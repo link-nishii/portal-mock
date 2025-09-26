@@ -49,7 +49,7 @@
         <div class="flex flex-col md:flex-row md:items-end gap-4">
           <div class="flex-1">
             <label class="text-xs text-gray-500">社員検索（氏名・社員番号）</label>
-            <input type="text" x-model.trim="employeeQuery" placeholder="例：西井 / 10023"
+            <input type="text" x-model.trim="employeeQuery" placeholder="例：石井 / 10023"
               class="mt-1 w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
           </div>
           <div class="md:ml-auto text-sm text-gray-500">全 <span class="font-medium"
@@ -473,7 +473,7 @@
         get currentGroup() { return (this.currentEmployee && this.currentGi !== null) ? this.currentEmployee.groups[this.currentGi] : null },
 
         // data
-        owners: ['榎本', '西井', '足利', '石田', '中村'],
+        owners: ['鈴木', '石井', '石田', '中村'],
         statusOptions: ['エントリー前', 'エントリー済', '面談依頼', '面談後／オファー前', 'オファー', '面談後お見送り', 'お見送り', 'エントリーしない', '参画決定'],
         employees: [],
 
@@ -493,15 +493,15 @@
           // seed sample employees with groups & chat
           this.employees = [
             {
-              id: rid(), name: '榎本 テスト', no: '10021', groups: [
+              id: rid(), name: '佐藤 悠真', no: '10021', groups: [
                 {
                   id: rid(), name: '2025年10月〜向け営業', display: 20, rows: [
-                    this.makeRow('株式会社フリューゲル', 'Javaサーバサイド開発', '品川', '〜75万/月', '榎本', 'エントリー済', [
+                    this.makeRow('株式会社フリューゲル', 'Javaサーバサイド開発', '品川', '〜75万/月', '鈴木', 'エントリー済', [
                       this.msg('system', '案件が作成されました'),
                       this.msg('sales', 'ご確認ください。エントリー可否お願いします。'),
                       this.msg('me', 'エントリーします。')
                     ]),
-                    this.makeRow('AlphaTech', 'Reactフロント開発', 'フルリモート', '〜80万/月', '榎本', '面談依頼', [
+                    this.makeRow('AlphaTech', 'Reactフロント開発', 'フルリモート', '〜80万/月', '鈴木', '面談依頼', [
                       this.msg('sales', '面談候補: 明日10:00/14:00、明後日13:00'),
                       this.msg('me', '明後日13:00でお願いします')
                     ])
@@ -509,21 +509,21 @@
                 },
                 {
                   id: rid(), name: '2024年10月〜向け営業', display: 20, rows: [
-                    this.makeRow('LinkWorks', 'Laravel保守/追加開発', '渋谷', '〜88万/月', '榎本', 'オファー', [this.msg('sales', 'オファー提示しました。締切は金曜です')])
+                    this.makeRow('LinkWorks', 'Laravel保守/追加開発', '渋谷', '〜88万/月', '鈴木', 'オファー', [this.msg('sales', 'オファー提示しました。締切は金曜です')])
                   ]
                 }
               ]
             },
             {
-              id: rid(), name: '西井 テスト', no: '10023', groups: [
+              id: rid(), name: '高橋 美咲', no: '10023', groups: [
                 {
                   id: rid(), name: '2024年6月〜向け営業', display: 20, rows: [
-                    this.makeRow('トレミーシステム', 'Salesforce運用', '新宿', '〜70万/月', '西井', 'お見送り', [this.msg('me', '今回は辞退します。別案件を優先します')])
+                    this.makeRow('トレミーシステム', 'Salesforce運用', '新宿', '〜70万/月', '石井', 'お見送り', [this.msg('me', '今回は辞退します。別案件を優先します')])
                   ]
                 }
               ]
             },
-            { id: rid(), name: '中村 テスト', no: '10031', groups: [] }
+            { id: rid(), name: '田中 健太', no: '10031', groups: [] }
           ]
         },
 
