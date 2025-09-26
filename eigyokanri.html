@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>営業管理（社員一覧 → 社員ページ → グループ詳細 → 案件内チャット）Tailwind+Alpine</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 font-sans" x-data="salesApp()" x-init="init()">
+  <!-- Header -->
+  <header class="bg-white sticky top-0 z-30 shadow">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-4">
+      <template x-if="screen==='employees'">
+        <h1 class="text-xl font-bold tracking-tight">社員一覧</h1>
+      </template>
+      <template x-if="screen==='employee'">
+        <div class="flex items-center gap-3">
+          <button @click="goEmployees()" class="px-3 py-1.5 rounded-xl border hover:bg-gray-50">← 戻る</button>
+          <h1 class="text-xl font-bold tracking-tight">社員ページ</h1>
+        </div>
+      </template>
+      <template x-if="screen==='detail'">
+        <div class="flex items-center gap-3">
+          <button @click="goEmployee()" class="px-3 py-1.5 rounded-xl border hover:bg-gray-50">← 社員ページへ</button>
+          <h1 class="text-xl font-bold tracking-tight" x-text="currentGroup?.name || 'グループ詳細'"></h1>
+        </div>
+      </template>
+
+      <div class="ml-auto flex items-center gap-3">
+        <template x-if="screen==='employee'">
+          <button @click="openAddGroup()"
+            class="px-4 py-2 rounded-2xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500">グループ追加</button>
+        </template>
+        <template x-if="screen==='detail'">
+          <button @click="openNewModal(currentGi)"
+            class="px-4 py-2 rounded-2xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500">案件追加</button>
+        </template>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <!-- ===== SCREEN: EMPLOYEES（社員一覧） ===== -->
+    <section x-show="screen==='employees'" style="display:none" class="space-y-6">
+      <div class="bg-white rounded-2xl p-6 shadow">
+        <div class="flex flex-col md:flex-row md:items-end gap-4">
+          <div class="flex-1">
+            <label class="text-xs text-gray-500">社員検索（氏名・社員番号）</label>
+            <input type="text" x-model.trim="employeeQuery" placeholder="例：西井 / 10023"
+              class="mt-1 w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div class="md:ml-auto text-sm text-gray-500">全 <span class="font-medium"
+              x-text="filteredEmployees.length"></span> 名</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <template x-for="(emp, ei) in filteredEmployees" :key="emp.id">
+          <article class="bg-white rounded-2xl shadow border border-gray-100 p-6 flex flex-col">
+            <div class="flex items-start gap-3">
+              <div class="flex-1">
+                <div class="text-lg font-bold" x-text="emp.name"></div>
+                <div class="text-sm text-gray-500">社員番号：<span x-text="emp.no"></span></div>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-4 gap-3 text-center">
+              <div class="rounded-xl border p-3">
+                <div class="text-xs text-gray-500">グループ</div>
+                <div class="text-lg font-bold" x-text="emp.groups.length"></div>
+              </div>
+              <div class="rounded-xl border p-3">
+                <div class="text-xs text-gray-500">案件</div>
+                <div class="text-lg font-bold" x-text="emp.groups.reduce((a,g)=>a+g.rows.length,0)"></div>
+              </div>
+              <div class="rounded-xl border p-3">
+                <div class="text-xs text-gray-500">オファー</div>
+                <div class="text-lg font-bold"
+                  x-text="emp.groups.reduce((a,g)=>a+g.rows.filter(r=>r.status==='オファー').length,0)"></div>
+              </div>
+              <div class="rounded-xl border p-3">
+                <div class="text-xs text-gray-500">未読</div>
+                <div class="text-lg font-bold"
+                  x-text="emp.groups.reduce((a,g)=>a+g.rows.reduce((b,r)=>b+(r.unread||0),0),0)"></div>
+              </div>
+            </div>
+            <div class="mt-5 flex items-center gap-2">
+              <button @click="openEmployee(ei)"
+                class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500">開く</button>
+            </div>
+          </article>
+        </template>
+      </div>
+      <template x-if="filteredEmployees.length===0">
+        <div class="text-center text-gray-500 py-16">一致する社員がいません。</div>
+      </template>
+    </section>
+
+    <!-- ===== SCREEN: EMPLOYEE（社員ページ） ===== -->
+    <section x-show="screen==='employee'" style="display:none" class="space-y-6">
+      <!-- Profile head -->
+      <section class="bg-white rounded-2xl p-6 shadow">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="text-2xl font-extrabold" x-text="currentEmployee?.name"></div>
+            <div class="text-sm text-gray-600">社員番号：<span x-text="currentEmployee?.no"></span></div>
+          </div>
+          <div class="grid grid-cols-4 gap-3">
+            <div class="rounded-xl border p-3 text-center">
+              <div class="text-xs text-gray-500">グループ</div>
+              <div class="text-lg font-bold" x-text="currentEmployee?.groups.length||0"></div>
+            </div>
+            <div class="rounded-xl border p-3 text-center">
+              <div class="text-xs text-gray-500">案件</div>
+              <div class="text-lg font-bold" x-text="sumRows(currentEmployee)"></div>
+            </div>
+            <div class="rounded-xl border p-3 text-center">
+              <div class="text-xs text-gray-500">オファー</div>
+              <div class="text-lg font-bold" x-text="sumOffers(currentEmployee)"></div>
+            </div>
+            <div class="rounded-xl border p-3 text-center">
+              <div class="text-xs text-gray-500">未読</div>
+              <div class="text-lg font-bold" x-text="sumUnread(currentEmployee)"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Groups of employee -->
+      <section class="bg-white rounded-2xl p-6 shadow">
+        <div class="flex flex-col md:flex-row md:items-end gap-4">
+          <div class="flex-1">
+            <label class="text-xs text-gray-500">グループ検索</label>
+            <input type="text" x-model.trim="groupQuery" placeholder="例：2024年10月〜"
+              class="mt-1 w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div class="md:ml-auto text-sm text-gray-500">全 <span class="font-medium"
+              x-text="filteredGroups.length"></span> 件</div>
+        </div>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <template x-for="(g, gi) in filteredGroups" :key="g.id">
+            <article class="bg-white rounded-2xl shadow border border-gray-100 p-6 flex flex-col">
+              <input x-model="g.name"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 bg-white focus:ring-2 focus:ring-indigo-500" />
+              <p class="mt-2 text-xs text-gray-500 flex items-center gap-2">更新 <span
+                  x-text="formatDateTime(lastUpdated(g))"></span> <span
+                  class="ml-auto inline-flex items-center gap-1 text-rose-600" x-show="groupUnread(g)>0">● <span
+                    x-text="groupUnread(g)"></span> 未読</span></p>
+              <div class="mt-4 grid grid-cols-4 gap-3 text-center">
+                <div class="rounded-xl border p-3">
+                  <div class="text-xs text-gray-500">案件</div>
+                  <div class="text-lg font-bold" x-text="g.rows.length"></div>
+                </div>
+                <div class="rounded-xl border p-3">
+                  <div class="text-xs text-gray-500">面談依頼</div>
+                  <div class="text-lg font-bold" x-text="countBy(g,'面談依頼')"></div>
+                </div>
+                <div class="rounded-xl border p-3">
+                  <div class="text-xs text-gray-500">オファー</div>
+                  <div class="text-lg font-bold" x-text="countBy(g,'オファー')"></div>
+                </div>
+                <div class="rounded-xl border p-3">
+                  <div class="text-xs text-gray-500">未読</div>
+                  <div class="text-lg font-bold" x-text="groupUnread(g)"></div>
+                </div>
+              </div>
+              <div class="mt-5 flex items-center gap-2">
+                <button @click="openDetail(gi)"
+                  class="px-4 py-2 rounded-xl bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-500">開く</button>
+                <button @click="duplicateGroup(gi)"
+                  class="px-4 py-2 rounded-xl border text-sm hover:bg-gray-50">複製</button>
+                <button @click="removeGroup(gi)"
+                  class="ml-auto px-4 py-2 rounded-xl bg-rose-50 text-rose-700 text-sm border border-rose-200 hover:bg-rose-100">削除</button>
+              </div>
+            </article>
+          </template>
+        </div>
+        <template x-if="filteredGroups.length===0">
+          <div class="text-center text-gray-500 py-8">一致するグループがありません。</div>
+        </template>
+      </section>
+    </section>
+
+    <!-- ===== SCREEN: DETAIL（グループ詳細＝案件一覧） ===== -->
+    <section x-show="screen==='detail'" style="display:none" class="space-y-6">
+      <!-- Filters for current group -->
+      <section class="bg-white rounded-2xl p-6 shadow">
+        <div class="flex flex-col md:flex-row md:items-end gap-4">
+          <div class="flex-1">
+            <label class="text-xs text-gray-500">検索（会社名・案件名）</label>
+            <input type="text" x-model.trim="filters.q" placeholder="例：リモート Java"
+              class="mt-1 w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">ステータス</label>
+            <select x-model="filters.status"
+              class="mt-1 w-44 px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="">すべて</option>
+              <template x-for="opt in statusOptions" :key="opt">
+                <option :value="opt" x-text="opt"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">担当</label>
+            <select x-model="filters.owner"
+              class="mt-1 w-40 px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+              <option value="">すべて</option>
+              <template x-for="o in owners" :key="o">
+                <option :value="o" x-text="o"></option>
+              </template>
+            </select>
+          </div>
+          <div class="md:ml-auto flex gap-2">
+            <button @click="resetFilters()"
+              class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition">クリア</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPIs -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-xl p-4 border">
+          <p class="text-sm text-gray-500">案件提案数</p>
+          <p class="mt-1 text-2xl font-bold" x-text="kpi(currentGroup).proposals"></p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border">
+          <p class="text-sm text-gray-500">面談依頼数</p>
+          <p class="mt-1 text-2xl font-bold" x-text="kpi(currentGroup).interviewRequests"></p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border">
+          <p class="text-sm text-gray-500">オファー数</p>
+          <p class="mt-1 text-2xl font-bold" x-text="kpi(currentGroup).offers"></p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border">
+          <p class="text-sm text-gray-500">面談通過率</p>
+          <p class="mt-1 text-xl font-bold" x-text="kpi(currentGroup).passRatePct"></p>
+          <p class="text-xs text-gray-500" x-text="`（${kpi(currentGroup).num}／${kpi(currentGroup).den}）`"></p>
+        </div>
+      </div>
+
+      <!-- List -->
+      <section class="bg-white rounded-2xl shadow overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-slate-50 text-gray-600 border-y border-gray-200">
+              <tr>
+                <th class="text-left px-6 py-3 w-40 font-medium">ステータス</th>
+                <th class="text-left px-6 py-3 font-medium">会社名</th>
+                <th class="text-left px-6 py-3 font-medium">案件名</th>
+                <th class="text-left px-6 py-3 w-28 font-medium">場所</th>
+                <th class="text-left px-6 py-3 w-28 font-medium">単価</th>
+                <th class="text-left px-6 py-3 w-28 font-medium">担当</th>
+                <th class="text-left px-6 py-3 w-40 font-medium">更新日時</th>
+                <th class="text-left px-6 py-3 w-24 font-medium">未読</th>
+                <th class="px-6 py-3 w-40 font-medium">操作</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <template x-for="(row, ri) in visibleRows(currentGroup)" :key="row.id">
+                <tr class="hover:bg-gray-50 transition">
+                  <td class="px-6 py-3">
+                    <select class="px-2 py-1 rounded-md border text-xs focus:ring-2 focus:ring-indigo-500"
+                      x-model="row.status" @change="onStatusChanged(row)">
+                      <template x-for="opt in statusOptions" :key="opt">
+                        <option :value="opt" x-text="opt"></option>
+                      </template>
+                    </select>
+                  </td>
+                  <td class="px-6 py-3 font-medium" x-text="row.company"></td>
+                  <td class="px-6 py-3">
+                    <div class="flex items-center gap-2">
+                      <span x-text="row.title"></span>
+                      <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded-full text-xs"
+                        :class="row.unread>0 ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'hidden'">未読 <span
+                          class="ml-1 font-semibold" x-text="row.unread"></span></span>
+                    </div>
+                  </td>
+                  <td class="px-6 py-3" x-text="row.location"></td>
+                  <td class="px-6 py-3" x-text="row.rate"></td>
+                  <td class="px-6 py-3" x-text="row.owner"></td>
+                  <td class="px-6 py-3 whitespace-nowrap" x-text="formatDateTime(row.updatedAt)"></td>
+                  <td class="px-6 py-3"><span x-text="row.unread||0"></span></td>
+                  <td class="px-6 py-3">
+                    <div class="flex gap-2">
+                      <button @click="openDeal(currentGi, ri)"
+                        class="px-3 py-1 rounded-lg border text-gray-700 hover:bg-gray-100 transition">詳細</button>
+                      <button @click="removeRow(currentGi, ri)"
+                        class="px-3 py-1 rounded-lg border text-gray-700 hover:bg-gray-100 transition">削除</button>
+                    </div>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-4 text-center" x-show="visibleRows(currentGroup).length < filteredRows(currentGroup).length">
+          <button @click="currentGroup.display += 20"
+            class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200">さらに表示</button>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- New Row Modal -->
+  <div x-show="modal.open" style="display:none" class="fixed inset-0 z-50">
+    <div class="absolute inset-0 bg-black/30" @click="closeModal()"></div>
+    <div class="absolute inset-0 grid place-items-center p-4">
+      <div class="w-full max-w-3xl bg-white rounded-2xl shadow-xl p-6">
+        <div class="flex items-center justify-between">
+          <div class="text-lg font-semibold">案件追加（<span x-text="currentGroup?.name||''"></span>）</div>
+          <button class="p-2 rounded-lg hover:bg-slate-100" @click="closeModal()">✕</button>
+        </div>
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <label class="text-xs text-gray-500">会社名</label>
+            <input x-model="form.company"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">案件名</label>
+            <input x-model="form.title"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">場所</label>
+            <input x-model="form.location"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">単価</label>
+            <input x-model="form.rate" placeholder="例：〜80万/月"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">担当</label>
+            <select x-model="form.owner"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500">
+              <option value="">未設定</option>
+              <template x-for="o in owners" :key="o">
+                <option :value="o" x-text="o"></option>
+              </template>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs text-gray-500">ステータス</label>
+            <select x-model="form.status"
+              class="mt-1 w-full px-3 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500">
+              <template x-for="opt in statusOptions" :key="opt">
+                <option :value="opt" x-text="opt"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+        <div class="mt-6 flex justify-end gap-2">
+          <button @click="closeModal()" class="px-3 py-2 rounded-xl bg-slate-100">キャンセル</button>
+          <button @click="saveRow()" class="px-3 py-2 rounded-xl bg-indigo-600 text-white">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deal Drawer (右スライド) -->
+  <div x-show="deal.open" style="display:none" class="fixed inset-0 z-50">
+    <div class="absolute inset-0 bg-black/30" @click="closeDeal()"></div>
+    <aside class="absolute top-0 right-0 h-full w-full max-w-4xl bg-white shadow-2xl grid grid-rows-[auto_1fr]">
+      <!-- Drawer header -->
+      <div class="px-6 py-4 border-b flex items-center gap-3">
+        <div class="flex-1">
+          <p class="text-xs text-gray-500" x-text="deal.row.company"></p>
+          <h2 class="text-lg font-bold" x-text="deal.row.title"></h2>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-1 rounded-md text-xs border" x-text="deal.row.status"></span>
+          <button class="p-2 rounded-lg hover:bg-slate-100" @click="closeDeal()">✕</button>
+        </div>
+      </div>
+      <!-- Drawer body -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 h-full">
+        <!-- Left: Overview -->
+        <section class="p-6 border-r space-y-4 lg:col-span-1">
+          <div>
+            <h3 class="text-sm font-semibold text-gray-700">案件情報</h3>
+            <dl class="mt-2 grid grid-cols-3 gap-2 text-sm">
+              <dt class="text-gray-500">会社</dt>
+              <dd class="col-span-2" x-text="deal.row.company"></dd>
+              <dt class="text-gray-500">案件名</dt>
+              <dd class="col-span-2" x-text="deal.row.title"></dd>
+              <dt class="text-gray-500">場所</dt>
+              <dd class="col-span-2" x-text="deal.row.location"></dd>
+              <dt class="text-gray-500">単価</dt>
+              <dd class="col-span-2" x-text="deal.row.rate"></dd>
+              <dt class="text-gray-500">担当</dt>
+              <dd class="col-span-2" x-text="deal.row.owner"></dd>
+              <dt class="text-gray-500">更新</dt>
+              <dd class="col-span-2" x-text="formatDateTime(deal.row.updatedAt)"></dd>
+            </dl>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-sm font-semibold text-gray-700">ステータス更新</h3>
+            <div class="flex items-center gap-2">
+              <select class="px-3 py-2 rounded-lg border" x-model="deal.row.status" @change="onStatusChanged(deal.row)">
+                <template x-for="opt in statusOptions" :key="opt">
+                  <option :value="opt" x-text="opt"></option>
+                </template>
+              </select>
+              <button class="px-3 py-2 rounded-lg border hover:bg-gray-50"
+                @click="addSystemLog('ステータスを『'+deal.row.status+'』に更新しました')">記録</button>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <h3 class="text-sm font-semibold text-gray-700">テンプレ</h3>
+            <div class="flex flex-wrap gap-2 text-xs">
+              <button class="px-3 py-1 rounded-full border hover:bg-gray-50"
+                @click="quick('辞退理由: 他案件優先のため')">辞退理由</button>
+              <button class="px-3 py-1 rounded-full border hover:bg-gray-50"
+                @click="quick('面談候補: 明日10:00/14:00、明後日13:00')">面談候補</button>
+              <button class="px-3 py-1 rounded-full border hover:bg-gray-50"
+                @click="quick('条件確認: 稼働開始日/就業時間/リモート可否を教えてください')">条件確認</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Chat & History (2 columns on large) -->
+        <section class="p-6 space-y-4 lg:col-span-2 overflow-hidden">
+          <div class="flex items-center gap-3">
+            <h3 class="text-sm font-semibold text-gray-700">チャット</h3>
+            <span class="ml-auto text-xs text-gray-500">未読 <span x-text="deal.row.unread||0"></span></span>
+          </div>
+          <div class="h-[52vh] lg:h-[60vh] overflow-y-auto bg-slate-50 rounded-xl p-4" @scroll.passive="rememberScroll">
+            <template x-for="m in deal.row.chat" :key="m.id">
+              <div class="mb-3" :class="m.role==='me' ? 'text-right' : 'text-left'">
+                <div class="inline-block max-w-[90%] rounded-2xl px-3 py-2 text-sm align-top"
+                  :class="m.role==='system' ? 'bg-amber-50 text-amber-900 border border-amber-200' : (m.role==='me' ? 'bg-indigo-600 text-white' : 'bg-white border')">
+                  <div class="whitespace-pre-wrap" x-text="m.text"></div>
+                  <div class="mt-1 text-[10px] opacity-70" x-text="formatDateTime(m.at)"></div>
+                </div>
+              </div>
+            </template>
+            <template x-if="(deal.row.chat||[]).length===0">
+              <p class="text-sm text-gray-500">まだメッセージはありません。</p>
+            </template>
+          </div>
+          <div class="flex items-end gap-2">
+            <textarea x-model="deal.input" @keydown.enter.prevent="send()" placeholder="ここに入力（Enterで送信）"
+              class="flex-1 min-h-[48px] max-h-40 px-3 py-2 rounded-xl border focus:ring-2 focus:ring-indigo-500"></textarea>
+            <button @click="send()"
+              class="px-4 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500">送信</button>
+          </div>
+          <div class="flex items-center gap-2 text-xs">
+            <input type="datetime-local" x-model="deal.meeting" class="px-2 py-1 rounded-lg border" />
+            <button @click="proposeMeeting()" class="px-3 py-1.5 rounded-lg border hover:bg-gray-50">面談日時を提案</button>
+            <button @click="clearUnread()"
+              class="ml-auto px-3 py-1.5 rounded-lg border hover:bg-gray-50">未読をクリア</button>
+          </div>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    function salesApp() {
+      return {
+        // routing
+        screen: 'employees', // 'employees' | 'employee' | 'detail'
+        currentEi: null,
+        currentGi: null,
+        get currentEmployee() { return this.currentEi !== null ? this.employees[this.currentEi] : null },
+        get currentGroup() { return (this.currentEmployee && this.currentGi !== null) ? this.currentEmployee.groups[this.currentGi] : null },
+
+        // data
+        owners: ['榎本', '西井', '足利', '石田', '中村'],
+        statusOptions: ['エントリー前', 'エントリー済', '面談依頼', '面談後／オファー前', 'オファー', '面談後お見送り', 'お見送り', 'エントリーしない', '参画決定'],
+        employees: [],
+
+        // filters
+        employeeQuery: '',
+        groupQuery: '',
+        filters: { q: '', status: '', owner: '' },
+
+        // modal
+        modal: { open: false },
+        form: { company: '', title: '', location: '', rate: '', owner: '', status: 'エントリー前' },
+
+        // deal drawer state
+        deal: { open: false, gi: null, ri: null, row: null, input: '', meeting: '' },
+
+        init() {
+          // seed sample employees with groups & chat
+          this.employees = [
+            {
+              id: rid(), name: '榎本 テスト', no: '10021', groups: [
+                {
+                  id: rid(), name: '2025年10月〜向け営業', display: 20, rows: [
+                    this.makeRow('株式会社フリューゲル', 'Javaサーバサイド開発', '品川', '〜75万/月', '榎本', 'エントリー済', [
+                      this.msg('system', '案件が作成されました'),
+                      this.msg('sales', 'ご確認ください。エントリー可否お願いします。'),
+                      this.msg('me', 'エントリーします。')
+                    ]),
+                    this.makeRow('AlphaTech', 'Reactフロント開発', 'フルリモート', '〜80万/月', '榎本', '面談依頼', [
+                      this.msg('sales', '面談候補: 明日10:00/14:00、明後日13:00'),
+                      this.msg('me', '明後日13:00でお願いします')
+                    ])
+                  ]
+                },
+                {
+                  id: rid(), name: '2024年10月〜向け営業', display: 20, rows: [
+                    this.makeRow('LinkWorks', 'Laravel保守/追加開発', '渋谷', '〜88万/月', '榎本', 'オファー', [this.msg('sales', 'オファー提示しました。締切は金曜です')])
+                  ]
+                }
+              ]
+            },
+            {
+              id: rid(), name: '西井 テスト', no: '10023', groups: [
+                {
+                  id: rid(), name: '2024年6月〜向け営業', display: 20, rows: [
+                    this.makeRow('トレミーシステム', 'Salesforce運用', '新宿', '〜70万/月', '西井', 'お見送り', [this.msg('me', '今回は辞退します。別案件を優先します')])
+                  ]
+                }
+              ]
+            },
+            { id: rid(), name: '中村 テスト', no: '10031', groups: [] }
+          ]
+        },
+
+        // navigation helpers
+        openEmployee(ei) { this.currentEi = ei; this.screen = 'employee'; this.groupQuery = ''; },
+        goEmployees() { this.screen = 'employees'; this.currentEi = null; this.currentGi = null; },
+        openDetail(gi) { this.currentGi = gi; this.screen = 'detail' },
+        goEmployee() { this.screen = 'employee'; this.currentGi = null; this.filters = { q: '', status: '', owner: '' } },
+
+        // computed lists
+        get filteredEmployees() {
+          const q = this.employeeQuery.toLowerCase()
+          return this.employees.filter(e => !q || e.name.toLowerCase().includes(q) || (e.no || '').toLowerCase().includes(q))
+        },
+        get filteredGroups() {
+          const q = this.groupQuery.toLowerCase();
+          const groups = this.currentEmployee?.groups || []
+          return groups.filter(g => !q || g.name.toLowerCase().includes(q))
+        },
+
+        // group ops
+        openAddGroup() {
+          if (!this.currentEmployee) return
+          const name = prompt('グループ名を入力（例：2025年10月〜向け営業）', '2025年10月〜向け営業')
+          if (!name) return
+          this.currentEmployee.groups.unshift({ id: rid(), name, display: 20, rows: [] })
+        },
+        duplicateGroup(gi) {
+          const g = this.currentEmployee.groups[gi]
+          const clone = { id: rid(), name: g.name + '（複製）', display: 20, rows: g.rows.map(r => ({ ...r, id: rid(), chat: [...r.chat.map(m => ({ ...m }))], unread: r.unread })) }
+          this.currentEmployee.groups.splice(gi + 1, 0, clone)
+        },
+        removeGroup(gi) { if (confirm('このグループを削除します。よろしいですか？')) this.currentEmployee.groups.splice(gi, 1) },
+
+        // rows
+        makeRow(company, title, location, rate, owner, status, chat = []) {
+          return { id: rid(), company, title, location, rate, owner, status, updatedAt: new Date().toISOString(), chat, unread: chat.filter(m => m.role !== 'me').length }
+        },
+        msg(role, text) { return { id: rid(), role, text, at: new Date().toISOString() } },
+        filteredRows(g) {
+          const q = this.filters.q.toLowerCase()
+          return g.rows.filter(r => {
+            const okQ = !q || [r.company, r.title].some(v => String(v).toLowerCase().includes(q))
+            const okS = !this.filters.status || r.status === this.filters.status
+            const okO = !this.filters.owner || r.owner === this.filters.owner
+            return okQ && okS && okO
+          }).sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+        },
+        visibleRows(g) { return this.filteredRows(g).slice(0, g.display) },
+        openNewModal(gi) { this.currentGi = gi; this.modal.open = true; this.form = { company: '', title: '', location: '', rate: '', owner: this.owners[0], status: 'エントリー前' } },
+        closeModal() { this.modal.open = false },
+        saveRow() {
+          if (this.currentGi === null || !this.currentEmployee) return
+          if (!this.form.company || !this.form.title) { alert('会社名と案件名は必須です。'); return }
+          const row = this.makeRow(this.form.company, this.form.title, this.form.location || '未設定', this.form.rate || '-', this.form.owner || '未設定', this.form.status)
+          this.currentEmployee.groups[this.currentGi].rows.unshift(row)
+          this.modal.open = false
+        },
+        removeRow(gi, ri) { this.currentEmployee.groups[gi].rows.splice(ri, 1) },
+        touch(g, row, reason) { row.updatedAt = new Date().toISOString() },
+
+        // unread helpers
+        sumUnread(emp) { return (emp?.groups || []).reduce((a, g) => a + g.rows.reduce((b, r) => b + (r.unread || 0), 0), 0) },
+        groupUnread(g) { return g.rows.reduce((a, r) => a + (r.unread || 0), 0) },
+
+        // KPI helpers
+        lastUpdated(g) { if (!g.rows.length) return new Date(0).toISOString(); return g.rows.map(r => r.updatedAt).sort().slice(-1)[0] },
+        countBy(g, status) { return g.rows.filter(r => r.status === status).length },
+        sumRows(emp) { return (emp?.groups || []).reduce((a, g) => a + g.rows.length, 0) },
+        sumOffers(emp) { return (emp?.groups || []).reduce((a, g) => a + g.rows.filter(r => r.status === 'オファー').length, 0) },
+        kpi(g) {
+          const rows = this.filteredRows(g)
+          const proposals = rows.length
+          const interviewRequests = rows.filter(r => r.status === '面談依頼').length
+          const offers = rows.filter(r => r.status === 'オファー').length
+          const afterInterview = rows.filter(r => ['面談後お見送り', 'オファー', '参画決定'].includes(r.status)).length
+          const num = offers, den = afterInterview
+          const pct = den ? Math.round((num / den) * 100) + '%' : '0%'
+          return { proposals, interviewRequests, offers, passRatePct: pct, num, den }
+        },
+        resetFilters() { this.filters = { q: '', status: '', owner: '' } },
+        formatDateTime(iso) { const d = new Date(iso); const mm = String(d.getMonth() + 1).padStart(2, '0'); const dd = String(d.getDate()).padStart(2, '0'); const hh = String(d.getHours()).padStart(2, '0'); const mi = String(d.getMinutes()).padStart(2, '0'); return `${d.getFullYear()}/${mm}/${dd} ${hh}:${mi}` },
+
+        // status changes -> system log entry
+        onStatusChanged(row) {
+          row.updatedAt = new Date().toISOString()
+          this.addSystemLog(`ステータスが『${row.status}』に変更されました`, row)
+        },
+
+        // drawer
+        openDeal(gi, ri) {
+          this.deal.gi = gi; this.deal.ri = ri; this.deal.row = this.currentEmployee.groups[gi].rows[ri]; this.deal.open = true; this.clearUnread();
+          this.$nextTick(() => { const box = document.querySelector('[x-data] .h-\\[52vh\\], .h-\\[60vh\\]'); if (box) box.scrollTop = box.scrollHeight; });
+        },
+        closeDeal() { this.deal.open = false; this.deal.input = ''; this.deal.meeting = ''; },
+        clearUnread() { if (this.deal.row) { this.deal.row.unread = 0 } },
+        rememberScroll() { /* noop placeholder */ },
+        quick(text) { this.deal.input = (this.deal.input ? this.deal.input + '\n' : '') + text },
+        send() {
+          const text = (this.deal.input || '').trim(); if (!text) return
+          const m = this.msg('me', text); this.deal.row.chat.push(m); this.deal.input = ''; this.bump();
+        },
+        proposeMeeting() {
+          if (!this.deal.meeting) { alert('日時を選択してください'); return }
+          const t = new Date(this.deal.meeting); const mm = String(t.getMonth() + 1).padStart(2, '0'); const dd = String(t.getDate()).padStart(2, '0');
+          const hh = String(t.getHours()).padStart(2, '0'); const mi = String(t.getMinutes()).padStart(2, '0');
+          const msg = `面談候補: ${t.getFullYear()}/${mm}/${dd} ${hh}:${mi}`
+          const m = this.msg('me', msg); this.deal.row.chat.push(m); this.deal.meeting = ''; this.bump();
+        },
+        addSystemLog(text, row = null) {
+          const target = row || this.deal.row; if (!target) return
+          target.chat.push(this.msg('system', text)); this.bump(target)
+        },
+        bump(row = null) {
+          const target = row || this.deal.row; target.updatedAt = new Date().toISOString();
+          // simulate the other side replying -> increase unread (デモ用)
+          setTimeout(() => { if (!this.deal.open || Math.random() < 0.4) { target.chat.push(this.msg('sales', '了解しました')); target.unread = (target.unread || 0) + 1; target.updatedAt = new Date().toISOString(); this.$dispatch('dummy'); } }, 1200)
+        }
+      }
+    }
+
+    function rid() { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); return 'id-' + Math.random().toString(36).slice(2) }
+  </script>
+</body>
+
+</html>
