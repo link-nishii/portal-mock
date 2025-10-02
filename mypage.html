@@ -206,12 +206,13 @@
                         <div class="mt-3 space-y-2 overflow-y-auto max-h-96 pr-2">
                             <template x-for="n in allNotifications().slice(0,50)" :key="n.id">
                                 <div class="grid grid-cols-[auto_1fr_auto] items-center gap-3 p-3 rounded-lg border border-slate-200 bg-white
-             hover:border-sky-300 hover:bg-sky-50/40 transition-colors cursor-pointer select-none"
+      hover:border-sky-300 hover:bg-sky-50/40 transition-colors cursor-pointer select-none"
                                     :class="n.read ? 'border-l-4 border-l-slate-200' : 'border-l-4 border-l-[var(--brand-main)]'"
                                     role="button" tabindex="0" @click="openNotification(n)"
                                     @keydown.enter.prevent="openNotification(n)"
                                     @keydown.space.prevent="openNotification(n)">
-                                    <!-- 左：チェック + アイコン（独立操作） -->
+
+                                    <!-- 左：チェック + アイコン -->
                                     <div class="flex items-center gap-3 min-w-[52px]">
                                         <input type="checkbox" class="h-4 w-4 accent-[var(--brand-main)]" :value="n.id"
                                             x-model="selectedNotifications" @click.stop @keydown.stop />
@@ -226,8 +227,9 @@
 
                                     <!-- 本文 -->
                                     <div class="min-w-0">
-                                        <div class="font-medium leading-tight truncate" x-text="n.title"></div>
-                                        <div class="text-[13px] leading-snug text-slate-600 truncate" x-text="n.desc">
+                                        <div class="text-sm font-medium leading-snug truncate mb-1" x-text="n.title">
+                                        </div>
+                                        <div class="text-[11px] leading-tight text-slate-600 truncate" x-text="n.desc">
                                         </div>
                                     </div>
 
@@ -236,7 +238,16 @@
                                         x-text="n.time"></div>
                                 </div>
                             </template>
+
+                            <!-- 古い既読を開閉 -->
+                            <template x-if="olderCount() > 0 && !showOlder">
+                                <button @click="showOlder = true"
+                                    class="w-full mt-2 text-xs px-3 py-2 border rounded-md hover:bg-[var(--brand-gray)]">
+                                    さらに表示（<span x-text="olderCount()"></span>件の過去の既読）
+                                </button>
+                            </template>
                         </div>
+
 
 
                     </section>
@@ -402,6 +413,47 @@
             profileOpen: false,
             sidebarOpen: false,
             selectedNotifications: [],
+            // 追加：表示ウィンドウ（日数）
+            visibleDays: 1,
+            showOlder: false,
+
+            // 置き換え：表示用の整形関数
+            displayNotifications() {
+                const now = new Date();
+                const isRecent = (t) => {
+                    // t: 'MM/DD HH:MM' を今年の日付としてパース（簡易）
+                    const [md, hm] = t.split(' ');
+                    const [m, d] = md.split('/').map(Number);
+                    const [H, M] = hm.split(':').map(Number);
+                    const dt = new Date(now.getFullYear(), m - 1, d, H, M);
+                    const diff = (now - dt) / (1000 * 60 * 60 * 24);
+                    return diff <= this.visibleDays;
+                };
+
+                const list = this.allNotifications()
+                    .map(n => ({ ...n, _recent: isRecent(n.time) }))
+                    .sort((a, b) => a.time < b.time ? 1 : -1);
+
+                const primary = list.filter(n => !n.read || n._recent);
+                const older = list.filter(n => n.read && !n._recent);
+
+                // 画面キャップ（未読優先）
+                const capped = primary.slice(0, 50);
+                return this.showOlder ? capped.concat(older) : capped;
+            },
+
+            olderCount() {
+                const now = new Date();
+                const isRecent = (t) => {
+                    const [md, hm] = t.split(' ');
+                    const [m, d] = md.split('/').map(Number);
+                    const [H, M] = hm.split(':').map(Number);
+                    const dt = new Date(now.getFullYear(), m - 1, d, H, M);
+                    return (now - dt) / (1000 * 60 * 60 * 24) <= this.visibleDays;
+                };
+                return this.allNotifications().filter(n => n.read && !isRecent(n.time)).length;
+            },
+
             menuItems: [
                 { key: 'mypage', label: 'マイページ' },
                 { key: 'attendance', label: '勤怠表' },
