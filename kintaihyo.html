@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>勤怠表</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    :root {
+      --brand-main: #f15b2a;
+      --brand-sub: #111111;
+      --brand-gray: #f7f7f7;
+    }
+
+    [x-cloak] {
+      display: none !important;
+    }
+
+    .active-menu {
+      background: color-mix(in srgb, var(--brand-sub) 100%, transparent);
+      color: var(--brand-gray);
+    }
+
+    /* インタラクティブタグ（おセルボタン） */
+    .chip-btn {
+      @apply inline-flex items-center gap-1 h-6 px-2 rounded-full border text-[11px] cursor-pointer transition;
+      @apply bg-white border-slate-300 text-slate-700 hover:shadow-sm hover:bg-slate-50 active:scale-[.99];
+    }
+
+    .chip-btn.ok {
+      @apply bg-indigo-50 border-indigo-200 text-indigo-700;
+    }
+
+    .chip-btn.warn {
+      @apply bg-amber-50 border-amber-200 text-amber-800;
+    }
+
+    .chip-btn.rose {
+      @apply bg-rose-50 border-rose-200 text-rose-700;
+    }
+
+    .chip-btn.em {
+      @apply bg-emerald-50 border-emerald-200 text-emerald-700;
+    }
+
+    .chip-static {
+      @apply inline-flex items-center h-6 px-2 rounded-full text-[11px] border bg-slate-50 text-slate-400 border-slate-200 cursor-default;
+    }
+
+    /* 小ドット（調整ありの控えめサイン） */
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      display: inline-block
+    }
+  </style>
+</head>
+
+<body class="bg-[var(--brand-gray)] text-[var(--brand-sub)]" x-data="attendanceApp()" x-init="init()">
+
+  <!-- サイドバー -->
+  <aside
+    class="fixed inset-y-0 left-0 w-60 bg-white border-r border-slate-200 transform md:transform-none transition-transform duration-200 ease-in-out z-50 flex flex-col"
+    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
+    <div class="flex items-center gap-2 p-4 border-b border-slate-200">
+      <div class="h-8 w-8 rounded-md bg-[var(--brand-main)] grid place-items-center text-white font-bold">L</div>
+      <div class="font-semibold">Link Portal</div>
+    </div>
+    <nav class="px-2 py-2 text-sm overflow-y-auto space-y-3">
+      <template x-for="item in menuItems" :key="item.key">
+        <a :href="'#'+item.key" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-md hover:opacity-70"
+          :class="currentPage===item.key ? 'active-menu' : ''">
+          <span class="h-4 w-4 text-slate-600" x-html="menuIcon(item.key)"></span>
+          <span class="flex-1 text-left" x-text="item.label"></span>
+        </a>
+      </template>
+    </nav>
+  </aside>
+
+  <!-- メイン -->
+  <div class="min-h-screen md:pl-60">
+    <main class="min-h-screen flex flex-col">
+      <header class="sticky top-0 bg-white/90 backdrop-blur border-b border-slate-200 z-30">
+        <div class="flex items-center justify-between px-4 md:px-6 py-3">
+          <div class="flex items-center gap-2">
+            <button class="md:hidden p-2 rounded-md hover:bg-[var(--brand-gray)]" @click="sidebarOpen=!sidebarOpen"
+              aria-label="メニューを開く">
+              <svg class="h-6 w-6 text-slate-600" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path d="M3 6h18M3 12h18M3 18h18" />
+              </svg>
+            </button>
+            <h1 class="text-lg md:text-xl font-semibold">勤怠表</h1>
+          </div>
+          <div class="text-xs text-slate-600">調整日 <span class="font-semibold tabular-nums"
+              x-text="stats.adjustDays"></span> 日</div>
+        </div>
+      </header>
+
+      <div class="p-4 md:p-6 flex-1">
+        <!-- 操作バー -->
+        <section class="rounded-md border border-slate-200 bg-white p-3 md:p-4">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2">
+              <label for="month" class="text-sm text-slate-600">対象月</label>
+              <select id="month" x-model="selectedMonth"
+                class="h-9 rounded-md border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]">
+                <template x-for="m in months" :key="m.value">
+                  <option :value="m.value" x-text="m.label"></option>
+                </template>
+              </select>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-xs text-slate-500">合計 メイン <span class="font-semibold tabular-nums"
+                  x-text="totals.main"></span> / サブ <span class="font-semibold tabular-nums" x-text="totals.sub"></span>
+              </div>
+              <button @click="submitSheet()"
+                class="inline-flex items-center gap-1 px-3 h-9 text-sm rounded-md bg-[var(--brand-main)] text-white hover:opacity-90">提出
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14" />
+                  <path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- テーブル -->
+        <section class="mt-4 rounded-md border border-slate-200 bg-white overflow-hidden">
+          <!-- 見出し（非sticky） -->
+          <div class="bg-white">
+            <!-- 列：日付 / 区分 / 出勤 / 退勤 / 休憩 / 調整 / 労働 / 申請 -->
+            <div
+              class="grid grid-cols-[110px_150px_140px_140px_120px_1fr_210px_200px] text-sm border-b border-slate-200">
+              <div class="px-3 py-2 text-slate-500">日付</div>
+              <div class="px-3 py-2 text-slate-500">区分</div>
+              <div class="px-3 py-2 text-slate-500">出勤</div>
+              <div class="px-3 py-2 text-slate-500">退勤</div>
+              <div class="px-3 py-2 text-slate-500">休憩</div>
+              <div class="px-3 py-2 text-slate-500">調整</div>
+              <div class="px-3 py-2 text-slate-500">労働</div>
+              <div class="px-3 py-2 text-slate-500">申請/状況</div>
+            </div>
+          </div>
+
+          <!-- 行 -->
+          <div class="divide-y divide-slate-200">
+            <template x-for="row in rows" :key="row.id">
+              <div class="relative">
+                <div
+                  class="grid grid-cols-[110px_150px_140px_140px_120px_1fr_210px_200px] items-center hover:bg-slate-50">
+                  <!-- 日付 -->
+                  <div class="px-3 py-3 text-sm tabular-nums" :class="row.holiday ? 'bg-sky-50/50' : ''">
+                    <div class="flex items-center gap-2">
+                      <button class="shrink-0 h-6 w-6 grid place-items-center rounded hover:bg-[var(--brand-gray)]"
+                        @click="toggle(row)" :aria-expanded="row.open" :aria-controls="'drawer-'+row.id" title="詳細を開閉">
+                        <svg class="h-4 w-4 text-slate-500 transition-transform" :class="row.open ? 'rotate-180' : ''"
+                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </button>
+                      <span x-text="row.dateLabel"></span>
+                      <!-- 調整ドット -->
+                      <div class="ml-1 flex items-center gap-1.5"
+                        x-show="row.summary.nukeCount>0 || row.summary.addCount>0">
+                        <span class="dot bg-rose-400" x-show="row.summary.nukeCount>0"
+                          :title="`控除 ${row.summary.nukeCount}件（${row.summary.nukeMinus}）`"></span>
+                        <span class="dot bg-emerald-400" x-show="row.summary.addCount>0"
+                          :title="`追加 ${row.summary.addCount}件（${row.summary.addDur}）`"></span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 区分（ドロップダウン） -->
+                  <div class="px-3 py-3">
+                    <div class="flex items-center gap-2">
+                      <select
+                        class="h-8 w-[120px] rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]"
+                        x-model="row.type" @change="onTypeChange(row)">
+                        <template x-for="t in typeOptions" :key="t">
+                          <option x-text="t"></option>
+                        </template>
+                      </select>
+                      <!-- 自動判定ラベル（休日出勤など） -->
+                      <template x-if="computedType(row) !== row.type">
+                        <span class="chip-static" x-text="computedType(row)"></span>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- 出勤 -->
+                  <div class="px-3 py-3">
+                    <div class="flex items-center gap-2">
+                      <label class="text-xs text-slate-500">出勤</label>
+                      <input type="time"
+                        class="h-8 w-[110px] rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]"
+                        x-model="row.mainStart" @change="recalc(row)" />
+                    </div>
+                  </div>
+
+                  <!-- 退勤 -->
+                  <div class="px-3 py-3">
+                    <div class="flex items-center gap-2">
+                      <label class="text-xs text-slate-500">退勤</label>
+                      <input type="time"
+                        class="h-8 w-[110px] rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]"
+                        x-model="row.mainEnd" @change="recalc(row)" />
+                    </div>
+                  </div>
+
+                  <!-- 休憩 -->
+                  <div class="px-3 py-3">
+                    <div class="flex items-center gap-2">
+                      <label class="text-xs text-slate-500">休憩</label>
+                      <input type="number" min="0" step="5"
+                        class="h-8 w-[80px] rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]"
+                        x-model.number="row.breakMin" @change="recalc(row)" />
+                      <span class="text-sm text-slate-600">分</span>
+                    </div>
+                  </div>
+
+                  <!-- 調整（抜け/追加のミニボタン） -->
+                  <div class="px-3 py-3">
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <!-- 抜け（押せる） -->
+                        <button class="chip-btn rose" @click="openAdjust(row, 'nuke')"
+                          :aria-label="`抜け ${row.summary.nukeCount}件`">
+                          抜け <span class="tabular-nums font-semibold" x-text="row.summary.nukeCount"></span>
+                        </button>
+                        <!-- 追加（押せる） -->
+                        <button class="chip-btn em" @click="openAdjust(row, 'add')"
+                          :aria-label="`追加 ${row.summary.addCount}件`">
+                          追加 <span class="tabular-nums font-semibold" x-text="row.summary.addCount"></span>
+                        </button>
+                        <!-- 調整合計（表示のみ） -->
+                        <span class="chip-static"
+                          x-text="`控除 ${row.summary.nukeMinus} / 追加 ${row.summary.addDur}`"></span>
+                      </div>
+                      <button @click="openAdjust(row)"
+                        class="text-xs px-2.5 h-8 rounded border border-slate-300 hover:bg-[var(--brand-gray)]">調整</button>
+                    </div>
+                  </div>
+
+                  <!-- 労働 -->
+                  <div class="px-3 py-3">
+                    <div class="text-sm">
+                      <strong>メイン <span class="tabular-nums" x-text="row.summary.mainNet"></span></strong>
+                      <span class="text-slate-400"> / </span>
+                      <span>サブ <span class="tabular-nums" x-text="row.summary.addDur"></span></span>
+                    </div>
+                  </div>
+
+                  <!-- 申請/状況（おセルボタン or ラベル） -->
+                  <div class="px-3 py-3">
+                    <div class="flex flex-wrap gap-1.5">
+                      <template x-for="chip in row.statusChips" :key="chip.id">
+                        <template x-if="chip.actionable">
+                          <button class="chip-btn" :class="chip.variant||''" @click="onChip(row, chip)">
+                            <span x-text="chip.text"></span>
+                          </button>
+                        </template>
+                        <template x-if="!chip.actionable">
+                          <span class="chip-static" :class="chip.variant==='ok' ? 'ok' : ''"><span
+                              x-text="chip.text"></span></span>
+                        </template>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ドロワー -->
+                <div :id="'drawer-'+row.id" x-show="row.open" x-transition
+                  class="border-t border-dashed border-slate-200 bg-white">
+                  <div class="p-3 md:p-4 grid md:grid-cols-2 gap-3">
+                    <div class="rounded-md border border-slate-200">
+                      <div class="px-3 py-2 border-b border-slate-200 font-medium">調整の詳細</div>
+                      <div class="p-3 space-y-2">
+                        <template x-if="row.nuke.length===0 && row.add.length===0">
+                          <div class="text-sm text-slate-500">—</div>
+                        </template>
+                        <template x-for="(s,idx) in row.nuke" :key="'n'+idx">
+                          <div
+                            class="flex items-center justify-between p-2 rounded-md border border-rose-200 bg-rose-50">
+                            <div class="text-sm"><strong x-text="s.start"></strong>–<strong x-text="s.end"></strong>
+                              <span x-text="s.label"></span> <span class="text-slate-400"
+                                x-text="s.note && `（${s.note}）`"></span>
+                            </div>
+                            <button @click="removeSpan(row,'nuke',idx)"
+                              class="h-7 px-2 text-xs rounded border border-slate-300 bg-white hover:bg-[var(--brand-gray)]">削除</button>
+                          </div>
+                        </template>
+                        <template x-for="(s,idx) in row.add" :key="'a'+idx">
+                          <div
+                            class="flex items-center justify-between p-2 rounded-md border border-emerald-200 bg-emerald-50">
+                            <div class="text-sm"><strong x-text="s.start"></strong>–<strong x-text="s.end"></strong>
+                              <span x-text="s.label"></span> <span class="text-slate-400"
+                                x-text="s.note && `（${s.note}）`"></span>
+                            </div>
+                            <button @click="removeSpan(row,'add',idx)"
+                              class="h-7 px-2 text-xs rounded border border-slate-300 bg-white hover:bg-[var(--brand-gray)]">削除</button>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+
+                    <div class="rounded-md border border-slate-200">
+                      <div class="px-3 py-2 border-b border-slate-200 font-medium">申請の詳細</div>
+                      <div class="p-3 space-y-2">
+                        <template x-for="ap in row.applications" :key="ap.id">
+                          <div
+                            class="flex items-center justify-between p-2 rounded-md border border-slate-200 bg-white">
+                            <div class="text-sm" x-text="ap.title"></div>
+                            <div class="text-xs text-slate-500" x-text="ap.status"></div>
+                          </div>
+                        </template>
+                        <template x-if="row.applications.length===0">
+                          <div class="text-sm text-slate-500">—</div>
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </template>
+          </div>
+        </section>
+      </div>
+
+      <div
+        class="sticky bottom-0 bg-white/90 backdrop-blur border-t border-slate-200 px-4 md:px-6 py-3 flex items-center justify-between">
+        <div class="text-xs text-slate-500">合計 メイン <span class="font-semibold tabular-nums" x-text="totals.main"></span>
+          / サブ <span class="font-semibold tabular-nums" x-text="totals.sub"></span></div>
+        <button @click="submitSheet()"
+          class="inline-flex items-center gap-1 px-3 h-9 text-sm rounded-md bg-[var(--brand-main)] text-white hover:opacity-90">提出
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14" />
+            <path d="m12 5 7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- 調整モーダル -->
+  <div x-cloak x-show="modal.open" x-transition.opacity
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+    <div @click.outside="closeModal()"
+      class="w-full max-w-xl rounded-lg bg-white shadow-xl border border-slate-200 overflow-hidden">
+      <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
+        <div class="font-semibold">時間調整を記録</div>
+        <button class="h-8 px-2 rounded hover:bg-[var(--brand-gray)]" @click="closeModal()">閉じる</button>
+      </div>
+      <div class="p-4 space-y-3">
+        <div class="grid grid-cols-[96px_1fr] items-center gap-3">
+          <div class="text-sm text-slate-600">種類</div>
+          <div class="inline-flex rounded-full border border-slate-300 overflow-hidden">
+            <button class="h-9 px-4 text-sm"
+              :class="modal.tab==='add' ? 'bg-orange-50 text-[var(--brand-main)]' : 'bg-white'"
+              @click="modal.tab='add'">追加</button>
+            <button class="h-9 px-4 text-sm border-l border-slate-300"
+              :class="modal.tab==='nuke' ? 'bg-orange-50 text-[var(--brand-main)]' : 'bg-white'"
+              @click="modal.tab='nuke'">控除</button>
+          </div>
+
+          <div class="text-sm text-slate-600">項目</div>
+          <div>
+            <select
+              class="h-9 w-full rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]"
+              x-model="modal.label">
+              <template x-for="opt in (modal.tab==='add'? addOptions : nukeOptions)" :key="opt">
+                <option x-text="opt"></option>
+              </template>
+            </select>
+          </div>
+
+          <div class="text-sm text-slate-600">時間帯</div>
+          <div class="flex items-center gap-2">
+            <label class="text-xs text-slate-500">開始</label>
+            <input type="time" x-model="modal.start"
+              class="h-9 w-28 rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]" />
+            <span class="text-slate-400">→</span>
+            <label class="text-xs text-slate-500">終了</label>
+            <input type="time" x-model="modal.end"
+              class="h-9 w-28 rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]" />
+            <button class="h-9 px-2 text-xs rounded border border-slate-300 hover:bg-[var(--brand-gray)]"
+              @click="add30()">＋30分</button>
+          </div>
+
+          <div class="text-sm text-slate-600">メモ</div>
+          <div><input type="text" x-model="modal.note" placeholder="任意"
+              class="h-9 w-full rounded border border-slate-300 bg-white px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-main)]" />
+          </div>
+        </div>
+        <p class="text-[11px] text-slate-500">控除はメイン時間内でのみ設定できます。</p>
+      </div>
+      <div class="px-4 py-3 border-t border-slate-200 flex justify-end gap-2">
+        <button class="h-9 px-3 rounded border border-slate-300 hover:bg-[var(--brand-gray)]"
+          @click="closeModal()">キャンセル</button>
+        <button class="h-9 px-3 rounded bg-[var(--brand-main)] text-white hover:opacity-90"
+          @click="applyAdjust()">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function attendanceApp() {
+      return {
+        // UI
+        currentPage: 'attendance',
+        sidebarOpen: false,
+        points: 1200,
+        menuItems: [
+          { key: 'attendance', label: '勤怠表' },
+          { key: 'workflow', label: 'ワークフロー' },
+          { key: 'community', label: 'コミュニティ' },
+          { key: 'employees', label: '社員一覧' },
+          { key: 'sales', label: '営業状況' },
+          { key: 'docs', label: 'ドキュメント' },
+        ],
+        menuIcon(k) {
+          const m = {
+            attendance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/></svg>',
+            docs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+          }; return m[k] || m.attendance;
+        },
+
+        // データ
+        months: [{ value: '2024-08', label: '2024年 08月' }, { value: '2024-09', label: '2024年 09月' }],
+        selectedMonth: '2024-08',
+        typeOptions: ['出勤', '休日', '有休', '特休', '振休'],
+
+        rows: [],
+        totals: { main: '00:00', sub: '00:00' },
+        stats: { adjustDays: 0 },
+
+        // モーダル
+        modal: { open: false, rowId: null, tab: 'add', label: '', start: '13:00', end: '15:00', note: '' },
+        addOptions: ['社内業務', '広報活動協力', '社内勉強会参加', 'その他'],
+        nukeOptions: ['私用中抜け', '遅刻', '早退', '休憩延長'],
+
+        init() {
+          this.rows = [
+            this.makeRow({
+              id: '2024-08-01', y: 2024, m: 8, d: 1, weekday: '木',
+              type: '出勤', mainStart: '09:00', mainEnd: '18:00', breakMin: 60,
+              nuke: [{ label: '私用中抜け', start: '13:00', end: '14:00', note: '通院' }],
+              add: [{ label: '社内撮影', start: '19:00', end: '20:00', note: 'YouTube' }],
+              applications: [
+                { id: 'ap1', text: '残業 申請中', actionable: true, variant: 'warn' },
+                { id: 'ap2', text: '交通費 承認', actionable: false, variant: 'ok' },
+              ],
+            }),
+            this.makeRow({ id: '2024-08-02', y: 2024, m: 8, d: 2, weekday: '金', type: '出勤', mainStart: '09:00', mainEnd: '18:00', breakMin: 60 }),
+            this.makeRow({ id: '2024-08-03', y: 2024, m: 8, d: 3, weekday: '土', type: '休日', mainStart: '00:00', mainEnd: '00:00', breakMin: 0 }),
+          ];
+          this.rows.forEach(r => this.recalc(r));
+          this.recalcTotals(); this.recalcStats();
+        },
+
+        // ユーティリティ
+        toMin(t) { if (!t) return 0; const [h, m] = t.split(':').map(Number); return h * 60 + m; },
+        hm(min) { min = Math.max(0, min | 0); const h = Math.floor(min / 60), m = min % 60; return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`; },
+        overlap(aS, aE, bS, bE) { return Math.max(0, Math.min(aE, bE) - Math.max(aS, bS)); },
+        unionTotal(iv) { if (!iv.length) return 0; iv = iv.slice().sort((a, b) => a[0] - b[0]); let s = iv[0][0], e = iv[0][1], sum = 0; for (let i = 1; i < iv.length; i++) { const [S, E] = iv[i]; if (S <= e) { e = Math.max(e, E) } else { sum += e - s; s = S; e = E } } return sum + e - s; },
+
+        // 行
+        makeRow({ id, y, m, d, weekday, type, mainStart, mainEnd, breakMin, nuke = [], add = [], applications = [] }) {
+          return {
+            id,
+            dateLabel: `${String(m).padStart(2, '0')}/${String(d).padStart(2, '0')}(${weekday})`,
+            type: type || '出勤',
+            mainStart: mainStart || '00:00', mainEnd: mainEnd || '00:00', breakMin: breakMin || 0,
+            nuke, add, open: false,
+            statusChips: applications,
+            summary: { nukeCount: 0, addCount: 0, nukeMinus: '00:00', addDur: '00:00', mainNet: '00:00' }
+          }
+        },
+
+        computedType(row) {
+          const ms = this.toMin(row.mainStart), me = this.toMin(row.mainEnd);
+          const hasWork = me > ms;
+          if (row.type === '休日' && hasWork) return '休日出勤';
+          return row.type;
+        },
+        onTypeChange(row) { /* 追加の副作用があればここで */ },
+
+        // 再計算
+        recalc(row) {
+          const ms = this.toMin(row.mainStart || '00:00');
+          const me = this.toMin(row.mainEnd || '00:00');
+          const br = parseInt(row.breakMin || 0, 10);
+          const baseMain = Math.max(0, (me - ms) - br);
+
+          let addDur = 0; const nukeIn = [], addIn = [];
+          row.add.forEach(s => { const sM = this.toMin(s.start), eM = this.toMin(s.end); addDur += Math.max(0, eM - sM); const ov = this.overlap(sM, eM, ms, me); if (ov > 0) addIn.push([Math.max(sM, ms), Math.min(eM, me)]) });
+          row.nuke.forEach(s => { const sM = this.toMin(s.start), eM = this.toMin(s.end); const ov = this.overlap(sM, eM, ms, me); if (ov > 0) nukeIn.push([Math.max(sM, ms), Math.min(eM, me)]) });
+
+          const nukeMinus = this.unionTotal(nukeIn);
+          const addMinus = this.unionTotal(addIn);
+          const mainNet = Math.max(0, baseMain - nukeMinus - addMinus);
+
+          row.summary = { nukeCount: row.nuke.length, addCount: row.add.length, nukeMinus: this.hm(nukeMinus), addDur: this.hm(addDur), mainNet: this.hm(mainNet) };
+          this.recalcTotals(); this.recalcStats();
+        },
+        recalcTotals() {
+          let main = 0, sub = 0;
+          this.rows.forEach(r => { const [mh, mm] = r.summary.mainNet.split(':').map(Number); const [ah, am] = r.summary.addDur.split(':').map(Number); main += mh * 60 + mm; sub += ah * 60 + am; });
+          this.totals = { main: this.hm(main), sub: this.hm(sub) };
+        },
+        recalcStats() { this.stats.adjustDays = this.rows.filter(r => r.summary.nukeCount > 0 || r.summary.addCount > 0).length; },
+
+        // 申請チップ押下
+        onChip(row, chip) {
+          // ここで申請モーダルやルーティングへ
+          alert(`${chip.text} を開く（デモ）`);
+        },
+
+        // 行開閉
+        toggle(row) { row.open = !row.open; },
+
+        // 調整モーダル
+        openAdjust(row, forceTab) {
+          this.modal = { open: true, rowId: row.id, tab: forceTab || 'add', label: (forceTab === 'nuke' ? this.nukeOptions[0] : this.addOptions[0]), start: '13:00', end: '15:00', note: '' };
+        },
+        closeModal() { this.modal.open = false; },
+        add30() { const e = this.toMin(this.modal.end), next = this.hm(e + 30); this.modal.end = next; },
+        applyAdjust() {
+          const row = this.rows.find(r => r.id === this.modal.rowId); if (!row) { this.closeModal(); return; }
+          const s = this.toMin(this.modal.start), e = this.toMin(this.modal.end); if (!(e > s)) { alert('開始/終了を正しく入力してください'); return; }
+          const ms = this.toMin(row.mainStart || '00:00'), me = this.toMin(row.mainEnd || '00:00');
+          if (this.modal.tab === 'nuke' && this.overlap(s, e, ms, me) <= 0) { alert('控除はメイン時間内で設定してください'); return; }
+          const obj = { label: this.modal.label, start: this.modal.start, end: this.modal.end, note: this.modal.note || '' };
+          if (this.modal.tab === 'add') { row.add.push(obj); row.add.sort((a, b) => this.toMin(a.start) - this.toMin(b.start)); }
+          else { row.nuke.push(obj); row.nuke.sort((a, b) => this.toMin(a.start) - this.toMin(b.start)); }
+          this.recalc(row); this.closeModal(); row.open = true;
+        },
+        removeSpan(row, kind, idx) { (kind === 'add' ? row.add : row.nuke).splice(idx, 1); this.recalc(row); },
+
+        // 提出など
+        submitSheet() { alert('提出しました（サンプル）'); },
+      }
+    }
+  </script>
+
+</body>
+
+</html>

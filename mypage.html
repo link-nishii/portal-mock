@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ポータル｜マイページ</title>
+    <title>マイページ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
@@ -265,8 +265,8 @@
                                 <div class="mt-1 text-xl font-semibold" x-text="entitlements.paidLeaveOwned + ' 日'">
                                 </div>
                                 <p class="mt-1 text-[11px] text-slate-500 leading-tight">
-                                    次回付与: <span x-text="entitlements.nextGrantDate"></span> に
-                                    <span x-text="entitlements.nextGrantDays + ' 日'"></span> 付与予定
+                                    次回付与:<span x-text="entitlements.nextGrantDate"></span> に<span
+                                        x-text="entitlements.nextGrantDays + '日'"></span>付与予定
                                 </p>
                                 <!-- 導線 -->
                                 <div class="mt-2">
@@ -309,7 +309,7 @@
                                     <div class="mt-1 text-xl font-semibold"
                                         x-text="entitlements.summerLeaveDays + ' 日'"></div>
                                     <p class="mt-1 text-[11px] text-slate-500 leading-tight">
-                                        取得可能: 7/1〜9/30<br>申請期限: 6/1〜8/31
+                                        取得可能: 7/1〜10/31<br>申請期限: 5/1〜10/31
                                     </p>
                                     <!-- 導線 -->
                                     <div class="mt-2">
