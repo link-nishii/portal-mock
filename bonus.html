@@ -10,12 +10,9 @@
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     :root {
-      --brand-main: #f15b2a;
-      /* 赤オレンジ */
+      --brand-main: #e17510;
       --brand-sub: #111111;
-      /* 黒 */
       --brand-gray: #f7f7f7;
-      /* 薄いグレー */
     }
 
     [x-cloak] {
@@ -24,59 +21,42 @@
 
     .active-menu {
       background: color-mix(in srgb, var(--brand-sub) 100%, transparent);
-      color: var(--brand-gray);
+      color: var(--brand-gray)
     }
   </style>
 </head>
 
 <body class="bg-[var(--brand-gray)] text-[var(--brand-sub)]" x-data="portalApp()">
-
   <div class="min-h-screen grid md:grid-cols-[240px_1fr] grid-cols-1">
-
-    <!-- モバイル用オーバーレイ -->
     <div x-show="sidebarOpen" x-cloak x-transition.opacity class="fixed inset-0 bg-black/50 z-30 md:hidden"
       @click="sidebarOpen=false"></div>
 
     <!-- 左サイドバー -->
-    <aside class="fixed inset-y-0 left-0 w-60 bg-white border-r border-slate-200 
-           transform md:transform-none md:relative md:translate-x-0 
-           transition-transform duration-200 ease-in-out z-40
-           flex flex-col min-h-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
-
-      <!-- Brand -->
+    <aside
+      class="fixed inset-y-0 left-0 w-60 bg-white border-r border-slate-200 transform md:transform-none md:relative md:translate-x-0 transition-transform duration-200 ease-in-out z-40 flex flex-col min-h-0"
+      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
       <div class="flex items-center gap-2 p-4 border-b border-slate-200">
-        <div class="h-8 w-8 rounded-md bg-[var(--brand-main)] grid place-items-center text-white font-bold">
-          L</div>
+        <div class="h-8 w-8 rounded-md bg-[var(--brand-main)] grid place-items-center text-white font-bold">L</div>
         <div class="font-semibold">Link Portal</div>
       </div>
-
-      <!-- メニュー -->
       <div class="flex-1 min-h-0 overflow-y-auto">
         <nav class="px-2 py-2 text-sm space-y-3">
           <template x-for="item in menuItems" :key="item.key">
             <a :href="routeFor(item.key)" class="w-full flex items-center gap-2 px-3 py-2.5 rounded-md hover:opacity-70"
               :class="currentPage===item.key ? 'active-menu' : ''">
-              <!-- アイコン -->
               <span class="h-4 w-4 text-slate-600" x-html="menuIcon(item.key)"></span>
-              <!-- ラベル -->
               <span class="flex-1 text-left" x-text="item.label"></span>
-              <!-- 未読数 -->
               <template x-if="unreadCount(item.key) > 0">
                 <span class="ml-2 rounded-full text-[11px] px-1.5 py-0.5 min-w-[1.5rem] text-center font-medium"
                   :class="currentPage===item.key ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'"
                   x-text="unreadCount(item.key)" title="未読通知数"></span>
               </template>
-              <!-- ドキュメント外部リンク -->
-              <template x-if="item.key === 'docs'">
-                <span class="h-4 w-4 text-slate-500" x-html="icons.external"></span>
-              </template>
+              <template x-if="item.key==='docs'"><span class="h-4 w-4 text-slate-500"
+                  x-html="icons.external"></span></template>
             </a>
           </template>
         </nav>
       </div>
-
-
-      <!-- 下部プロフィール -->
       <div class="shrink-0 p-3 border-t border-slate-200 relative" @click.outside="profileOpen=false">
         <button @click="profileOpen=!profileOpen"
           class="w-full flex items-center justify-between gap-2 px-2 py-2 rounded-md hover:bg-[var(--brand-gray)]">
@@ -84,11 +64,10 @@
             <div class="h-9 w-9 rounded-md bg-slate-200"></div>
             <div>
               <div class="text-sm font-medium truncate">山田 太郎</div>
-              <!-- ポイント -->
               <div class="flex items-center gap-1 text-xs text-[var(--brand-main)] font-semibold">
                 <svg class="h-4 w-4 text-[var(--brand-main)]" viewBox="0 0 24 24" fill="currentColor">
-                  <circle cx="12" cy="12" r="10" />
-                  <text x="12" y="16" text-anchor="middle" font-size="10" fill="white" font-weight="bold">P</text>
+                  <circle cx="12" cy="12" r="10" /><text x="12" y="16" text-anchor="middle" font-size="10" fill="white"
+                    font-weight="bold">P</text>
                 </svg>
                 <span x-text="entitlements.points"></span> pt
               </div>
@@ -98,7 +77,6 @@
             <path d="m6 9 6 6 6-6" />
           </svg>
         </button>
-        <!-- ドロップメニュー -->
         <div x-cloak x-show="profileOpen" x-transition
           class="absolute bottom-full left-3 right-3 mb-2 bg-white border border-slate-200 rounded-md shadow-lg overflow-hidden z-50">
           <a href="#profile" class="block px-3 py-2 text-sm hover:bg-[var(--brand-gray)]"><span
@@ -117,8 +95,6 @@
 
     <!-- メイン -->
     <main class="min-h-screen flex flex-col" x-data="bonusPage()">
-
-      <!-- ヘッダー -->
       <header class="sticky top-0 bg-white/90 backdrop-blur border-b border-slate-200 z-20">
         <div class="flex items-center justify-between px-4 md:px-6 py-3">
           <div class="flex items-center gap-2">
@@ -138,12 +114,8 @@
         </div>
       </header>
 
-      <!-- コンテンツ -->
       <div class="p-4 md:p-6 flex-1 flex flex-col gap-6">
-
-        <!-- タブ本体 -->
         <section class="bg-white rounded-md border border-slate-200 shadow-sm p-6" x-data="{tab:'current'}">
-
           <!-- タブ -->
           <div class="flex gap-4 border-b mb-6">
             <template x-for="t in tabs" :key="t.key">
@@ -153,10 +125,9 @@
             </template>
           </div>
 
-          <!-- タブパネル -->
+          <!-- パネル -->
           <template x-for="t in tabs" :key="`panel-${t.key}`">
             <div x-show="tab===t.key" x-cloak>
-
               <!-- サマリー -->
               <div class="bg-[var(--brand-gray)] rounded-md p-4 mb-6">
                 <div class="flex items-start justify-between">
@@ -165,34 +136,88 @@
                     <p class="text-3xl md:text-4xl font-bold tabular-nums" x-text="yen(periods[t.key].fc)"></p>
                   </div>
                   <div class="text-right">
-                    <p class="text-xs text-slate-500">賞与原資</p>
+                    <p class="text-xs text-slate-500">基礎賞与＋手当</p>
                     <p class="text-lg font-semibold tabular-nums" x-text="yen(periods[t.key].ew)"></p>
                   </div>
                 </div>
               </div>
 
-              <!-- 円グラフ＋凡例 -->
+              <!-- 内訳 -->
               <h3 class="font-medium mb-2" x-text="`内訳（${t.graphTitle}）`"></h3>
-              <div class="grid md:grid-cols-3 gap-6 items-center">
-                <!-- ドーナツ -->
+              <div class="grid md:grid-cols-3 gap-6 items-start">
+                <!-- ドーナツ：暖色=加算／寒色=会社負担 -->
                 <div class="flex justify-center">
-                  <svg :width="size" :height="size" :viewBox="`0 0 ${size} ${size}`">
+                  <svg :width="size" :height="size" :viewBox="`0 0 ${size} ${size}`" aria-label="内訳ドーナツ">
                     <g :transform="`translate(${size/2},${size/2})`">
-                      <circle :r="radius" :cx="0" :cy="0" fill="none" class="stroke-slate-200"
-                        :stroke-width="thickness"></circle>
+                      <circle :r="radius" cx="0" cy="0" fill="none" class="stroke-slate-200" :stroke-width="thickness">
+                      </circle>
                       <g x-html="segmentsSvg(itemsOf(periods[t.key]))"></g>
                       <text text-anchor="middle" dy="6" class="fill-slate-600" style="font-size:12px;">内訳</text>
                     </g>
                   </svg>
                 </div>
 
-                <!-- 凡例（項目＋金額） -->
+                <!-- グルーピングされた凡例 -->
                 <div class="md:col-span-2">
-                  <template x-for="grp in uiGroups(itemsOf(periods[t.key]))" :key="grp.group">
-                    <div class="mb-3">
-                      <p class="text-xs font-medium text-slate-500 mb-1" x-text="grp.group"></p>
+                  <!-- 加算カード -->
+                  <div class="rounded-md border border-slate-200 mb-4">
+                    <div class="px-3 py-2 border-b border-slate-200 text-xs font-medium">加算内訳</div>
+                    <div class="p-3 space-y-3">
+                      <!-- 基礎賞与 -->
+                      <template x-if="itemsByGroup(addsOf(periods[t.key]), '基礎賞与').length">
+                        <div>
+                          <p class="text-xs font-bold text-slate-500 mb-1">基礎賞与</p>
+                          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <template x-for="it in itemsByGroup(addsOf(periods[t.key]), '基礎賞与')"
+                              :key="`base-${it.label}`">
+                              <li class="flex items-center justify-between gap-3 bg-slate-50 rounded px-3 py-1.5">
+                                <div class="flex items-center gap-2">
+                                  <span class="h-3 w-3 rounded-full" :style="`background:${it.color}`"></span>
+                                  <p class="text-sm" x-text="it.label"></p>
+                                </div>
+                                <p class="text-sm tabular-nums text-slate-700" x-text="yen(it.value)"></p>
+                              </li>
+                            </template>
+                          </ul>
+                        </div>
+                      </template>
+                      <!-- 手当 -->
+                      <template x-if="itemsByGroup(addsOf(periods[t.key]), '手当').length">
+                        <div>
+                          <p class="text-xs font-bold text-slate-500 mb-1">手当</p>
+                          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <template x-for="it in itemsByGroup(addsOf(periods[t.key]), '手当')"
+                              :key="`allow-${it.label}`">
+                              <li class="flex items-center justify-between gap-3 bg-slate-50 rounded px-3 py-1.5">
+                                <div class="flex items-center gap-2">
+                                  <span class="h-3 w-3 rounded-full" :style="`background:${it.color}`"></span>
+                                  <p class="text-sm" x-text="it.label"></p>
+                                </div>
+                                <p class="text-sm tabular-nums text-slate-700" x-text="yen(it.value)"></p>
+                              </li>
+                            </template>
+                          </ul>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- 会社負担カード -->
+                  <div class="rounded-md border border-slate-200 mb-1">
+                    <div
+                      class="px-3 py-2 border-b border-slate-200 text-xs font-medium flex items-baseline justify-between">
+                      <span>調整内訳</span>
+
+                    </div>
+                    <div class="p-3">
+                      <p class="text-xs font-bold text-slate-500 mb-1">
+                        会社負担
+                        <span
+                          class="text-[10px] text-slate-500 ml-4 font-normal">会社負担は「積立額・超過還元・前回持越分」のみ対象。手当は対象外</span>
+                      </p>
+
                       <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <template x-for="it in grp.items" :key="it.label">
+                        <template x-for="it in subsOf(periods[t.key])" :key="`sub-${it.label}`">
                           <li class="flex items-center justify-between gap-3 bg-slate-50 rounded px-3 py-1.5">
                             <div class="flex items-center gap-2">
                               <span class="h-3 w-3 rounded-full" :style="`background:${it.color}`"></span>
@@ -203,7 +228,8 @@
                         </template>
                       </ul>
                     </div>
-                  </template>
+                  </div>
+
                   <div class="text-xs text-slate-500">※小さい要素は「その他」にまとめる場合があります。</div>
                 </div>
               </div>
@@ -218,7 +244,7 @@
                         <th class="py-2 pr-4">月</th>
                         <th class="py-2 pr-4">単価</th>
                         <th class="py-2 pr-4">月額原価</th>
-                        <th class="py-2 pr-4">賞与積立額</th>
+                        <th class="py-2 pr-4">積立額</th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
@@ -233,23 +259,19 @@
                     </tbody>
                   </table>
                 </div>
-                <p class="mt-2 text-xs text-slate-500">
-                  ※表の「賞与積立額」の合計は、内訳の「基礎賞与」と一致する想定です。
-                </p>
+                <p class="mt-2 text-xs text-slate-500">※表の「賞与積立額」の合計は、内訳の「基礎賞与」と一致する想定です。</p>
               </div>
             </div>
           </template>
         </section>
 
-        <!-- FAQ（質問太字・回答小さめ・略語なし） -->
+        <!-- FAQ（そのまま） -->
         <section class="bg-white rounded-md border border-slate-200 shadow-sm p-6" x-data="{open:null}">
           <div class="flex items-center justify-between gap-3 mb-3">
             <h2 class="text-lg md:text-xl font-semibold text-slate-900">FAQ</h2>
             <div class="text-xs text-slate-400">よくある質問</div>
           </div>
-
           <div class="divide-y divide-slate-100">
-            <!-- 概算 -->
             <div class="py-4">
               <button class="w-full text-left flex justify-between items-center gap-4"
                 @click="open = open===1 ? null : 1">
@@ -258,13 +280,10 @@
               </button>
               <div x-show="open===1" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
                 このページに表示されている金額は<strong>概算</strong>です。実際の支給額は、支給時点の保険料率・標準報酬・加入状況・勤怠などによって変動します。
-                <p class="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-xs">
-                  <span class="font-bold">ご注意：</span>本ページは目安です。確定額は給与明細でご確認ください。
-                </p>
+                <p class="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-red-700 text-xs"><span
+                    class="font-bold">ご注意：</span>本ページは目安です。確定額は給与明細でご確認ください。</p>
               </div>
             </div>
-
-            <!-- 計算式 -->
             <div class="py-4">
               <button class="w-full text-left flex justify-between items-center gap-4"
                 @click="open = open===2 ? null : 2">
@@ -280,71 +299,6 @@
                 <p class="mt-2 text-xs text-slate-500">※ 本画面の数値は入力値を表示しており、自動再計算は行っていません。</p>
               </div>
             </div>
-
-            <!-- 会社負担 -->
-            <div class="py-4">
-              <button class="w-full text-left flex justify-between items-center gap-4"
-                @click="open = open===3 ? null : 3">
-                <span class="font-semibold text-slate-900">会社負担の保険料が賞与に関係するのはなぜですか？</span>
-                <span class="text-slate-400" x-text="open===3 ? '−' : '＋'"></span>
-              </button>
-              <div x-show="open===3" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
-                当社では一定の還元率の範囲内で「会社が負担する保険料」も含めて原資を管理しています。見た目上は個人から引かれているように見えますが、実際には会社が負担している費用です。
-              </div>
-            </div>
-
-            <!-- 単価同じでも差が出る理由 -->
-            <div class="py-4">
-              <button class="w-full text-left flex justify-between items-center gap-4"
-                @click="open = open===4 ? null : 4">
-                <span class="font-semibold text-slate-900">単価が同じでも、支給額が前回と違うのはなぜですか？</span>
-                <span class="text-slate-400" x-text="open===4 ? '−' : '＋'"></span>
-              </button>
-              <div x-show="open===4" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
-                以下の要因で会社負担や積立額が変動し、結果として支給額が異なる場合があります。
-                <ul class="list-disc pl-5 mt-1 space-y-1">
-                  <li>保険料率や標準報酬の改定</li>
-                  <li>勤怠の変動（欠勤・休職・途中入退社など）</li>
-                  <li>みなし残業と実残業の差</li>
-                </ul>
-              </div>
-            </div>
-
-            <!-- 前回持越 -->
-            <div class="py-4">
-              <button class="w-full text-left flex justify-between items-center gap-4"
-                @click="open = open===5 ? null : 5">
-                <span class="font-semibold text-slate-900">「前回持越分」とは何ですか？</span>
-                <span class="text-slate-400" x-text="open===5 ? '−' : '＋'"></span>
-              </button>
-              <div x-show="open===5" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
-                前回支給時の端数や調整差を、次回で加算または減算して均すための項目です。
-              </div>
-            </div>
-
-            <!-- 検算 -->
-            <div class="py-4">
-              <button class="w-full text-left flex justify-between items-center gap-4"
-                @click="open = open===6 ? null : 6">
-                <span class="font-semibold text-slate-900">自分で確認・検算する方法はありますか？</span>
-                <span class="text-slate-400" x-text="open===6 ? '−' : '＋'"></span>
-              </button>
-              <div x-show="open===6" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
-                対象タブの「月別サマリー」で<strong>賞与積立額</strong>を合計すると、内訳の<strong>基礎賞与</strong>と一致する想定です。超過還元・手当は規定に応じて別途加算されます。
-              </div>
-            </div>
-
-            <!-- 反映タイミング -->
-            <div class="py-4">
-              <button class="w-full text-left flex justify-between items-center gap-4"
-                @click="open = open===7 ? null : 7">
-                <span class="font-semibold text-slate-900">データはいつ更新されますか？</span>
-                <span class="text-slate-400" x-text="open===7 ? '−' : '＋'"></span>
-              </button>
-              <div x-show="open===7" x-collapse class="mt-2 text-sm text-slate-600 leading-relaxed">
-                月次締め後に更新し、支給月の前に概算額を再表示します。<span class="text-red-700 font-semibold">確定額は支給処理時点で確定します。</span>
-              </div>
-            </div>
           </div>
         </section>
 
@@ -354,17 +308,11 @@
 
   <!-- Alpine Apps -->
   <script>
-    /* ====== レイアウト側（共通ポータル） ====== */
     function portalApp() {
       return {
-        entitlements: {
-          points: 1200
-        },
-        currentPage: 'bonus',  // ← このページをアクティブ表示
-        profileOpen: false,
-        sidebarOpen: false,
-        selectedNotifications: [],
-        showOlder: false,
+        entitlements: { points: 1200 },
+        currentPage: 'bonus',
+        profileOpen: false, sidebarOpen: false,
         menuItems: [
           { key: 'mypage', label: 'マイページ' },
           { key: 'attendance', label: '勤怠表' },
@@ -374,8 +322,7 @@
           { key: 'sales', label: '営業状況' },
           { key: 'docs', label: 'ドキュメント' },
         ],
-        notifications: {}, // ここは今回は未使用（必要に応じて埋めてOK）
-        unreadCount(key) { return 0 },
+        unreadCount() { return 0 },
         routeFor(key) { return key === 'bonus' ? '#bonus' : '#' + key },
         menuIcon(key) {
           const m = {
@@ -389,17 +336,16 @@
             bonus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v7M12 16v7M4.22 4.22l4.95 4.95M14.83 14.83l4.95 4.95M1 12h7M16 12h7"/></svg>',
             link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1 0 7 5 5 0 0 1-7 0l-1-1"/><path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 0-7 5 5 0 0 1 7 0l1 1"/></svg>',
             bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
-            cog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .33-1.82l-.06-.06A2 2 0 1 1 7.76 4.3l.06.06A1.65 1.65 0 0 0 9.6 4.6H10a2 2 0 1 1 4 0h.4a1.65 1.65 0 0 0 1.78-.24l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.2.5.68.86 1.22.93H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>',
+            cog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9c.2.5.68.86 1.22.93H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>',
             power: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10"/><path d="M5.5 5.6a9 9 0 1 0 12.9 0"/></svg>',
             user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>',
             search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
             external: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>',
-          };
-          return m[key] || m.home;
+          }; return m[key] || m.home;
         },
         icons: {
           bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
-          cog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0 .33-1.82l-.06-.06A2 2 0 1 1 7.76 4.3l.06.06A1.65 1.65 0 0 0 9.6 4.6H10a2 2 0 1 1 4 0h.4a1.65 1.65 0 0 0 1.78-.24l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.2.5.68.86 1.22.93H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>',
+          cog: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15 1.65 1.65 0 0 0 3.09 14H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9c.2.5.68.86 1.22.93H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>',
           power: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10"/><path d="M5.5 5.6a9 9 0 1 0 12.9 0"/></svg>',
           user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>',
           search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
@@ -409,7 +355,6 @@
       }
     }
 
-    /* ====== 賞与見込み（このページ固有） ====== */
     function bonusPage() {
       return {
         /* ドーナツ見た目 */
@@ -417,20 +362,16 @@
         get radius() { return (this.size - this.thickness) / 2 },
         get circumference() { return 2 * Math.PI * this.radius },
 
-        /* タブ定義 */
         tabs: [
           { key: 'current', label: '2025年10月支給分（今回）', graphTitle: '2025年10月支給分', monthRange: '5〜8月' },
           { key: 'previous', label: '2025年6月支給分（前回）', graphTitle: '2025年6月支給分', monthRange: '1〜4月' },
           { key: 'prevprev', label: '2025年2月支給分（前々回）', graphTitle: '2025年2月支給分', monthRange: '9〜12月' },
         ],
 
-        /* 手入力で保持（支給額面/原資も固定値） */
+        /* データ */
         periods: {
           current: {
-            fc: 676000, ew: 777000,
-            baseBonus: 604129, extraReturn: 173460, allowance: 0,
-            carryoverPrev: 0,
-            healthIns: 32110, pension: 61854, employmentIns: 6084,
+            fc: 676000, ew: 777000, baseBonus: 604129, extraReturn: 173460, allowance: 0, carryoverPrev: 0, healthIns: 32110, pension: 61854, employmentIns: 6084,
             months: [
               { month: '2025-05', unitPrice: 850000, cost: 480770, reserve: 156730 },
               { month: '2025-06', unitPrice: 850000, cost: 480770, reserve: 156730 },
@@ -439,46 +380,45 @@
             ]
           },
           previous: {
-            fc: 640000, ew: 694000,
-            baseBonus: 480000, extraReturn: 20000, allowance: 140000,
-            carryoverPrev: 5000,
-            healthIns: 17500, pension: 21000, employmentIns: 10500,
+            fc: 825000, ew: 874000, baseBonus: 374274, extraReturn: 0, allowance: 500000, carryoverPrev: 0, healthIns: 15438, pension: 29738, employmentIns: 2925,
             months: [
-              { month: '2025-01', unitPrice: 1080000, cost: 640000, reserve: 175000 },
-              { month: '2025-02', unitPrice: 1090000, cost: 645000, reserve: 178000 },
-              { month: '2025-03', unitPrice: 1120000, cost: 655000, reserve: 185000 },
-              { month: '2025-04', unitPrice: 1100000, cost: 650000, reserve: 180000 },
+              { month: '2025-01', unitPrice: 860000, cost: 557990, reserve: 87010 },
+              { month: '2025-02', unitPrice: 860000, cost: 557990, reserve: 87010 },
+              { month: '2025-03', unitPrice: 860000, cost: 531756, reserve: 113244 },
+              { month: '2025-04', unitPrice: 860000, cost: 557990, reserve: 87010 },
             ]
           },
           prevprev: {
-            fc: 607000, ew: 646500,
-            baseBonus: 455000, extraReturn: 22000, allowance: 130000,
-            carryoverPrev: -8000,
-            healthIns: 17000, pension: 20500, employmentIns: 10000,
+            fc: 607000, ew: 646500, baseBonus: 455000, extraReturn: 22000, allowance: 130000, carryoverPrev: -8000, healthIns: 17000, pension: 20500, employmentIns: 10000,
             months: [
               { month: '2024-09', unitPrice: 1060000, cost: 635000, reserve: 170000 },
               { month: '2024-10', unitPrice: 1070000, cost: 638000, reserve: 172000 },
               { month: '2024-11', unitPrice: 1090000, cost: 642000, reserve: 176000 },
               { month: '2024-12', unitPrice: 1110000, cost: 648000, reserve: 182000 },
             ]
-          }
+          },
         },
 
-        /* ドーナツ用データ（順：支給分 → 調整 → 会社負担） */
+        /* 配色：暖色（加算）／寒色（会社負担） */
         itemsOf(emp) {
           const raw = [
-            { group: '支給分', label: '基礎賞与', value: emp.baseBonus, color: '#6366F1' },
-            { group: '支給分', label: '超過還元', value: emp.extraReturn, color: '#22C55E' },
-            { group: '支給分', label: '手当（開拓・紹介含む）', value: emp.allowance, color: '#F59E0B' },
-            { group: '調整', label: '前回持越分', value: emp.carryoverPrev, color: '#A78BFA' },
-            { group: '会社負担', label: '健康保険', value: emp.healthIns, color: '#93C5FD' },
-            { group: '会社負担', label: '厚生年金', value: emp.pension, color: '#60A5FA' },
-            { group: '会社負担', label: '雇用保険', value: emp.employmentIns, color: '#06B6D4' },
+            { group: '基礎賞与', label: '積立額', value: emp.baseBonus, color: '#f97316' }, // orange-500
+            { group: '基礎賞与', label: '超過還元', value: emp.extraReturn, color: '#fb923c' }, // orange-400
+            { group: '基礎賞与', label: '前回持越分', value: emp.carryoverPrev, color: '#fca5a5' }, // rose-300
+            { group: '手当', label: '開拓手当／紹介手当', value: emp.allowance, color: '#f59e0b' }, // amber-500
+            { group: '会社負担', label: '健康保険', value: emp.healthIns, color: '#60a5fa' }, // blue-400
+            { group: '会社負担', label: '厚生年金', value: emp.pension, color: '#3b82f6' }, // blue-500
+            { group: '会社負担', label: '雇用保険', value: emp.employmentIns, color: '#06b6d4' }, // cyan-500
           ];
+          // グラフ表示上、負値は0扱い
           return raw.map(it => ({ ...it, value: Math.max(0, +(it.value || 0)) }));
         },
 
-        /* ドーナツ描画（12時開始） */
+        addsOf(emp) { return this.itemsOf(emp).filter(i => i.group !== '会社負担'); },
+        subsOf(emp) { return this.itemsOf(emp).filter(i => i.group === '会社負担'); },
+        itemsByGroup(arr, group) { return arr.filter(i => i.group === group); },
+
+        /* ドーナツ（12時開始） */
         segments(items) {
           const total = items.reduce((s, i) => s + i.value, 0) || 1;
           let acc = 0;
@@ -499,15 +439,6 @@
           `).join('');
         },
 
-        /* 凡例グループ順 */
-        uiGroups(items) {
-          const groups = {};
-          for (const it of items) { (groups[it.group] ||= []).push(it); }
-          const order = ['支給分', '調整', '会社負担'];
-          return order.filter(k => groups[k]?.length).map(k => ({ group: k, items: groups[k] }));
-        },
-
-        /* 表示フォーマッタ */
         yen(n) { return (n ?? 0).toLocaleString('ja-JP', { style: 'currency', currency: 'JPY' }); },
       }
     }
