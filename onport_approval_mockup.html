@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OnPort 承認管理申請一覧 モックアップ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Kaku Gothic ProN",
+        "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif;
+      background: #f7f7f5;
+      color: #202124;
+    }
+    .soft-shadow { box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 1px 6px rgba(0,0,0,.04); }
+    .menu-scroll::-webkit-scrollbar { width: 6px; }
+    .menu-scroll::-webkit-scrollbar-thumb { background: #d7d7d7; border-radius: 999px; }
+    input[type="date"]::-webkit-calendar-picker-indicator { opacity: .55; }
+  </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+  <div class="min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex w-[226px] shrink-0 bg-white border-r border-[#e7e5e1] flex-col fixed inset-y-0 left-0 z-30">
+      <div class="h-[72px] flex items-center px-5 border-b border-[#eceae7]">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center mr-2">
+          <i data-lucide="home" class="w-[18px] h-[18px]"></i>
+        </div>
+        <div class="leading-tight">
+          <div class="font-bold text-[17px]">社内ポータル</div>
+          <div class="text-[11px] text-gray-400 mt-1">Employee Portal</div>
+        </div>
+        <button class="ml-auto text-gray-500"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+      </div>
+
+      <div class="px-6 py-4 border-b border-[#eceae7]">
+        <div class="flex gap-3 items-start">
+          <div class="w-8 h-8 rounded-lg bg-[#f4f4f2] flex items-center justify-center font-medium">管</div>
+          <div>
+            <div class="text-[13px] font-medium">管理 太郎</div>
+            <div class="text-[11px] text-gray-400 mt-0.5">情報システム部</div>
+            <div class="inline-flex mt-1 text-[10px] font-semibold text-gray-600 bg-[#f1f1ef] rounded px-2 py-0.5">管理者</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="menu-scroll px-3 py-4 space-y-1 overflow-y-auto">
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="home" class="w-[17px] h-[17px]"></i>ホーム</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="users" class="w-[17px] h-[17px]"></i>メンバー</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="file-text" class="w-[17px] h-[17px]"></i>ドキュメント</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="message-square" class="w-[17px] h-[17px]"></i>コミュニティ</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="calendar-days" class="w-[17px] h-[17px]"></i>勤怠表</a>
+        <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-semibold text-[#2563eb] bg-white border border-[#deddd9] soft-shadow" href="#">
+          <i data-lucide="list-checks" class="w-[17px] h-[17px]"></i>承認管理 申請一覧
+        </a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="list-checks" class="w-[17px] h-[17px]"></i>自身の申請一覧</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="trending-up" class="w-[17px] h-[17px]"></i>営業支援</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="award" class="w-[17px] h-[17px]"></i>ポイント</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="square-check-big" class="w-[17px] h-[17px]"></i>TODO</a>
+        <a class="menu-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] hover:bg-gray-50" href="#"><i data-lucide="settings" class="w-[17px] h-[17px]"></i>設定</a>
+      </nav>
+
+      <div class="mt-auto border-t border-[#eceae7] px-4 py-4">
+        <button class="flex items-center gap-2 text-[#ef4444] text-[13px]">
+          <span class="w-8 h-8 rounded-full bg-[#343434] text-white flex items-center justify-center">N</span>
+          ログアウト
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 lg:ml-[226px] min-w-0 flex flex-col min-h-screen">
+      <header class="h-[72px] bg-white border-b border-[#e6e4e0] flex items-center px-4 lg:px-8 fixed top-0 right-0 left-0 lg:left-[226px] z-20">
+        <button class="lg:hidden mr-3"><i data-lucide="menu" class="w-5 h-5"></i></button>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-[#f5f5f3] flex items-center justify-center">
+            <i data-lucide="home" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <div class="text-[12px] text-gray-400 tracking-wide">社内ポータル</div>
+            <div class="font-bold text-[19px] leading-tight">承認管理 申請一覧</div>
+          </div>
+          <span class="hidden sm:inline-flex ml-3 text-[10px] font-semibold bg-[#f1f1ef] rounded-full px-3 py-1">system_admin</span>
+        </div>
+        <div class="ml-auto flex items-center gap-4">
+          <button class="hidden md:flex items-center gap-2 px-4 h-10 rounded-lg border border-[#e2e0dc] bg-[#fafaf9] text-[13px] font-semibold">
+            <i data-lucide="mail" class="w-4 h-4"></i>12,480 pt
+          </button>
+          <button class="relative"><i data-lucide="bell" class="w-5 h-5"></i><span class="absolute -top-2 -right-2 bg-[#ef4444] text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center">4</span></button>
+          <div class="hidden sm:flex items-center gap-3 border border-[#e2e0dc] rounded-lg px-3 py-2 bg-white">
+            <div class="w-8 h-8 rounded-full bg-[#f4f4f2] flex items-center justify-center font-medium">管</div>
+            <div class="leading-tight">
+              <div class="text-[12px] font-medium">管理 太郎</div>
+              <div class="text-[10px] text-gray-400 mt-1">情報システム部</div>
+            </div>
+          </div>
+          <button class="hidden md:flex items-center gap-1 text-[#ef4444] text-[12px]"><i data-lucide="log-out" class="w-4 h-4"></i>ログアウト</button>
+        </div>
+      </header>
+
+      <section class="pt-[94px] px-4 lg:px-[50px] pb-10 flex-1">
+        <div class="max-w-[1096px] mx-auto bg-white border border-[#e4e2de] rounded-xl p-4 lg:p-[18px] soft-shadow">
+          <div class="flex flex-col xl:flex-row xl:items-start gap-4">
+            <div>
+              <h1 class="font-bold text-[16px]">承認管理 申請一覧</h1>
+              <p class="mt-2 text-[12px] text-gray-500">承認、差戻し、担当割当など自分が次に処理する申請を確認できます。</p>
+            </div>
+            <div class="xl:ml-auto flex flex-wrap gap-2 relative">
+              <button id="templateMenuButton" class="h-9 px-4 rounded-lg border border-[#deddd9] bg-[#fafaf9] text-[12px] font-medium flex items-center gap-2 hover:bg-gray-100">
+                <i data-lucide="plus" class="w-4 h-4"></i>申請フォーマット追加
+              </button>
+
+              <div id="templateMenu" class="hidden absolute top-11 right-[104px] w-[220px] bg-white border border-[#dddcd8] rounded-xl soft-shadow p-1.5 z-30">
+                <button data-template="attendance" class="template-option w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#f5f7fb] text-[13px] flex items-center gap-2"><i data-lucide="clock-3" class="w-4 h-4 text-gray-500"></i>勤怠テンプレート</button>
+                <button data-template="expense" class="template-option w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#f5f7fb] text-[13px] flex items-center gap-2"><i data-lucide="receipt" class="w-4 h-4 text-gray-500"></i>経費テンプレート</button>
+                <button data-template="allowance" class="template-option w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#f5f7fb] text-[13px] flex items-center gap-2"><i data-lucide="wallet-cards" class="w-4 h-4 text-gray-500"></i>手当テンプレート</button>
+                <button data-template="leave" class="template-option w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#f5f7fb] text-[13px] flex items-center gap-2"><i data-lucide="bed-double" class="w-4 h-4 text-gray-500"></i>休業テンプレート</button>
+                <button data-template="other" class="template-option w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#f5f7fb] text-[13px] flex items-center gap-2"><i data-lucide="file-plus-2" class="w-4 h-4 text-gray-500"></i>その他テンプレート</button>
+              </div>
+
+              <button class="h-9 px-4 rounded-lg bg-[#2563eb] text-white text-[12px] font-medium flex items-center gap-2 hover:bg-blue-700">
+                <i data-lucide="plus" class="w-4 h-4"></i>代理申請
+              </button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[188px_120px_142px_114px_1fr_90px] gap-2 mt-5">
+            <button class="h-8 px-3 border border-[#deddd9] rounded-md bg-white flex items-center justify-between text-[12px]">全カテゴリ<i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+            <button class="h-8 px-3 border border-[#deddd9] rounded-md bg-white flex items-center justify-between text-[12px]">----年--月<i data-lucide="calendar" class="w-4 h-4"></i></button>
+            <input class="h-8 px-3 border border-[#deddd9] rounded-md text-[12px] outline-none focus:ring-2 focus:ring-blue-100" placeholder="申請者" />
+            <button class="h-8 px-3 border border-[#deddd9] rounded-md bg-white flex items-center justify-between text-[12px]">承認待ち<i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+            <div class="relative">
+              <input class="w-full h-8 pl-3 pr-9 border border-[#deddd9] rounded-md text-[12px] outline-none focus:ring-2 focus:ring-blue-100" placeholder="申請ID、タイトル、申請者、カテゴリを検索" />
+              <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute right-3 top-2"></i>
+            </div>
+            <button class="h-8 px-3 border border-[#deddd9] rounded-md bg-[#fafaf9] flex items-center justify-between text-[12px]">提出期間<i data-lucide="chevron-down" class="w-4 h-4"></i></button>
+          </div>
+
+          <div class="mt-3 border border-[#e3e2de] rounded-lg overflow-x-auto">
+            <table class="w-full min-w-[880px] text-[12px]">
+              <thead class="bg-[#f7f7f5] text-gray-500">
+                <tr class="h-8 border-b border-[#e6e4e0]">
+                  <th class="w-36 text-left font-normal px-3">申請種別</th>
+                  <th class="text-left font-normal px-3">対象月</th>
+                  <th class="text-left font-normal px-3">申請者</th>
+                  <th class="text-left font-normal px-3">担当者</th>
+                  <th class="text-left font-normal px-3">提出日 <span class="text-gray-400">⇅</span></th>
+                  <th class="text-left font-normal px-3">ステータス</th>
+                  <th class="text-left font-normal px-3">アクション</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="h-[47px] border-b border-[#eceae7]">
+                  <td class="px-3"><div class="flex gap-3 items-center"><input type="checkbox" class="rounded"><div><div class="text-[#2563eb]">経費申請</div><div class="text-[10px] text-gray-400">#2</div></div></div></td>
+                  <td class="px-3">2026年5月</td><td class="px-3"><div>管理 太郎</div><div class="text-[10px] text-gray-400">EMP001</div></td><td class="px-3">総務 花子</td><td class="px-3">2026/05/28</td>
+                  <td class="px-3"><span class="inline-flex rounded-full px-3 py-1 bg-[#fff3d8] border border-[#f3d790] text-[#b07a13] text-[11px]">承認待ち</span></td>
+                  <td class="px-3"><button class="border border-[#deddd9] rounded-md px-3 py-1 bg-[#fafaf9]">開く</button></td>
+                </tr>
+                <tr class="h-[47px] border-b border-[#eceae7]">
+                  <td class="px-3"><div class="flex gap-3 items-center"><input type="checkbox" class="rounded"><div><div class="text-[#2563eb]">勤怠表提出</div><div class="text-[10px] text-gray-400">#4</div></div></div></td>
+                  <td class="px-3">2026年6月</td><td class="px-3"><div>管理 太郎</div><div class="text-[10px] text-gray-400">EMP001</div></td><td class="px-3">総務プール</td><td class="px-3">2026/06/23</td>
+                  <td class="px-3"><span class="inline-flex rounded-full px-3 py-1 bg-[#fff3d8] border border-[#f3d790] text-[#b07a13] text-[11px]">承認待ち</span></td>
+                  <td class="px-3"><button class="border border-[#deddd9] rounded-md px-3 py-1 bg-[#fafaf9]">開く</button></td>
+                </tr>
+                <tr class="h-[47px] border-b border-[#eceae7]">
+                  <td class="px-3"><div class="flex gap-3 items-center"><input type="checkbox" class="rounded"><div><div class="text-[#2563eb]">勤怠申請</div><div class="text-[10px] text-gray-400">#3</div></div></div></td>
+                  <td class="px-3">2026年6月</td><td class="px-3"><div>管理 太郎</div><div class="text-[10px] text-gray-400">EMP001</div></td><td class="px-3">総務プール</td><td class="px-3">2026/06/12</td>
+                  <td class="px-3"><span class="inline-flex rounded-full px-3 py-1 bg-[#fff3d8] border border-[#f3d790] text-[#b07a13] text-[11px]">承認待ち</span></td>
+                  <td class="px-3"><button class="border border-[#deddd9] rounded-md px-3 py-1 bg-[#fafaf9]">開く</button></td>
+                </tr>
+                <tr class="h-[47px]">
+                  <td class="px-3"><div class="flex gap-3 items-center"><input type="checkbox" class="rounded"><div><div class="text-[#2563eb]">勤怠申請</div><div class="text-[10px] text-gray-400">#1</div></div></div></td>
+                  <td class="px-3">2026年5月</td><td class="px-3"><div>管理 太郎</div><div class="text-[10px] text-gray-400">EMP001</div></td><td class="px-3">総務プール</td><td class="px-3">2026/05/28</td>
+                  <td class="px-3"><span class="inline-flex rounded-full px-3 py-1 bg-[#fff3d8] border border-[#f3d790] text-[#b07a13] text-[11px]">承認待ち</span></td>
+                  <td class="px-3"><button class="border border-[#deddd9] rounded-md px-3 py-1 bg-[#fafaf9]">開く</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex items-center mt-4 text-[11px] text-gray-500">
+            <span>表示件数</span>
+            <button class="ml-2 h-8 px-3 border border-[#deddd9] rounded-md bg-white flex items-center gap-5 text-[12px] text-gray-700">50件<i data-lucide="chevron-down" class="w-3.5 h-3.5"></i></button>
+            <div class="ml-auto flex items-center gap-2">
+              <span>表示 1-4 / 4件</span>
+              <button class="w-7 h-7 rounded-md border border-[#eceae7] bg-[#fafaf9]">«</button>
+              <button class="w-7 h-7 rounded-md bg-[#2563eb] text-white">1</button>
+              <button class="w-7 h-7 rounded-md border border-[#eceae7] bg-[#fafaf9]">»</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="h-[58px] border-t border-[#e6e4e0] bg-white flex items-center justify-center text-[11px] text-gray-500">
+        © 2026 link-onport. All rights reserved.
+      </footer>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalBackdrop" class="hidden fixed inset-0 bg-black/30 z-40"></div>
+  <div id="templateModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="min-h-full flex items-center justify-center p-4">
+      <div class="w-full max-w-[720px] bg-white rounded-2xl soft-shadow border border-[#dfddd9] overflow-hidden">
+        <div class="px-6 py-4 border-b border-[#ebe9e5] flex items-start">
+          <div>
+            <div class="text-[11px] text-gray-400 mb-1">申請フォーマット追加</div>
+            <h2 id="modalTitle" class="font-bold text-[18px]"></h2>
+          </div>
+          <button id="closeModal" class="ml-auto w-9 h-9 rounded-lg hover:bg-gray-100 flex items-center justify-center"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+        <form id="templateForm" class="px-6 py-5 max-h-[70vh] overflow-y-auto space-y-5"></form>
+        <div class="px-6 py-4 border-t border-[#ebe9e5] bg-[#fafaf9] flex justify-end gap-2">
+          <button id="cancelModal" class="h-9 px-5 rounded-lg border border-[#dddcd8] bg-white text-[13px]">キャンセル</button>
+          <button id="saveTemplate" class="h-9 px-5 rounded-lg bg-[#2563eb] text-white text-[13px] font-medium">保存する</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#202124] text-white rounded-lg px-4 py-3 text-[13px] z-[60] soft-shadow">
+    テンプレートを保存しました
+  </div>
+
+<script>
+  const templates = {
+    attendance: {
+      title: "勤怠テンプレート",
+      fields: [
+        {label:"タイトル", type:"textarea", required:true, note:"テンプレートの名称"},
+        {label:"取得方法", type:"select", options:["単発","期間"], required:true, note:"期間選択時のみ終了日が表示される", id:"attendanceMethod"},
+        {label:"取得日", type:"date", required:true, placeholder:"2026/06/12"},
+        {label:"終了日", type:"date", required:true, placeholder:"2026/06/14", conditional:"attendancePeriod"},
+        {label:"勤怠種別", type:"select", options:["全日休暇","AM半休","PM半休"], required:true},
+        {label:"申請本文テンプレート", type:"textarea", required:false, note:"入力テンプレートを自由に初期表示できます"},
+        {label:"備考", type:"textarea", required:false},
+        {label:"添付ファイル", type:"fileToggle", required:false, note:"有無を選択できます"},
+        {label:"有効フラグ", type:"switch", required:false, note:"有効の場合にユーザー側に表示されます。初期値は「有効」"}
+      ]
+    },
+    expense: {
+      title: "経費テンプレート",
+      fields: [
+        {label:"タイトル", type:"textarea", required:true, note:"テンプレートの名称"},
+        {label:"対象日・購入日", type:"date", required:true, placeholder:"2026/06/12"},
+        {label:"利用先・購入先", type:"textarea", required:true},
+        {label:"金額", type:"number", required:true},
+        {label:"申請本文テンプレート", type:"textarea", required:false, note:"入力テンプレートを自由に初期表示できます"},
+        {label:"備考", type:"textarea", required:false},
+        {label:"添付ファイル", type:"fileToggle", required:false},
+        {label:"有効フラグ", type:"switch", required:false, note:"有効の場合にユーザー側に表示されます。初期値は「有効」"}
+      ]
+    },
+    allowance: {
+      title: "手当テンプレート",
+      fields: [
+        {label:"タイトル", type:"textarea", required:true, note:"テンプレートの名称"},
+        {label:"取得日", type:"date", required:true, placeholder:"2026/06/12"},
+        {label:"申請本文テンプレート", type:"textarea", required:false, note:"入力テンプレートを自由に初期表示できます"},
+        {label:"備考", type:"textarea", required:false, note:"半日休暇の場合はAM/PMの注意書きを表示"},
+        {label:"添付ファイル", type:"fileToggle", required:false, note:"有無を選択できます"},
+        {label:"有効フラグ", type:"switch", required:false, note:"有効の場合にユーザー側に表示されます。初期値は「有効」"}
+      ]
+    },
+    leave: {
+      title: "休業テンプレート",
+      fields: [
+        {label:"タイトル", type:"textarea", required:true, note:"テンプレートの名称"},
+        {label:"取得方法", type:"select", options:["単発","期間"], required:true, note:"期間選択時のみ終了日が表示される", id:"leaveMethod"},
+        {label:"開始日", type:"date", required:true, placeholder:"2026/06/12"},
+        {label:"終了日", type:"date", required:true, placeholder:"2026/06/14", conditional:"leavePeriod"},
+        {label:"申請本文テンプレート", type:"textarea", required:false, note:"入力テンプレートを自由に初期表示できます"},
+        {label:"備考", type:"textarea", required:false},
+        {label:"添付ファイル", type:"fileToggle", required:false, note:"有無を選択できます"},
+        {label:"有効フラグ", type:"switch", required:false, note:"有効の場合にユーザー側に表示されます。初期値は「有効」"}
+      ]
+    },
+    other: {
+      title: "その他テンプレート",
+      fields: [
+        {label:"タイトル", type:"textarea", required:true, note:"テンプレートの名称"},
+        {label:"申請本文テンプレート", type:"textarea", required:false, note:"入力テンプレートを自由に初期表示できます"},
+        {label:"備考", type:"textarea", required:false, note:"半日休暇の場合はAM/PMの注意書きを表示"},
+        {label:"添付ファイル", type:"fileToggle", required:false, note:"有無を選択できます"},
+        {label:"有効フラグ", type:"switch", required:false, note:"有効の場合にユーザー側に表示されます。初期値は「有効」"}
+      ]
+    }
+  };
+
+  const menuButton = document.getElementById("templateMenuButton");
+  const menu = document.getElementById("templateMenu");
+  const modal = document.getElementById("templateModal");
+  const backdrop = document.getElementById("modalBackdrop");
+  const form = document.getElementById("templateForm");
+  const title = document.getElementById("modalTitle");
+
+  menuButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.classList.toggle("hidden");
+  });
+  document.addEventListener("click", (e) => {
+    if (!menu.contains(e.target) && !menuButton.contains(e.target)) menu.classList.add("hidden");
+  });
+
+  function fieldMarkup(field, index) {
+    const requiredBadge = field.required
+      ? '<span class="text-[10px] text-[#dc2626] bg-[#fee2e2] px-2 py-0.5 rounded-full">必須</span>'
+      : '<span class="text-[10px] text-gray-500 bg-[#f1f1ef] px-2 py-0.5 rounded-full">任意</span>';
+
+    let control = "";
+    const base = 'w-full border border-[#dcdad6] rounded-lg px-3 text-[13px] outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 bg-white';
+    if (field.type === "textarea") {
+      control = `<textarea rows="${field.label === "申請本文テンプレート" ? 4 : 2}" class="${base} py-2.5" placeholder="${field.label === "タイトル" ? "テンプレート名を入力" : "入力してください"}"></textarea>`;
+    } else if (field.type === "select") {
+      control = `<select id="${field.id || ""}" class="${base} h-10"><option value="">選択してください</option>${field.options.map(o=>`<option value="${o}">${o}</option>`).join("")}</select>`;
+    } else if (field.type === "date") {
+      control = `<input type="date" class="${base} h-10" />`;
+    } else if (field.type === "number") {
+      control = `<div class="relative"><input type="number" min="0" class="${base} h-10 pr-10" placeholder="0" /><span class="absolute right-3 top-2.5 text-[12px] text-gray-500">円</span></div>`;
+    } else if (field.type === "fileToggle") {
+      control = `<div class="space-y-3">
+        <label class="inline-flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" class="file-toggle sr-only peer">
+          <span class="w-10 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 relative transition">
+            <span class="absolute w-5 h-5 rounded-full bg-white top-0.5 left-0.5 peer-checked:translate-x-4 transition shadow"></span>
+          </span>
+          <span class="text-[13px] text-gray-700">添付ファイルを使用する</span>
+        </label>
+        <button type="button" class="upload-button hidden h-9 px-4 rounded-lg border border-[#dcdad6] bg-[#fafaf9] text-[12px] items-center gap-2">
+          <i data-lucide="upload" class="w-4 h-4"></i>ファイルを選択
+        </button>
+      </div>`;
+    } else if (field.type === "switch") {
+      control = `<label class="inline-flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" checked class="sr-only peer">
+        <span class="w-10 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 relative transition">
+          <span class="absolute w-5 h-5 rounded-full bg-white top-0.5 left-0.5 peer-checked:translate-x-4 transition shadow"></span>
+        </span>
+        <span class="text-[13px] text-gray-700">有効</span>
+      </label>`;
+    }
+
+    return `<div class="field-row ${field.conditional ? "hidden conditional-field" : ""}" data-condition="${field.conditional || ""}">
+      <div class="flex items-center gap-2 mb-2">
+        <label class="text-[13px] font-medium">${field.label}</label>${requiredBadge}
+      </div>
+      ${control}
+      ${field.note ? `<p class="mt-1.5 text-[11px] text-gray-400">${field.note}</p>` : ""}
+    </div>`;
+  }
+
+  function openTemplate(key) {
+    const data = templates[key];
+    title.textContent = data.title;
+    form.innerHTML = data.fields.map(fieldMarkup).join("");
+    menu.classList.add("hidden");
+    backdrop.classList.remove("hidden");
+    modal.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+    lucide.createIcons();
+
+    document.querySelectorAll(".file-toggle").forEach(toggle => {
+      toggle.addEventListener("change", () => {
+        const button = toggle.closest(".space-y-3").querySelector(".upload-button");
+        button.classList.toggle("hidden", !toggle.checked);
+        button.classList.toggle("inline-flex", toggle.checked);
+      });
+    });
+
+    const attendanceMethod = document.getElementById("attendanceMethod");
+    if (attendanceMethod) {
+      attendanceMethod.addEventListener("change", () => {
+        document.querySelector('[data-condition="attendancePeriod"]').classList.toggle("hidden", attendanceMethod.value !== "期間");
+      });
+    }
+    const leaveMethod = document.getElementById("leaveMethod");
+    if (leaveMethod) {
+      leaveMethod.addEventListener("change", () => {
+        document.querySelector('[data-condition="leavePeriod"]').classList.toggle("hidden", leaveMethod.value !== "期間");
+      });
+    }
+  }
+
+  document.querySelectorAll(".template-option").forEach(button => {
+    button.addEventListener("click", () => openTemplate(button.dataset.template));
+  });
+
+  function closeModal() {
+    backdrop.classList.add("hidden");
+    modal.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+  }
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+  document.getElementById("cancelModal").addEventListener("click", (e) => { e.preventDefault(); closeModal(); });
+  backdrop.addEventListener("click", closeModal);
+
+  document.getElementById("saveTemplate").addEventListener("click", (e) => {
+    e.preventDefault();
+    closeModal();
+    const toast = document.getElementById("toast");
+    toast.classList.remove("hidden");
+    setTimeout(() => toast.classList.add("hidden"), 2200);
+  });
+
+  lucide.createIcons();
+</script>
+</body>
+</html>
