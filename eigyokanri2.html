@@ -1,66 +1,1848 @@
 <!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>営業支援 | リデザインモック</title><style>
-:root{--p:#010120;--pale:#c8f6f9;--ink:#010120;--muted:#747583;--line:#e7e7eb;--bg:#ffffff;--soft:#f7f8fa;--red:#c43b35;--green:#177d53;--amber:#9b681d}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);font:14px/1.5 Inter,'Helvetica Neue',Arial,'Noto Sans JP',sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.4;cursor:not-allowed}.app{display:flex;min-height:100vh}.side{width:204px;flex-shrink:0;border-right:1px solid #28283b;background:#010120;color:white;padding:23px 14px;display:flex;flex-direction:column;gap:25px}.brand{font-size:17px;font-weight:800;letter-spacing:-.6px}.sub{font-size:10px;color:var(--muted)}.nav{display:flex;flex-direction:column;gap:4px}.nav div{padding:10px 11px;color:#aaaac0}.nav div.selected{color:#c8f6f9;font-weight:700;background:#26263a;border-left:3px solid #c8f6f9;padding-left:8px}.main{min-width:0;flex:1}.top{height:57px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 32px}.top small{color:var(--muted)}.container{max-width:1530px;margin:auto;padding:17px 28px 70px}.heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:10px}h1{font-size:23px;margin:0;font-weight:750;letter-spacing:-1px}h2{font-size:16px;margin:0}h3{font-size:13px;margin:0}.textmuted{color:var(--muted)}.tiny{font-size:11px}.btn{height:35px;border:1px solid var(--line);background:white;padding:0 13px;border-radius:4px;color:var(--ink);white-space:nowrap}.btn.primary{background:var(--p);color:#fff;border-color:var(--p)}.btn.ghost{border:0;background:transparent}.btn.danger{color:var(--red)}.btn:hover:not(:disabled){filter:brightness(.97)}.btn:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--p);outline-offset:2px}.buttons{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.tabs{display:flex;gap:23px;border-bottom:1px solid var(--line);margin-bottom:10px}.tab{background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:10px 1px;font-size:13px}.tab.active{font-weight:600;color:var(--ink);border-color:var(--ink)}.monthbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding-bottom:10px}.month{font-size:19px;font-weight:600}.note{font-size:11px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:10px}.metric{background:white;padding:8px 12px}.metric .num{font-size:21px;font-weight:600;line-height:1.2}.metric small{font-size:11px;color:var(--muted)}.metric .num.purple{color:var(--p)}.section{border:1px solid var(--line);background:white;margin-bottom:10px}.sectionhead{padding:10px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center;border-bottom:1px solid var(--line);flex-wrap:wrap}.sectionbody{padding:11px 14px}.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:13px}input,select,textarea{border:1px solid #d9d3d3;border-radius:4px;background:var(--soft);color:var(--ink);padding:8px 9px;min-height:36px}input[type=checkbox]{accent-color:var(--p);width:16px;height:16px;min-height:0}input[type=date]{min-width:0}textarea{resize:vertical;min-height:100px}.search{flex:1;min-width:200px}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left;white-space:nowrap}th{background:var(--soft);color:var(--muted);font-size:11px;font-weight:500}th,td{padding:11px 12px;border-bottom:1px solid #ece8e8}tr:last-child td{border-bottom:none}td{vertical-align:middle}.name{background:transparent;border:0;color:var(--ink);padding:0;text-decoration:none;font-weight:600}.name:hover{color:var(--p)}.link{background:transparent;border:0;color:var(--ink);padding:0;font-weight:600;text-decoration:none}.pill{display:inline-block;border:1px solid var(--line);padding:2px 7px;border-radius:3px;font-size:10px;background:#fff}.pill.purple{background:#f0f0ff;border-color:#d6d6fa;color:#4d47ad}.pill.green{background:#eaf7ef;border-color:#d2ead8;color:var(--green)}.pill.red{color:var(--red);background:#fff1ee;border-color:#f5d5cf}.pill.gray{color:#777}.smallselect{height:32px;min-height:32px;max-width:136px;padding:3px 6px;background:white;font-size:11px}.checkrow{display:flex;align-items:center;gap:7px}.empty{padding:48px 15px;text-align:center;color:var(--muted)}.backdrop{position:fixed;inset:0;background:rgba(15,0,0,.40);z-index:10}.drawer{position:fixed;right:0;top:0;bottom:0;background:#fff;z-index:11;width:min(820px,100vw);display:flex;flex-direction:column;border-left:1px solid var(--line);box-shadow:-7px 0 25px #0000000e}.drawer.narrow{width:min(670px,100vw)}.drawerhead{border-bottom:1px solid var(--line);padding:16px 21px;display:flex;justify-content:space-between;align-items:flex-start}.drawerbody{overflow:auto;padding:21px;flex:1}.panelgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:11px;color:var(--muted)}.field .value{font-size:13px;font-weight:600}.infobox{border:1px solid var(--line);padding:15px;margin-bottom:15px}.infobox h3{margin-bottom:12px}.casecard{border:1px solid var(--line);padding:13px;margin:9px 0;display:flex;align-items:center;justify-content:space-between;gap:10px}.casecard:hover{border-color:#c5a7f9}.modal{position:fixed;z-index:21;top:50%;left:50%;transform:translate(-50%,-50%);width:min(590px,calc(100vw - 22px));background:white;border:1px solid var(--line);padding:22px;max-height:90vh;overflow:auto}.shade2{position:fixed;inset:0;background:#0006;z-index:20}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}.casetabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:17px;gap:14px}.casetab{padding:7px 3px;background:transparent;border:0;border-bottom:2px solid transparent;color:var(--muted)}.casetab.active{border-color:var(--ink);color:var(--ink);font-weight:600}.chat{background:var(--soft);border:1px solid var(--line);padding:15px;height:330px;overflow:auto;display:flex;flex-direction:column;gap:12px}.bubble{max-width:85%;align-self:flex-end;background:#e9e8ff;padding:10px 12px;border:1px solid #d7d6fa;white-space:pre-wrap;border-radius:5px}.bubble.system{background:white;align-self:center;font-size:11px;color:var(--muted)}.chatinput{display:flex;gap:8px;margin-top:10px;align-items:flex-end}.chatinput textarea{flex:1;min-height:70px}.snapshot{border:1px solid #d8c4fb;background:#fbf8ff;padding:11px 14px;font-size:12px;margin-bottom:17px}.highlight{color:var(--p)}.categoryline{display:flex;flex-wrap:wrap;gap:7px}.categorycount{padding:5px 11px;border:1px solid var(--line);min-width:0;display:flex;align-items:center;gap:9px}.categorycount b{font-size:16px}.w100{width:100%}.mobilehint{display:none}@media(max-width:1050px){.side{width:70px}.side .nav div{font-size:0}.side .nav div:before{content:'[+]';font-size:14px}.side .brand{font-size:11px}.side .sub{display:none}.metrics{grid-template-columns:repeat(3,1fr)}.container{padding:24px 17px}.top{padding:0 17px}}@media(max-width:620px){.side{display:none}.metrics{grid-template-columns:repeat(2,1fr)}.panelgrid,.formgrid{grid-template-columns:1fr}.full{grid-column:1}.heading{align-items:flex-start;flex-direction:column}.monthbar{align-items:flex-start}.mobilehint{display:block}}
-.clickrow{cursor:pointer}.clickrow:hover td{background:#f0f7fa}.casecard{cursor:pointer}.casecard:hover{background:#f6fafc}.nav div:not(.selected){cursor:pointer}.categorycount .tiny{white-space:nowrap}.monthchips{display:flex;gap:6px;flex-wrap:wrap;max-height:115px;overflow:auto;margin:11px 0}.monthchip{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);padding:5px 8px;background:#f7f8fa;border-radius:4px}.monthchip button{border:0;background:transparent;cursor:pointer}.minirow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.compactcategories{display:flex;align-items:center;gap:16px;padding:9px 13px;border:1px solid var(--line);border-top:0;margin-bottom:11px}.compactcategories h2{font-size:12px;white-space:nowrap;font-weight:600}.halfbox{border:1px solid var(--line);padding:15px;min-width:0}.halfbox h3{font-size:14px;margin:0 0 12px}.data-line{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid #f0f0f1;padding:9px 0}.data-line label{font-size:12px;color:var(--muted);white-space:nowrap}.data-line strong{font-weight:500;text-align:right;overflow-wrap:anywhere}.overviewcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.warncontract{background:#fdf6e8;border:1px solid #f3d6a0;padding:11px 13px;margin:11px 0;color:#8f530b}.quicktemplates{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.chatmeta{font-size:10px;color:#787883;margin-top:3px}.chatinput textarea{min-height:68px}.tinyaction{border:1px solid var(--line);padding:4px 9px;background:white;border-radius:4px}.drawer.narrow{width:min(920px,100vw)}.drawerbody{padding:17px}.status-row{display:flex;align-items:end;gap:12px;justify-content:space-between}.employee-owner{background:#f7f8fa;padding:10px 12px;border:1px solid var(--line);display:flex;align-items:center;gap:12px;margin-bottom:12px}button,.tab,.casetab,select,input[type=checkbox],input[type=month],.btn,.link,.name{cursor:pointer}@media(max-width:720px){.overviewcols{grid-template-columns:1fr}.compactcategories{align-items:flex-start;flex-direction:column;gap:7px}.metrics{grid-template-columns:repeat(3,1fr)}}
+<html lang="ja">
 
-button,select,[onclick],input[type=checkbox],.casecard,.clickrow{cursor:pointer!important}.clickrow:hover td{background:#f5f7fb}.name,.link{text-decoration:none!important}.casecard{display:block}.casecard .case-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:10px}.mini-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);margin:14px 0 18px}.mini-kpis>div{padding:11px;border-right:1px solid var(--line)}.mini-kpis>div:last-child{border:0}.mini-kpis small{font-size:11px;color:var(--muted)}.mini-kpis strong{display:block;font-size:19px;font-weight:600}.deal-split{display:grid;grid-template-columns:1fr 1fr;gap:12px}.deal-split .infobox{margin:0;min-width:0}.compactdetails{display:grid;grid-template-columns:100px minmax(0,1fr);gap:9px 12px;margin-top:13px;font-size:13px}.compactdetails dt{color:var(--muted)}.compactdetails dd{margin:0;overflow-wrap:anywhere}.case-extra{margin-top:12px;color:var(--muted);font-size:12px;white-space:pre-wrap}.status-choice{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.status-choice button{padding:7px 12px;border-radius:4px;border:1px solid var(--line);background:#fff}.status-choice button:hover{background:#eaf9fb}.role-toggle{display:flex;gap:6px;align-items:center}.role-toggle button{padding:7px 12px;border:1px solid var(--line);background:white}.role-toggle button.active{background:#010120;color:white}.chat-meta{font-size:11px;color:var(--muted);margin-bottom:4px}.bubble.them{align-self:flex-start;background:#f5f6fa;border:1px solid var(--line)}.bubble.system{align-self:center;max-width:95%;text-align:center}.chat-tools{margin-top:8px}.unread{display:inline-block;background:#ef2cc1;color:white;font-weight:600;font-size:10px;padding:2px 6px;border-radius:9px}.reasonfield{border:1px solid #f0bdd9;background:#fff9fc;padding:12px;margin-top:10px}.reasonfield textarea{width:100%;min-height:68px;margin:7px 0}.month-assign{border:1px solid var(--line);padding:12px;margin:12px 0;display:flex;gap:9px;flex-wrap:wrap;align-items:center}.month-assign select{min-width:130px}.chat-message-body{white-space:pre-wrap}@media(max-width:650px){.deal-split{grid-template-columns:1fr}.mini-kpis{grid-template-columns:repeat(2,1fr)}}
-</style><style>
-/* v5 UI refinements */
-.compactcategories .categoryline{gap:0;display:flex;flex-wrap:wrap;border:1px solid var(--line);width:max-content;max-width:100%}.compactcategories .category-filter{display:flex;align-items:center;gap:10px;border:0;border-right:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;cursor:pointer;font-size:13px;border-radius:0!important}.compactcategories .category-filter:last-child{border-right:0}.compactcategories .category-filter:hover,.compactcategories .category-filter.on{background:#f0f0f4}.category-filter.on{box-shadow:inset 0 -3px 0 var(--category-color)}.category-filter strong{font-size:17px}.category-mark{width:7px;height:7px;flex-shrink:0}.employee-name{font-weight:650;display:block;text-align:left;font-size:14px}.clickrow td:first-child{text-align:left}.remove-target{padding:2px 0;border:0;background:none;color:#777;font-size:10px;white-space:nowrap;cursor:pointer}.remove-target:hover{color:#ba3838;text-decoration:underline}.member-contractgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.next-contract+.next-contract{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}.next-heading{display:flex;align-items:start;justify-content:space-between;gap:10px;margin:0 0 14px}.next-heading strong{font-size:13px}.tiny-link{border:0;background:transparent;font-size:11px;color:#4f4788;text-decoration:underline;white-space:nowrap}.case-list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.case-metrics{margin:0 0 14px!important;grid-template-columns:repeat(4,minmax(0,1fr))}.case-list{display:flex;flex-direction:column;gap:10px}.case-list-item{border:1px solid var(--line);padding:16px;cursor:pointer}.case-list-item:hover{background:#f9f9fb;border-color:#bcbcc8}.case-list-top{display:flex;justify-content:space-between;align-items:start;gap:12px}.case-list-top strong{font-size:15px}.case-title{font-size:14px;margin-top:5px}.case-list-bottom{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f3}.attachment-picker{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.attach-label{border:1px solid var(--line);background:#fff;padding:6px 10px;border-radius:4px;font-size:12px;cursor:pointer}.attach-label:hover{background:#f7f7fa}.attachment-picker input[type=file]{display:none}.attached-file{margin-top:8px;background:#fff;border:1px solid var(--line);padding:9px 11px;border-radius:6px;cursor:pointer;color:#201d1d;font-size:12px}.attached-file:hover{background:#f6f4ff}.attached-file small{color:var(--muted)}.drawer{width:min(820px,100vw)!important}.chat-shell{max-height:calc(100vh - 225px);min-height:440px}.chat-stream{min-height:220px}@media(max-width:700px){.member-contractgrid,.case-metrics{grid-template-columns:1fr 1fr}.case-topgrid{grid-template-columns:1fr}}
-</style></head><body><div id="root"></div><script>
-const KEY='ses_sales_redesign_mock_v3';const CATS=['新規営業','単価交渉','新規営業（終了予定）','育児休業','介護休業','待機','休職','勤怠免除','内勤'];const STAT=['エントリーする','エントリー済','面談依頼','面談後お見送り','お見送り','エントリーしない','オファー','参画決定','待機'];const members=[{id:1,name:'佐藤 直樹',team:'開発課',skill:'Java',exp:'8年',join:'2021',current:{company:'株式会社ホワイトボックス',start:'2025-11-01',end:'2026-10-31',rate:750000}},{id:2,name:'高橋 花子',team:'開発課',skill:'PHP',exp:'5年',join:'2022',current:{company:'株式会社イダス',start:'2026-04-01',end:'2026-10-31',rate:720000}},{id:3,name:'大竹 七奈',team:'コンサル課',skill:'PMO',exp:'6年',join:'2020',current:{company:'株式会社スタジー',start:'2026-01-01',end:'2026-10-31',rate:820000}},{id:4,name:'山田 智也',team:'インフラ課',skill:'AWS',exp:'4年',join:'2023',current:{company:'UP DOORS株式会社',start:'2026-02-01',end:'2026-10-31',rate:650000}},{id:5,name:'田中 美咲',team:'QA課',skill:'QA',exp:'3年',join:'2024',current:{company:'株式会社EXCEED',start:'2026-05-01',end:'2026-11-30',rate:610000}},{id:6,name:'伊藤 健一',team:'開発課',skill:'React',exp:'7年',join:'2019',current:{company:'株式会社フリューゲル',start:'2025-07-01',end:'2026-10-31',rate:790000}},{id:7,name:'小林 亮太',team:'インフラ課',skill:'Network',exp:'2年',join:'2025',current:{company:'—',start:'',end:'',rate:''}},{id:8,name:'鈴木 沙織',team:'開発課',skill:'C#',exp:'6年',join:'2020',current:{company:'株式会社ケーズ',start:'2026-01-01',end:'2026-12-31',rate:750000}},{id:9,name:'中村 拓海',team:'QA課',skill:'QA',exp:'4年',join:'2022',current:{company:'株式会社クリニック',start:'2026-04-01',end:'2026-10-31',rate:640000}}];
-const OWNERS=['営業 四郎','営業 三郎','営業 花子','管理 太郎'];const seed={owners:{1:'営業 四郎',2:'営業 四郎',3:'営業 三郎',4:'営業 三郎',5:'営業 花子',6:'営業 四郎',7:'営業 花子',8:'営業 三郎',9:'営業 花子'},months:{'2026-09':{final:true,types:{1:'新規営業',3:'単価交渉',4:'待機',6:'新規営業'},snapshot:null},'2026-10':{final:false,types:{1:'新規営業',2:'単価交渉',3:'新規営業',4:'新規営業',5:'待機',6:'新規営業'},snapshot:null},'2026-11':{final:false,types:{2:'新規営業',7:'新規営業'},snapshot:null}},cases:[{id:100,mid:1,month:'2026-10',company:'Aster Works',title:'基幹刷新支援',station:'品川',notes:'Javaを中心とした開発。週2出社。',status:'エントリー済',owner:'営業 四郎',contract:{start:'',end:'',entry:'',rate:''},chat:[{text:'面談候補日時：9/23 09:00、10/1 15:00',at:'2026/09/23',system:false}]},{id:101,mid:1,month:'2026-10',company:'Northwind',title:'クラウド移行PMO',station:'新宿',notes:'PMO経験者歓迎',status:'面談後／オファー前',owner:'営業 四郎',contract:{start:'',end:'',entry:'',rate:''},chat:[]},{id:102,mid:1,month:'2026-10',company:'Contoso',title:'社内ポータル改善',station:'東京',notes:'',status:'オファー',owner:'営業 四郎',contract:{start:'2026-11-01',end:'2027-01-31',entry:'2026-11-01',rate:770000},chat:[]},{id:103,mid:2,month:'2026-10',company:'株式会社フリューゲル',title:'Javaサーバサイド開発',station:'品川',notes:'長期想定',status:'面談依頼',owner:'営業 四郎',contract:{start:'',end:'',entry:'',rate:''},chat:[]},{id:104,mid:3,month:'2026-10',company:'AlphaTech',title:'Reactフロント開発',station:'フルリモート',notes:'',status:'エントリーする',owner:'営業 三郎',contract:{start:'',end:'',entry:'',rate:''},chat:[]},{id:105,mid:6,month:'2026-10',company:'株式会社スクエア',title:'Webシステム改修',station:'五反田',notes:'',status:'参画決定',owner:'営業 四郎',contract:{start:'2026-11-01',end:'2027-03-31',entry:'2026-11-01',rate:810000},chat:[]}],next:106};
-let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(seed)}catch(e){state=structuredClone(seed)};if(!state.months['2026-09'].snapshot){state.months['2026-09'].snapshot=structuredClone({types:state.months['2026-09'].types,cases:[]})}if(!state.owners)state.owners=structuredClone(seed.owners);state.cases.forEach(c=>{if(c.status==='エントリーする')c.status='エントリーする';if(c.status==='面談後／オファー前')c.status='面談依頼';c.chat=(c.chat||[]).map(x=>({...x,role:x.role||(x.system?'system':'sales')}));c.readSales??=c.chat.length;c.readEngineer??=0;c.enteredAt??=(c.status==='エントリー済'?'2026-10-01':null)});let view='month',month='2026-10',query='',typeFilter='',statusFilter='',drawer=null,caseTab='chat',modal=null,selected=new Set(),bulkMonths=['2026-10'];let pickerMonth='2026-10',role='sales',reasonOpen=false;const $=s=>document.querySelector(s);const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=n=>n?Number(n).toLocaleString('ja-JP')+'円':'—';const ym=m=>m.replace('-','年')+'月';const mdata=()=>state.months[month]||(state.months[month]={final:false,types:{},snapshot:null});const data=()=>mdata().final?mdata().snapshot:{types:mdata().types,cases:state.cases.filter(c=>c.month===month),owners:state.owners};const currentCases=id=>data().cases.filter(c=>c.mid===id);const getMember=id=>members.find(m=>m.id===Number(id));const catOpts=(val='')=>CATS.map(c=>`<option ${c===val?'selected':''}>${esc(c)}</option>`).join('');const statusOpts=val=>STAT.map(s=>`<option ${val===s?'selected':''}>${esc(s)}</option>`).join('');const btn=(label,func,cls='')=>`<button class="btn ${cls}" onclick="${func}">${label}</button>`;function persist(){localStorage.setItem(KEY,JSON.stringify(state))}function monthShift(delta){const [y,m]=month.split('-').map(Number);const d=new Date(y,m-1+delta,1);month=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');selected.clear();render()}function notify(msg){alert(msg)}function totalStats(){const ids=Object.keys(data().types);const cs=data().cases;return {ids:ids.length,active:ids.filter(id=>cs.some(c=>c.mid==id&&!['エントリーする','エントリーしない','お見送り','面談後お見送り'].includes(c.status))).length,proposals:cs.filter(c=>!['エントリーする','エントリーしない'].includes(c.status)).length,interviews:cs.filter(c=>['面談依頼','面談後／オファー前','オファー','参画決定'].includes(c.status)).length,offers:cs.filter(c=>['オファー','参画決定'].includes(c.status)).length,decided:cs.filter(c=>c.status==='参画決定').length}}function applyAutoReject(){if(mdata().final)return;let changed=false;state.cases.forEach(c=>{if(c.status==='エントリー済'&&c.enteredAt&&Date.now()-new Date(c.enteredAt).getTime()>=7*86400000){c.status='お見送り';c.chat.push({text:'ステータス自動変更：エントリー済 → お見送り（7日経過）',system:true,role:'system',at:new Date().toLocaleString('ja-JP')});changed=true}});if(changed)persist()}function render(){applyAutoReject();const s=totalStats(),final=mdata().final;$('#root').innerHTML=`<div class="app"><aside class="side"><div><div class="brand">[+] LINK / PORTAL</div><div class="sub">EMPLOYEE PORTAL</div></div><div class="nav"><div>ホーム</div><div>メンバー</div><div>ドキュメント</div><div>勤怠表</div><div class="selected">営業支援</div><div>契約管理</div><div>設定</div></div><div class="sub" style="margin-top:auto">SALES WORKSPACE / MOCK</div></aside><div class="main"><header class="top"><div><b>営業支援</b><br><small>SES SALES / OPERATIONS</small></div><div class="tiny textmuted">管理 太郎　/　system_admin</div></header><div class="container"><div class="heading"><div><div class="tiny textmuted">営業支援 / ${view==='month'?'月別営業管理':'全社員'}</div><h1>${view==='month'?'営業活動の管理':'全社員から営業対象者を選定'}</h1></div><div class="buttons">${view==='month'?btn('全社員から追加 →',"view='employees';render()") : btn('月別営業管理に戻る →',"view='month';render()")}</div></div><div class="tabs"><button class="tab ${view==='month'?'active':''}" onclick="view='month';render()">月別営業管理</button><button class="tab ${view==='employees'?'active':''}" onclick="view='employees';render()">全社員・対象者選定</button></div>${view==='month'?monthPage(s,final):employeePage()}</div></div></div>${drawer?drawOverlay():''}${modal?modalOverlay():''}`}
-function monthPage(s,final){const ids=Object.keys(data().types).map(Number);const rows=members.filter(m=>ids.includes(m.id)).filter(m=>!typeFilter||data().types[m.id]===typeFilter).filter(m=>!query||(m.name+m.skill+m.team).toLowerCase().includes(query.toLowerCase())).filter(m=>!statusFilter||(statusFilter==='提案あり'?currentCases(m.id).length>0:currentCases(m.id).some(c=>c.status===statusFilter)));const counts=CATS.filter(c=>ids.some(id=>data().types[id]===c));return `<div class="monthbar"><div class="buttons">${btn('←', 'monthShift(-1)')}<span class="month">${ym(month)}</span>${btn('→','monthShift(1)')}<span class="pill ${final?'purple':'gray'}">${final?'確定済・履歴固定':'編集中'}</span></div><div class="buttons">${final?btn('確定を解除','unfinalize()'):btn('この月を確定する','finalize()','primary')}${btn('CSV出力','exportCSV()')}</div></div>${final?`<div class="snapshot">[✓] ${ym(month)}の営業状況は確定時点の状態で保存されています。現在の案件変更は反映されません。確定解除後に編集可能です。</div>`:''}<div class="metrics">${[['営業対象者',s.ids],['営業着手',s.active],['案件提案',s.proposals],['面談依頼以上',s.interviews],['オファー以上',s.offers],['参画決定',s.decided]].map(([label,value],i)=>`<div class="metric"><small>${label}</small><div class="num ${i===0?'purple':''}">${value}</div></div>`).join('')}</div><div class="compactcategories"><h2>営業種別 / 人数</h2><div class="categoryline">${CATS.filter(c=>ids.some(id=>data().types[id]===c)).map(c=>`<div class="categorycount"><span class="tiny textmuted">${c}</span><b>${ids.filter(id=>data().types[id]===c).length}</b><span class="tiny textmuted">人</span></div>`).join('')||'<span class="textmuted">営業対象者なし</span>'}</div></div><section class="section"><div class="sectionhead"><h2>${ym(month)}の営業対象者 <span class="highlight">${ids.length}名</span></h2>${!final?btn('[+] 対象者を追加',"view='employees';render()",'primary'):''}</div><div class="sectionbody"><div class="filters"><input class="search" placeholder="氏名・スキル・所属で検索" value="${esc(query)}" oninput="query=this.value;refreshRows()"><select onchange="typeFilter=this.value;refreshRows()"><option value="">全営業種別</option>${CATS.map(c=>`<option ${c===typeFilter?'selected':''}>${c}</option>`).join('')}</select><select onchange="statusFilter=this.value;refreshRows()"><option value="">全提案状況</option><option ${statusFilter==='提案あり'?'selected':''}>提案あり</option>${STAT.map(s=>`<option ${s===statusFilter?'selected':''}>${s}</option>`).join('')}</select></div><div class="scroll" id="rows">${monthRows(rows,final)}</div></div></section><p class="note">※ 日付入力や案件の進捗更新に締切は設けていません。月次確定は任意で行い、必要なら解除できます。すべて架空のデータです。</p>`}
-function monthRows(rows,final){if(!rows.length)return '<div class="empty">該当する営業対象者がいません</div>';return `<table><thead><tr><th>エンジニア</th><th>所属・スキル</th><th>営業種別</th><th>担当営業</th><th>現契約終了</th><th>案件提案</th><th>進捗の内訳</th><th>参画決定</th><th>${final?'履歴':'操作'}</th></tr></thead><tbody>${rows.map(m=>{const cs=currentCases(m.id),a=cs.filter(c=>!['エントリーする','エントリーしない'].includes(c.status));const won=cs.filter(c=>c.status==='参画決定').length;return `<tr class="clickrow" onclick="event.stopPropagation();openMember(${m.id})"><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button><div class="tiny textmuted">${esc(m.exp)} / ${esc(m.join)}入社</div></td><td>${esc(m.team)}<div class="tiny textmuted">${esc(m.skill)}</div></td><td>${final?`<span class="pill">${esc(data().types[m.id])}</span>`:`<select class="smallselect" aria-label="${esc(m.name)}の営業種別" onclick="event.stopPropagation()" onchange="changeType(${m.id},this.value)">${catOpts(data().types[m.id])}</select>`}</td><td>${esc((data().owners||state.owners)[m.id]||'未設定')}</td><td>${m.current.end||'—'}</td><td><button class="link" onclick="event.stopPropagation();openMember(${m.id},'cases')">${cs.length}件（提案${a.length}）</button></td><td><div class="tiny">${esc(progressSummary(cs))}</div></td><td>${won?`<span class="pill green">${won}件</span>`:'—'}</td><td>${final?'<span class="tiny textmuted">固定</span>':btn('対象から外す',`event.stopPropagation();removeTarget(${m.id})`,'danger')}</td></tr>`}).join('')}</tbody></table>`}
-function progressSummary(cs){if(!cs.length)return '案件未登録';const count={};cs.forEach(c=>count[c.status]=(count[c.status]||0)+1);return Object.entries(count).map(([a,b])=>`${a} ${b}`).join(' / ')}function refreshRows(){const rows=members.filter(m=>Object.keys(data().types).includes(String(m.id))).filter(m=>!typeFilter||data().types[m.id]===typeFilter).filter(m=>!query||(m.name+m.skill+m.team).toLowerCase().includes(query.toLowerCase())).filter(m=>!statusFilter||(statusFilter==='提案あり'?currentCases(m.id).length>0:currentCases(m.id).some(c=>c.status===statusFilter)));$('#rows').innerHTML=monthRows(rows,mdata().final)}
-function allowedMonths(){const now=new Date();const a=new Date(now.getFullYear(),now.getMonth(),1);return [0,1].map(n=>{const d=new Date(a.getFullYear(),a.getMonth()+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')})}function monthSelector(id='targetMonth'){return `<select id="${id}">${allowedMonths().map(mm=>`<option value="${mm}" ${mm===month?'selected':''}>${ym(mm)}</option>`).join('')}</select>`}function employeePage(){return `<section class="section"><div class="sectionhead"><div><h2>営業対象にする社員を選択</h2><div class="note">複数月にまとめて登録できます。すでに登録済みの月はそのまま維持されます。</div></div><span class="pill purple">選択中 ${selected.size}名</span></div><div class="sectionbody"><div class="filters"><input class="search" placeholder="社員名・所属・スキルを検索" oninput="filterEmployees(this.value)" id="empquery"><select id="empteam" onchange="filterEmployees($('#empquery').value)"><option value="">全部署</option>${[...new Set(members.map(m=>m.team))].map(t=>`<option>${t}</option>`).join('')}</select></div><div class="scroll" id="empRows">${empRows(members)}</div></div></section><section class="section"><div class="sectionhead"><h2>選択した社員の登録先</h2></div><div class="sectionbody"><div class="tiny textmuted" style="margin-bottom:9px">登録する月（当月または翌月）</div><div class="minirow">${monthSelector('bulkPicker')}${btn('選択した社員をこの月に登録','bulkAdd()','primary')}<span class="note">営業種別は登録後に設定できます（初期値：新規営業）</span></div></div></section>`}function empRows(ms){return `<table><thead><tr><th><input type="checkbox" onchange="toggleAll(this.checked)" aria-label="全社員を選択"></th><th>社員</th><th>所属</th><th>主要スキル</th><th>現契約先</th><th>営業対象に登録済みの月</th></tr></thead><tbody>${ms.map(m=>{const months=Object.entries(state.months).filter(([ym,d])=>!!d.types[m.id]).map(([ym])=>ym.replace('-', '年')+'月');return `<tr><td><input type="checkbox" data-emp-id="${m.id}" ${selected.has(m.id)?'checked':''} onchange="toggleSelect(${m.id},this.checked)"></td><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button></td><td>${esc(m.team)}</td><td>${esc(m.skill)}</td><td>${esc(m.current.company)}</td><td class="tiny">${months.join(' / ')||'—'}</td></tr>`}).join('')}</tbody></table>`}function filterEmployees(q){const t=$('#empteam').value;$('#empRows').innerHTML=empRows(members.filter(m=>(!t||t===m.team)&&(!q||(m.name+m.team+m.skill).toLowerCase().includes(q.toLowerCase()))))}function toggleSelect(id,v){v?selected.add(id):selected.delete(id);render()}function toggleAll(v){members.forEach(m=>v?selected.add(m.id):selected.delete(m.id));render()}function bulkAdd(){if(!selected.size)return notify('社員を選択してください');const mm=$('#bulkPicker').value;if(!allowedMonths().includes(mm))return notify('当月か翌月を選択してください');const d=state.months[mm]||(state.months[mm]={final:false,types:{},snapshot:null});if(d.final)return notify('確定済みのため登録できません。先に確定を解除してください');selected.forEach(id=>{if(!d.types[id])d.types[id]='新規営業'});month=mm;selected.clear();view='month';persist();render()}function addNextMonth(mid){const mm=$('#carryMonth').value;if(!allowedMonths().includes(mm))return notify('当月か翌月を選択してください');if(mm===month)return notify('現在の月は登録済みです');const d=state.months[mm]||(state.months[mm]={final:false,types:{},snapshot:null});if(d.final)return notify('確定済みの月です');if(d.types[mid])return notify('その月にはすでに登録されています');d.types[mid]=mdata().types[mid]||'新規営業';persist();notify(ym(mm)+'に登録しました。案件・チャットは現在の月に残ります');render()}function changeType(id,type){if(mdata().final)return;mdata().types[id]=type;persist();render()}function removeTarget(id){if(!confirm(getMember(id).name+'を'+ym(month)+'の営業対象から外しますか？（この月の案件は削除されません）'))return;delete mdata().types[id];persist();render()}
-function finalize(){if(!confirm(ym(month)+'の営業状況を現在の状態で確定しますか？\nあとから解除できます。'))return;const d=mdata();d.snapshot=structuredClone({types:d.types,cases:state.cases.filter(c=>c.month===month),owners:state.owners});d.final=true;persist();render()}function unfinalize(){if(!confirm(ym(month)+'の確定を解除しますか？\n確定時のコピーは解除され、現在の編集データが表示されます。'))return;mdata().final=false;mdata().snapshot=null;persist();render()}function exportCSV(){const d=data();const lines=[['月','氏名','所属','スキル','営業種別','現契約先','現契約終了','案件数','参画決定数'],...members.filter(m=>d.types[m.id]).map(m=>[month,m.name,m.team,m.skill,d.types[m.id],m.current.company,m.current.end,d.cases.filter(c=>c.mid===m.id).length,d.cases.filter(c=>c.mid===m.id&&c.status==='参画決定').length])];const str='\ufeff'+lines.map(a=>a.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([str],{type:'text/csv;charset=utf-8;'}));a.download=`sales_${month}.csv`;a.click();URL.revokeObjectURL(a.href)}
-function openMember(id,tab='overview'){drawer={kind:'member',mid:id,tab};render()}function openCase(id){drawer={kind:'case',id};caseTab='chat';reasonOpen=false;markRead(id);render()}function closeDrawer(){drawer=null;render()}function drawOverlay(){return `<div class="backdrop" onclick="closeDrawer()"></div>${drawer.kind==='member'?memberDrawer():caseDrawer()}`}function memberDrawer(){const m=getMember(drawer.mid),cs=currentCases(m.id),won=cs.filter(c=>c.status==='参画決定'),t=data().types[m.id],final=mdata().final;const owners=OWNERS.map(o=>`<option value="${esc(o)}" ${(data().owners||state.owners)[m.id]===o?'selected':''}>${esc(o)}</option>`).join('');const line=(k,v)=>`<div class="data-line"><label>${esc(k)}</label><strong>${esc(v)}</strong></div>`;return `<aside class="drawer"><div class="drawerhead"><div><div class="tiny textmuted">ENGINEER / ${ym(month)} ${final?'[確定時点]':''}</div><h2>${esc(m.name)}</h2><div class="tiny textmuted">${esc(m.team)} / ${esc(m.skill)} / ${esc(m.exp)}</div></div>${btn('×','closeDrawer()')}</div><div class="drawerbody"><div class="casetabs"><button class="casetab ${drawer.tab==='overview'?'active':''}" onclick="drawer.tab='overview';render()">社員・契約情報</button><button class="casetab ${drawer.tab==='cases'?'active':''}" onclick="drawer.tab='cases';render()">案件・営業状況 (${cs.length})</button></div>${!final&&t?`<div class="month-assign"><span class="tiny textmuted">この社員を別の月にも登録</span>${monthSelector('carryMonth')}${btn('月に追加',`addNextMonth(${m.id})`)}</div>`:''}${drawer.tab==='overview'?`<div class="employee-owner"><label class="tiny textmuted">担当営業</label><select style="flex:1" ${final?'disabled':''} onchange="changeOwner(${m.id},this.value)">${owners}</select></div><div class="overviewcols"><div class="halfbox"><h3>現契約情報</h3>${line('契約先',m.current.company)}${line('契約開始',m.current.start||'—')}${line('契約終了',m.current.end||'—')}${line('単価（月額）',fmt(m.current.rate))}</div><div class="halfbox"><h3>${ym(month)}の営業</h3>${line('営業種別',t||'未登録')}${line('案件提案数',cs.length+'件')}${line('提案中',cs.filter(c=>!['参画決定','待機','お見送り','面談後お見送り','エントリーしない'].includes(c.status)).length+'件')}${line('参画決定',won.length+'件')}</div></div><div class="infobox" style="margin-top:13px"><h3>参画決定した案件 / 次の契約情報</h3>${won.length?won.map(c=>`<div class="casecard" onclick="openCase(${c.id})"><div><b>${esc(c.company)}</b> / ${esc(c.title)}<div class="tiny textmuted">${esc(c.contract.start||'契約開始未入力')} 〜 ${esc(c.contract.end||'終了未入力')} / ${fmt(c.contract.rate)}</div></div><span>→</span></div>`).join(''):'<div class="textmuted">参画決定した案件はありません。</div>'}</div>${btn('案件・営業状況を見る →',"drawer.tab='cases';render()",'primary')}`:`<div class="buttons" style="justify-content:space-between"><div class="textmuted tiny">案件をクリックすると、進捗・チャット・契約情報を確認できます</div>${!final?btn('＋ 案件追加',`openCaseModal(${m.id})`,'primary'):''}</div><div class="mini-kpis">${[['案件提案数',cs.length],['面談依頼数',cs.filter(c=>['面談依頼','オファー','参画決定','面談後お見送り'].includes(c.status)).length],['オファー数',cs.filter(c=>['オファー','参画決定'].includes(c.status)).length],['面談通過率',`${cs.filter(c=>['オファー','参画決定'].includes(c.status)).length}/${cs.filter(c=>['面談依頼','オファー','参画決定','面談後お見送り'].includes(c.status)).length}`]].map(([k,v])=>`<div><small>${k}</small><strong>${v}</strong></div>`).join('')}</div>${cs.map(c=>`<div class="casecard" onclick="openCase(${c.id})"><div style="min-width:0"><b>${esc(c.company)}</b><div>${esc(c.title)}</div><div class="case-meta"><span class="pill ${c.status==='参画決定'?'green':'purple'}">${esc(c.status)}</span><span class="tiny textmuted">[最寄り駅] ${esc(c.station||'未登録')}</span>${unreadFor(c)?`<span class="unread">未読 ${unreadFor(c)}</span>`:''}${c.status==='参画決定'&&!contractComplete(c)?'<span class="pill red">契約情報の入力待ち</span>':''}</div><span>→</span></div>`).join('')||'<div class="empty">登録案件はありません。案件追加から登録できます。</div>'}`}</div></aside>`}function changeOwner(mid,o){state.owners[mid]=o;persist();render()}function contractComplete(c){return !!(c.contract?.start&&c.contract?.end&&c.contract?.entry&&c.contract?.rate)}
-function detail(k,v){return `<div class="field"><label>${esc(k)}</label><div class="value">${esc(v)}</div></div>`}
-function unreadFor(c){return Math.max(0,(c.chat||[]).length-(role==='sales'?(c.readSales||0):(c.readEngineer||0)))}function chatMetrics(cs){let interviews=cs.filter(c=>['面談依頼','面談後お見送り','オファー','参画決定'].includes(c.status)).length,offers=cs.filter(c=>['オファー','参画決定'].includes(c.status)).length;return [cs.length,interviews,offers,interviews?Math.round(offers/interviews*100)+'% ('+offers+'/'+interviews+')':'— (0/0)']}function caseDrawer(){const c=data().cases.find(c=>c.id===drawer.id);if(!c){drawer=null;return ''}const m=getMember(c.mid),final=mdata().final;const unread=unreadFor(c);return `<aside class="drawer narrow"><div class="drawerhead"><div><button class="link tiny" onclick="openMember(${m.id},'cases')">← ${esc(m.name)}の案件一覧</button><div class="tiny textmuted" style="margin-top:9px">${ym(month)} / ${esc(c.company)}</div><h2>${esc(c.title)}</h2></div>${btn('×','closeDrawer()')}</div><div class="drawerbody"><div class="deal-split"><div class="infobox"><div class="buttons" style="justify-content:space-between"><h3>案件情報</h3>${!final?btn('編集',`openCaseModal(${c.mid},${c.id})`):''}</div><dl class="compactdetails"><dt>会社名</dt><dd>${esc(c.company)}</dd><dt>案件名</dt><dd>${esc(c.title)}</dd><dt>最寄り駅</dt><dd>${esc(c.station||'—')}</dd></dl>${c.notes?`<div class="case-extra">${esc(c.notes)}</div>`:''}</div><div class="infobox"><h3>営業進捗</h3><div class="tiny textmuted" style="margin:5px 0 9px">担当営業：${esc(state.owners[c.mid]||'未設定')}</div>${role==='sales'?`<div class="field"><label>ステータス</label><select ${final?'disabled':''} onchange="changeStatus(${c.id},this.value)">${statusOpts(c.status)}</select></div>`:`<div class="tiny textmuted">現在のステータス</div><b>${esc(c.status)}</b><div class="status-choice">${!final?btn('エントリー希望',`changeStatus(${c.id},'エントリーする')`)+btn('エントリー辞退',`reasonOpen=true;render()`):''}</div>`}${role==='engineer'&&reasonOpen?`<div class="reasonfield"><label>辞退理由</label><textarea id="declineReason" placeholder="辞退理由を入力してください"></textarea>${btn('辞退を確定する',`declineEntry(${c.id})`,'primary')}${btn('キャンセル',`reasonOpen=false;render()`)}</div>`:''}</div></div>${c.status==='参画決定'&&!contractComplete(c)?`<div class="warncontract">参画決定です。契約情報が未入力のため、入力してください。 ${btn('契約情報を入力',"caseTab='contract';render()")}</div>`:''}${c.status==='待機'||c.status==='参画決定'?'<div class="snapshot">この社員の今月の営業はクローズ扱いです。月次データは確定するまで編集できます。</div>':''}<div class="casetabs"><button class="casetab ${caseTab==='chat'?'active':''}" onclick="caseTab='chat';render()">案件チャット ${unread?`<span class="unread">${unread}</span>`:''}</button><button class="casetab ${caseTab==='contract'?'active':''}" onclick="caseTab='contract';render()">契約情報</button></div>${caseTab==='chat'?`<div class="role-toggle"><span class="tiny textmuted">表示・発言する側（モック）</span><button class="${role==='sales'?'active':''}" onclick="setRole('sales')">営業側 ${c.chat.length-(c.readSales||0)?`<span class="unread">${c.chat.length-(c.readSales||0)}</span>`:''}</button><button class="${role==='engineer'?'active':''}" onclick="setRole('engineer')">エンジニア側 ${c.chat.length-(c.readEngineer||0)?`<span class="unread">${c.chat.length-(c.readEngineer||0)}</span>`:''}</button></div><div class="chat" id="chatHistory">${c.chat.map(x=>`<div class="bubble ${x.system?'system':x.role===role?'':'them'}">${!x.system?`<div class="chat-meta">${x.role==='engineer'?m.name:'担当営業'}</div>`:''}<div class="chat-message-body">${esc(x.text)}</div><div class="tiny textmuted">${esc(x.at)}</div></div>`).join('')||'<div class="empty">メッセージはまだありません。</div>'}</div>${!final?`<div class="chatinput"><textarea id="message" onkeydown="chatKeydown(event,${c.id})" placeholder="Enterで送信 / Shift+Enterで改行"></textarea>${btn('送信',`sendChat(${c.id})`,'primary')}</div><div class="chat-tools"><div class="tiny textmuted">定型入力</div><div class="quicktemplates">${(role==='sales'?['面談候補日時','条件確認','面談後の所感','選考結果共有','入場日確認']:['面談希望日時','案件についての質問','面談の感想','稼働条件の確認']).map(t=>`<button class="tinyaction" onclick="insertTemplate('${t}')">${t}</button>`).join('')}</div></div>`:''}`:`<div class="infobox"><h3>この案件の契約情報</h3><div class="tiny textmuted" style="margin-bottom:14px">参画決定時に入力してください。社員詳細にも同じ契約情報を表示します。</div><div class="formgrid"><div class="field"><label>契約開始年月日</label><input type="date" id="ct_start" value="${esc(c.contract.start)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>契約終了年月日</label><input type="date" id="ct_end" value="${esc(c.contract.end)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>入場予定年月日</label><input type="date" id="ct_entry" value="${esc(c.contract.entry)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>単価（円/月）</label><input type="number" min="0" id="ct_rate" placeholder="例：750000" value="${esc(c.contract.rate)}" ${final||role==='engineer'?'disabled':''}></div></div>${!final&&role==='sales'?`<div class="actions">${btn('契約情報を保存',`saveContract(${c.id})`,'primary')}</div>`:''}</div>`}</div></aside>`}function setRole(v){role=v;reasonOpen=false;if(drawer?.kind==='case'&&caseTab==='chat')markRead(drawer.id);render()}function markRead(id){const c=state.cases.find(x=>x.id===id);if(!c)return;if(role==='sales')c.readSales=c.chat.length;else c.readEngineer=c.chat.length;persist()}function declineEntry(id){const el=$('#declineReason');if(!el?.value.trim())return notify('辞退理由を入力してください');const c=state.cases.find(x=>x.id===id);c.chat.push({text:'エントリー辞退理由：'+el.value.trim(),at:new Date().toLocaleString('ja-JP'),system:false,role:'engineer'});reasonOpen=false;changeStatus(id,'エントリーしない')}
-function changeStatus(id,s){if(mdata().final)return;const c=state.cases.find(x=>x.id===id);if(!c||c.status===s)return;const old=c.status;c.status=s;if(s==='エントリー済')c.enteredAt=new Date().toISOString();if(['参画決定','待機'].includes(s)){const d=state.months[c.month];if(d){d.closed??={};d.closed[c.mid]=s}}c.chat.push({text:`ステータス変更：${old} → ${s}（${role==='sales'?'営業':'エンジニア'}）`,at:new Date().toLocaleString('ja-JP'),system:true,role:'system'});persist();if(s==='参画決定'&&!contractComplete(c))caseTab='contract';render()}function chatKeydown(e,id){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat(id)}}function insertTemplate(t){const x=$('#message');if(!x)return;const texts={'面談候補日時':'面談候補日時：\n①\n②\n③','条件確認':'稼働開始可能日：\n就業時間：\n出社・リモート条件：','面談後の所感':'面談の所感：\n案件への意欲：\n質問・懸念：','選考結果共有':'選考結果：\n次の対応：','入場日確認':'入場予定日：\n初日集合場所：\n持参するもの：','面談希望日時':'面談希望日時：\n①\n②','案件についての質問':'確認したいこと：','面談の感想':'面談の感想：\n参画意欲：','稼働条件の確認':'稼働開始日：\n希望する働き方：'};x.value+=(x.value?'\n':'')+(texts[t]||t);x.focus()}function sendChat(id){const el=$('#message'),v=el?.value.trim();if(!v)return;const c=state.cases.find(x=>x.id===id);c.chat.push({text:v,at:new Date().toLocaleString('ja-JP'),system:false,role});persist();markRead(id);render()}function saveContract(id){const c=state.cases.find(x=>x.id===id);c.contract={start:$('#ct_start').value,end:$('#ct_end').value,entry:$('#ct_entry').value,rate:$('#ct_rate').value};persist();render()}
-function openCaseModal(mid,id=null){modal={kind:'case',mid,id};render()}function closeModal(){modal=null;render()}function modalOverlay(){const c=modal.id?state.cases.find(c=>c.id===modal.id):null;return `<div class="shade2" onclick="closeModal()"></div><div class="modal"><div class="buttons" style="justify-content:space-between;margin-bottom:17px"><h2>${c?'案件を編集':'新しい案件を追加'}</h2>${btn('×','closeModal()')}</div><div class="formgrid"><div class="field full"><label>会社名</label><input id="f_company" value="${esc(c?.company||'')}" placeholder="会社名" maxlength="150"></div><div class="field full"><label>案件名</label><input id="f_title" value="${esc(c?.title||'')}" placeholder="案件名" maxlength="150"></div><div class="field full"><label>最寄り駅</label><input id="f_station" value="${esc(c?.station||'')}" placeholder="最寄り駅 / フルリモート"></div><div class="field full"><label>その他・案件詳細</label><textarea id="f_notes" placeholder="勤務条件・スキル要件・備考など">${esc(c?.notes||'')}</textarea></div></div><div class="actions" style="justify-content:space-between">${c?btn('この案件を削除',`deleteCase(${c.id})`,'danger'):'<span></span>'}<div class="buttons">${btn('キャンセル','closeModal()')}${btn(c?'変更を保存':'案件を追加','saveCase()','primary')}</div></div></div>`}function saveCase(){const company=$('#f_company').value.trim(),title=$('#f_title').value.trim();if(!company||!title)return notify('会社名と案件名は必須です');const v={company,title,station:$('#f_station').value.trim(),notes:$('#f_notes').value.trim()};if(modal.id){Object.assign(state.cases.find(c=>c.id===modal.id),v)}else{state.cases.push({id:state.next++,mid:modal.mid,month,...v,status:'エントリーする',owner:state.owners[modal.mid]||'',contract:{start:'',end:'',entry:'',rate:''},chat:[]})}const mid=modal.mid;modal=null;persist();openMember(mid,'cases')}function deleteCase(id){if(!confirm('この案件と案件チャット、契約情報を削除しますか？'))return;const mid=modal.mid;state.cases=state.cases.filter(c=>c.id!==id);modal=null;persist();openMember(mid,'cases')}render();
-</script>
-<style>
-/* v4 overrides */
-.compactcategories .categoryline{display:flex;flex-wrap:wrap;gap:10px}.compactcategories .categorycount{border-radius:8px;padding:10px 12px;border:1px solid var(--line);background:#fff;min-width:140px}.compactcategories .categorycount .dot{width:10px;height:10px;border-radius:999px;display:inline-block}.compactcategories .categorycount .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}.compactcategories .categorycount .numline{display:flex;align-items:baseline;gap:5px}
-.rowstack{display:flex;flex-direction:column;gap:2px}.mono{font-variant-numeric:tabular-nums}.wf-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--line);font-size:12px;border-radius:999px;background:#fff}.wf-badge.pending{color:#76520e;background:#fff8e7;border-color:#eed89e}.wf-badge.progress{color:#5e37ae;background:#f6f0ff;border-color:#d9c1ff}.wf-badge.done{color:#177d53;background:#eefbf4;border-color:#bfe7d0}.clickrow{cursor:pointer}.clickrow td{vertical-align:middle}.ownerfilter{min-width:160px}
-.caseflat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}.caseflat .casecard{margin:0;cursor:pointer;display:block}.caseflat .casecard:hover{background:#faf8ff}.case-flat-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.case-flat-title{display:flex;flex-direction:column;gap:4px;min-width:0}.case-flat-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}.mini-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}.mini-kpis>div{border:1px solid var(--line);padding:10px 12px;background:#fff}.mini-kpis small{display:block;color:var(--muted);margin-bottom:4px}.mini-kpis strong{font-size:18px}
-.member-topgrid{display:grid;grid-template-columns:1.1fr 1.1fr .9fr;gap:12px}.summarybox{border:1px solid var(--line);padding:15px;background:#fff}.summarybox h3{margin:0 0 12px;font-size:16px}.summarysub{font-size:11px;color:var(--muted);margin-bottom:6px}.summarylist{display:grid;gap:8px}.summaryitem{display:flex;justify-content:space-between;gap:8px;border-top:1px solid #f0f0f3;padding-top:8px}.summaryitem:first-child{border-top:none;padding-top:0}.summaryitem label{font-size:11px;color:var(--muted)}.summaryitem strong{font-size:13px;text-align:right}
-.drawer.casewide{width:min(1120px,100vw)}.case-topgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}.case-info-card{border:1px solid var(--line);padding:16px;background:#fff}.case-info-card h3{margin:0 0 12px;font-size:16px}.case-info-grid{display:grid;grid-template-columns:120px 1fr;gap:8px 12px}.case-info-grid dt{font-size:11px;color:var(--muted)}.case-info-grid dd{margin:0;font-weight:600}.case-notes{margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f3;white-space:pre-wrap}.role-toggle{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 12px}.role-toggle button{border:1px solid var(--line);background:#fff;padding:7px 10px;border-radius:999px}.role-toggle button.active{background:#f6f0ff;border-color:#d9c1ff;color:#5e37ae;font-weight:700}
-.chat-shell{display:flex;flex-direction:column;border:1px solid var(--line);background:#fff;min-height:540px;max-height:calc(100vh - 240px)}.chat-header{padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fcfcfd}.chat-header h3{margin:0;font-size:16px}.chat-sub{font-size:11px;color:var(--muted)}.chat-stream{flex:1;overflow:auto;padding:18px;background:#f7f8fa;display:flex;flex-direction:column;gap:12px}.message{display:flex;flex-direction:column;gap:4px;max-width:72%}.message.me{align-self:flex-end;align-items:flex-end}.message.them{align-self:flex-start;align-items:flex-start}.message.system{align-self:center;max-width:100%;align-items:center}.message .meta{font-size:11px;color:var(--muted)}.message .body{border:1px solid var(--line);background:#fff;padding:10px 12px;border-radius:14px;white-space:pre-wrap;word-break:break-word}.message.me .body{background:#ece8ff;border-color:#d6cdfd}.message.system .body{background:#fff6df;border-color:#efdfab;font-size:12px}.chat-compose{border-top:1px solid var(--line);padding:12px 16px;background:#fff;display:grid;gap:10px}.chat-textarea-wrap{display:flex;gap:10px;align-items:flex-end}.chat-compose textarea{flex:1;min-height:84px;resize:vertical}.template-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.template-row .tinyaction{border:1px solid var(--line);background:#fff;padding:7px 10px;border-radius:999px}.template-row .tinyaction:hover{background:#faf8ff}.compose-actions{display:flex;justify-content:space-between;gap:10px;align-items:center}.compose-actions .side-actions{display:flex;gap:8px;align-items:center}.infochips{display:flex;flex-wrap:wrap;gap:8px}.unread{display:inline-flex;align-items:center;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#f6f0ff;border:1px solid #d9c1ff;color:#5e37ae}.hintline{font-size:12px;color:var(--muted)}
-@media (max-width:960px){.member-topgrid,.case-topgrid,.caseflat,.mini-kpis{grid-template-columns:1fr}.drawer.casewide{width:100vw}.chat-shell{max-height:none;min-height:420px}}
-</style>
-<script>
-(function(){
-window.ownerFilter = window.ownerFilter || '';
-window.empNo = m => String((m.no || (30000 + m.id))).padStart(5,'0');
-window.ownerOf = id => ((data().owners||state.owners)[id] || '未設定');
-window.typeTone = type => ({'新規営業':'#7C3AED','単価交渉':'#FC4C02','新規営業（終了予定）':'#BDBBFF','育児休業':'#777','介護休業':'#777','待機':'#177D53','休職':'#959494','勤怠免除':'#959494','内勤':'#010120'}[type] || '#7C3AED');
-window.workflowStatus = mid => { const cs=currentCases(mid); if(cs.some(c=>c.status==='参画決定')) return '確定'; if(cs.length) return '提案中'; return '未'; };
-window.workflowBadge = st => `<span class="wf-badge ${st==='確定'?'done':st==='提案中'?'progress':'pending'}">${esc(st)}</span>`;
-window.typeCard = (type,count)=>`<button class="category-filter ${typeFilter===type?'on':''}" style="--category-color:${typeTone(type)}" onclick="typeFilter=typeFilter===${JSON.stringify(type)}?'':${JSON.stringify(type)};render()"><span class="category-mark" style="background:${typeTone(type)}"></span><span>${esc(type)}</span><strong>${count}</strong><span class="tiny">人</span></button>`;
-window.normalizeSeedStatuses = ()=>{ state.cases.forEach(c=>{ if(c.status==='面談後／オファー前') c.status='面談依頼'; if(typeof c.readSales!=='number') c.readSales=0; if(typeof c.readEngineer!=='number') c.readEngineer=0; if(!Array.isArray(c.chat)) c.chat=[]; c.chat.forEach(x=>{ if(!x.role && !x.system) x.role='sales'; }); }); persist(); };
-window.totalStats = function(){const ids=Object.keys(data().types);const cs=data().cases;return {ids:ids.length,active:ids.filter(id=>cs.some(c=>c.mid==id&&!['エントリーする','エントリーしない','お見送り','面談後お見送り'].includes(c.status))).length,proposals:cs.length,interviews:cs.filter(c=>['面談依頼','オファー','参画決定','面談後お見送り'].includes(c.status)).length,offers:cs.filter(c=>['オファー','参画決定'].includes(c.status)).length,decided:cs.filter(c=>c.status==='参画決定').length}};
-window.allowedMonths = function(){const [y,m]=month.split('-').map(Number); return [-1,0,1].map(n=>{const d=new Date(y,m-1+n,1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')})};
-window.monthSelector = function(id='targetMonth'){return `<select id="${id}">${allowedMonths().map(mm=>`<option value="${mm}" ${mm===month?'selected':''}>${ym(mm)}</option>`).join('')}</select>`};
-window.monthPage = function(s,final){const ids=Object.keys(data().types).map(Number);const rows=members.filter(m=>ids.includes(m.id)).filter(m=>!typeFilter||data().types[m.id]===typeFilter).filter(m=>!ownerFilter||ownerOf(m.id)===ownerFilter).filter(m=>!query||((m.name+m.skill+m.team+empNo(m)+(m.current.company||'')).toLowerCase().includes(query.toLowerCase()))).filter(m=>!statusFilter||workflowStatus(m.id)===statusFilter);const typeCounts=CATS.filter(c=>ids.some(id=>data().types[id]===c));return `<div class="monthbar"><div class="buttons">${btn('←', 'monthShift(-1)')}<span class="month">${ym(month)}</span>${btn('→','monthShift(1)')}<span class="pill ${final?'purple':'gray'}">${final?'確定済・履歴固定':'編集中'}</span></div><div class="buttons">${final?btn('確定を解除','unfinalize()'):btn('この月を確定する','finalize()','primary')}${btn('CSV出力','exportCSV()')}</div></div>${final?`<div class="snapshot">[✓] ${ym(month)}の営業状況は確定時点の状態で保存されています。現在の案件変更は反映されません。確定解除後に編集可能です。</div>`:''}<div class="metrics">${[['営業対象者',s.ids],['営業着手',s.active],['案件提案',s.proposals],['面談依頼以上',s.interviews],['オファー以上',s.offers],['参画決定',s.decided]].map(([label,value],i)=>`<div class="metric"><small>${label}</small><div class="num ${i===0?'purple':''}">${value}</div></div>`).join('')}</div><div class="compactcategories"><h2>営業種別 / 人数</h2><div class="categoryline">${typeCounts.map(c=>typeCard(c,ids.filter(id=>data().types[id]===c).length)).join('')||'<span class="textmuted">営業対象者なし</span>'}</div></div><section class="section"><div class="sectionhead"><h2>${ym(month)}の営業対象者 <span class="highlight">${ids.length}名</span></h2>${!final?btn('[+] 対象者を追加',"view='employees';render()",'primary'):''}</div><div class="sectionbody"><div class="filters"><input class="search" placeholder="氏名・社員番号・スキル・所属で検索" value="${esc(query)}" oninput="query=this.value;refreshRows()"><select onchange="typeFilter=this.value;refreshRows()"><option value="">全営業種別</option>${CATS.map(c=>`<option ${c===typeFilter?'selected':''}>${c}</option>`).join('')}</select><select class="ownerfilter" onchange="ownerFilter=this.value;refreshRows()"><option value="">全担当営業</option>${OWNERS.map(o=>`<option ${o===ownerFilter?'selected':''}>${o}</option>`).join('')}</select><select onchange="statusFilter=this.value;refreshRows()"><option value="">全ステータス</option><option ${statusFilter==='未'?'selected':''}>未</option><option ${statusFilter==='提案中'?'selected':''}>提案中</option><option ${statusFilter==='確定'?'selected':''}>確定</option></select></div><div class="scroll" id="rows">${monthRows(rows,final)}</div></div></section><p class="note">※ 提案件数はその月に登録されている案件数です。ステータスは「未 / 提案中 / 確定」で簡易表示しています。</p>`};
-window.monthRows = function(rows,final){if(!rows.length)return '<div class="empty">該当する営業対象者がいません</div>';return `<table><thead><tr><th>エンジニア</th><th>社員番号</th><th>所属・スキル</th><th>営業種別</th><th>担当営業</th><th>現契約終了</th><th>現契約先</th><th>提案件数</th><th>ステータス</th><th>${final?'履歴':'操作'}</th></tr></thead><tbody>${rows.map(m=>{const cs=currentCases(m.id);return `<tr class="clickrow" onclick="event.stopPropagation();openMember(${m.id})"><td><div class="rowstack"><span class="employee-name">${esc(m.name)}</span><div class="tiny textmuted">${esc(m.exp)} / ${esc(m.join)}入社</div></div></td><td class="mono">${empNo(m)}</td><td>${esc(m.team)}<div class="tiny textmuted">${esc(m.skill)}</div></td><td>${final?`<span class="pill">${esc(data().types[m.id])}</span>`:`<select class="smallselect" aria-label="${esc(m.name)}の営業種別" onclick="event.stopPropagation()" onchange="changeType(${m.id},this.value)">${catOpts(data().types[m.id])}</select>`}</td><td>${esc(ownerOf(m.id))}</td><td>${esc(m.current.end||'—')}</td><td>${esc(m.current.company||'—')}</td><td>${cs.length}件</td><td>${workflowBadge(workflowStatus(m.id))}</td><td>${final?'<span class="tiny textmuted">固定</span>':`<button class="remove-target" onclick="event.stopPropagation();removeTarget(${m.id})">対象から外す</button>`}</td></tr>`}).join('')}</tbody></table>`};
-window.refreshRows = function(){const ids=Object.keys(data().types).map(Number);const rows=members.filter(m=>ids.includes(m.id)).filter(m=>!typeFilter||data().types[m.id]===typeFilter).filter(m=>!ownerFilter||ownerOf(m.id)===ownerFilter).filter(m=>!query||((m.name+m.skill+m.team+empNo(m)+(m.current.company||'')).toLowerCase().includes(query.toLowerCase()))).filter(m=>!statusFilter||workflowStatus(m.id)===statusFilter);$('#rows').innerHTML=monthRows(rows,mdata().final)};
-window.employeePage = function(){return `<section class="section"><div class="sectionhead"><div><h2>営業対象にする社員を選択</h2><div class="note">対象月は「前月・当月・翌月」の3ヶ月から選べます。すでに登録済みの月はそのまま維持されます。</div></div><span class="pill purple">選択中 ${selected.size}名</span></div><div class="sectionbody"><div class="filters"><input class="search" placeholder="社員名・社員番号・所属・スキルを検索" oninput="filterEmployees(this.value)" id="empquery"><select id="empteam" onchange="filterEmployees($('#empquery').value)"><option value="">全部署</option>${[...new Set(members.map(m=>m.team))].map(t=>`<option>${t}</option>`).join('')}</select></div><div class="scroll" id="empRows">${empRows(members)}</div></div></section><section class="section"><div class="sectionhead"><h2>選択した社員の登録先</h2></div><div class="sectionbody"><div class="tiny textmuted" style="margin-bottom:9px">登録する月（前月・当月・翌月）</div><div class="minirow">${monthSelector('bulkPicker')}${btn('選択した社員をこの月に登録','bulkAdd()','primary')}<span class="note">営業種別は登録後に設定できます（初期値：新規営業）</span></div></div></section>`};
-window.empRows = function(ms){return `<table><thead><tr><th><input type="checkbox" onchange="toggleAll(this.checked)" aria-label="全社員を選択"></th><th>社員</th><th>社員番号</th><th>所属</th><th>主要スキル</th><th>現契約先</th><th>営業対象に登録済みの月</th></tr></thead><tbody>${ms.map(m=>{const months=Object.entries(state.months).filter(([x,d])=>!!d.types[m.id]).map(([x])=>x.replace('-', '年')+'月');return `<tr><td><input type="checkbox" data-emp-id="${m.id}" ${selected.has(m.id)?'checked':''} onchange="toggleSelect(${m.id},this.checked)"></td><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button></td><td class="mono">${empNo(m)}</td><td>${esc(m.team)}</td><td>${esc(m.skill)}</td><td>${esc(m.current.company)}</td><td class="tiny">${months.join(' / ')||'—'}</td></tr>`}).join('')}</tbody></table>`};
-window.filterEmployees = function(q){const t=$('#empteam').value;$('#empRows').innerHTML=empRows(members.filter(m=>(!t||t===m.team)&&(!q||((m.name+m.team+m.skill+empNo(m)+(m.current.company||'')).toLowerCase().includes(q.toLowerCase())))))};
-window.bulkAdd = function(){if(!selected.size)return notify('社員を選択してください');const mm=$('#bulkPicker').value;if(!allowedMonths().includes(mm))return notify('前月・当月・翌月のいずれかを選択してください');const d=state.months[mm]||(state.months[mm]={final:false,types:{},snapshot:null});if(d.final)return notify('確定済みのため登録できません。先に確定を解除してください');selected.forEach(id=>{if(!d.types[id])d.types[id]='新規営業'});month=mm;selected.clear();view='month';persist();render()};
-window.addNextMonth = function(mid){const mm=$('#carryMonth').value;if(!allowedMonths().includes(mm))return notify('前月・当月・翌月のいずれかを選択してください');if(mm===month)return notify('現在の月はすでに表示中です');const d=state.months[mm]||(state.months[mm]={final:false,types:{},snapshot:null});if(d.final)return notify('確定済みの月です');if(d.types[mid])return notify('その月にはすでに登録されています');d.types[mid]=mdata().types[mid]||'新規営業';persist();notify(ym(mm)+'に登録しました。案件・チャットは現在の月に残ります');render()};
-window.memberDrawer = function(){const m=getMember(drawer.mid),cs=currentCases(m.id),won=cs.filter(c=>c.status==='参画決定'),t=data().types[m.id],final=mdata().final;const owners=OWNERS.map(o=>`<option value="${esc(o)}" ${ownerOf(m.id)===o?'selected':''}>${esc(o)}</option>`).join('');const item=(k,v)=>`<div class="summaryitem"><label>${esc(k)}</label><strong>${esc(v)}</strong></div>`;return `<aside class="drawer"><div class="drawerhead"><div><div class="tiny textmuted">ENGINEER / ${ym(month)} ${final?'[確定時点]':''}</div><h2>${esc(m.name)}</h2><div class="tiny textmuted">社員番号 ${empNo(m)} / ${esc(m.team)} / ${esc(m.skill)} / ${esc(m.exp)}</div></div>${btn('×','closeDrawer()')}</div><div class="drawerbody"><div class="casetabs"><button class="casetab ${drawer.tab==='overview'?'active':''}" onclick="drawer.tab='overview';render()">社員・契約情報</button><button class="casetab ${drawer.tab==='cases'?'active':''}" onclick="drawer.tab='cases';render()">案件・営業状況 (${cs.length})</button></div>${!final&&t?`<div class="month-assign"><span class="tiny textmuted">この社員を別の月にも登録</span>${monthSelector('carryMonth')}${btn('月に追加',`addNextMonth(${m.id})`)}</div>`:''}${drawer.tab==='overview'?`<div class="employee-owner"><label class="tiny textmuted">担当営業</label><select style="flex:1" ${final?'disabled':''} onchange="changeOwner(${m.id},this.value)">${owners}</select></div><div class="member-contractgrid"><section class="summarybox"><h3>現契約情報</h3><div class="summarylist">${item('契約先',m.current.company)}${item('契約開始',m.current.start||'—')}${item('契約終了',m.current.end||'—')}${item('単価（月額）',fmt(m.current.rate))}</div></section><section class="summarybox"><h3>参画決定した案件 / 次の契約情報</h3>${won.length?won.map(c=>`<div class="next-contract"><div class="next-heading"><strong>${esc(c.company)} / ${esc(c.title)}</strong><button class="tiny-link" onclick="openCase(${c.id})">案件を開く →</button></div><div class="summarylist">${item('契約開始',c.contract.start||'未入力')}${item('契約終了',c.contract.end||'未入力')}${item('入場予定日',c.contract.entry||'未入力')}${item('単価（月額）',fmt(c.contract.rate))}</div></div>`).join(''):'<div class="textmuted">参画決定した案件はありません。</div>'}</section></div>`:`<div class="case-list-head"><span class="textmuted tiny">案件を選択すると進捗・チャット・契約情報を確認できます。</span>${!final?btn('＋ 案件追加',`openCaseModal(${m.id})`,'primary'):''}</div><div class="metrics case-metrics">${[['案件提案数',cs.length],['面談依頼数',cs.filter(c=>['面談依頼','オファー','参画決定','面談後お見送り'].includes(c.status)).length],['オファー数',cs.filter(c=>['オファー','参画決定'].includes(c.status)).length],['面談通過率',`${cs.filter(c=>['オファー','参画決定'].includes(c.status)).length}/${cs.filter(c=>['面談依頼','オファー','参画決定','面談後お見送り'].includes(c.status)).length||0}`]].map(([k,v])=>`<div class="metric"><small>${k}</small><div class="num">${v}</div></div>`).join('')}</div><div class="case-list">${cs.map(c=>`<div class="case-list-item" onclick="openCase(${c.id})"><div class="case-list-top"><div><strong>${esc(c.company)}</strong><div class="case-title">${esc(c.title)}</div></div><span class="pill ${c.status==='参画決定'?'green':'purple'}">${esc(c.status)}</span></div><div class="case-list-bottom"><span class="tiny textmuted">最寄り駅：${esc(c.station||'未登録')}</span>${unreadFor(c)?`<span class="unread">未読 ${unreadFor(c)}</span>`:''}${c.status==='参画決定'&&!contractComplete(c)?'<span class="pill red">契約情報の入力待ち</span>':''}</div></div>`).join('')||'<div class="empty">登録案件はありません。案件追加から登録できます。</div>'}</div>`}</div></aside>`};
-window.caseDrawer = function(){const c=data().cases.find(x=>x.id===drawer.id);if(!c){drawer=null;return ''}const m=getMember(c.mid),final=mdata().final;const unread=unreadFor(c);const statusButtons=!final&&role==='engineer'?`<div class="status-choice">${btn('エントリー希望',`changeStatus(${c.id},'エントリーする')`)}${btn('エントリー辞退',`reasonOpen=true;render()`)}${reasonOpen?`<div class="reasonfield"><label>辞退理由</label><textarea id="declineReason" placeholder="辞退理由を入力してください"></textarea><div class="buttons" style="margin-top:8px">${btn('辞退を確定する',`declineEntry(${c.id})`,'primary')}${btn('キャンセル',`reasonOpen=false;render()`)}</div></div>`:''}</div>`:'';return `<aside class="drawer"><div class="drawerhead"><div><button class="link tiny" onclick="openMember(${m.id},'cases')">← ${esc(m.name)}の案件一覧</button><div class="tiny textmuted" style="margin-top:9px">${ym(month)} / ${esc(c.company)} / 社員番号 ${empNo(m)}</div><h2>${esc(c.title)}</h2></div>${btn('×','closeDrawer()')}</div><div class="drawerbody"><div class="case-topgrid"><div class="case-info-card"><div class="buttons" style="justify-content:space-between;align-items:flex-start"><h3>案件情報</h3>${!final?btn('編集',`openCaseModal(${c.mid},${c.id})`):''}</div><dl class="case-info-grid"><dt>会社名</dt><dd>${esc(c.company)}</dd><dt>案件名</dt><dd>${esc(c.title)}</dd><dt>最寄り駅</dt><dd>${esc(c.station||'—')}</dd><dt>担当営業</dt><dd>${esc(state.owners[c.mid]||'未設定')}</dd></dl>${c.notes?`<div class="case-notes">${esc(c.notes)}</div>`:''}</div><div class="case-info-card"><h3>営業進捗</h3><dl class="case-info-grid"><dt>現在ステータス</dt><dd><span class="pill ${c.status==='参画決定'?'green':'purple'}">${esc(c.status)}</span></dd><dt>提案月</dt><dd>${ym(c.month)}</dd><dt>営業対象種別</dt><dd>${esc(data().types[c.mid]||'—')}</dd><dt>未読</dt><dd><div class="infochips"><span class="unread">営業 ${Math.max(0,c.chat.length-(c.readSales||0))}</span><span class="unread">エンジニア ${Math.max(0,c.chat.length-(c.readEngineer||0))}</span></div></dd></dl>${role==='sales'?`<div class="field" style="margin-top:12px"><label>ステータス変更</label><select ${final?'disabled':''} onchange="changeStatus(${c.id},this.value)">${statusOpts(c.status)}</select></div>`:''}${statusButtons}${c.status==='参画決定'&&!contractComplete(c)?`<div class="warncontract">参画決定です。契約情報が未入力のため、入力してください。 ${btn('契約情報を入力',"caseTab='contract';render()")}</div>`:''}</div></div>${c.status==='待機'||c.status==='参画決定'?'<div class="snapshot">この社員の今月の営業はクローズ扱いです。月次データは確定するまで編集できます。</div>':''}<div class="casetabs"><button class="casetab ${caseTab==='chat'?'active':''}" onclick="caseTab='chat';render()">チャット ${unread?`<span class="unread">${unread}</span>`:''}</button><button class="casetab ${caseTab==='contract'?'active':''}" onclick="caseTab='contract';render()">契約情報</button></div>${caseTab==='chat'?`<div class="role-toggle"><span class="tiny textmuted">表示・発言する側（モック）</span><button class="${role==='sales'?'active':''}" onclick="setRole('sales')">営業側 ${Math.max(0,c.chat.length-(c.readSales||0))?`<span class="unread">${Math.max(0,c.chat.length-(c.readSales||0))}</span>`:''}</button><button class="${role==='engineer'?'active':''}" onclick="setRole('engineer')">エンジニア側 ${Math.max(0,c.chat.length-(c.readEngineer||0))?`<span class="unread">${Math.max(0,c.chat.length-(c.readEngineer||0))}</span>`:''}</button></div><div class="chat-shell"><div class="chat-header"><div><h3>案件チャット</h3><div class="chat-sub">ステータス変更も履歴として残ります。どの進捗でどの会話をしたか追える構成です。</div></div><div class="infochips"><span class="pill">${esc(c.status)}</span>${unread?`<span class="unread">未読 ${unread}</span>`:''}</div></div><div class="chat-stream" id="chatHistory">${c.chat.map(x=>`<div class="message ${x.system?'system':x.role===role?'me':'them'}"><div class="meta">${x.system?'履歴':(x.role==='engineer'?m.name:'担当営業')}</div><div class="body">${esc(x.text)}${x.attachment?`<div class="attached-file" onclick="downloadChatAttachment('${esc(x.attachment.key)}')" role="button" tabindex="0">📎 ${esc(x.attachment.name)} <small>(${Math.round(x.attachment.size/1024)}KB)　↓</small></div>`:''}</div><div class="meta">${esc(x.at)}</div></div>`).join('')||'<div class="empty">メッセージはまだありません。</div>'}</div>${!final?`<div class="chat-compose"><div class="chat-textarea-wrap"><textarea id="message" onkeydown="chatKeydown(event,${c.id})" placeholder="Enterで送信 / Shift+Enterで改行"></textarea>${btn('送信',`sendChat(${c.id})`,'primary')}</div><div class="attachment-picker"><label class="attach-label" for="chatAttachment">＋ ファイル添付（最大10MB）</label><input id="chatAttachment" type="file" accept="*/*" onchange="attachCaseFile(${c.id},this)"><span class="tiny textmuted">送信後にチャット履歴へ追加されます</span></div><div class="template-row"><span class="tiny textmuted">定型入力</span>${(role==='sales'?['面談候補日時を送る','条件確認を送る','面談後共有を送る','選考結果を送る','入場日確認を送る']:['面談希望日時を送る','案件への質問を送る','面談の感想を送る','稼働条件の希望を送る']).map(t=>`<button class="tinyaction" onclick="insertTemplate('${t}')">${t}</button>`).join('')}</div><div class="compose-actions"><div class="hintline">よくあるチャットUIに寄せて、入力欄は下部固定にしています。</div><div class="side-actions">${btn('未読をクリア',`markRead(${c.id});render()`)} </div></div></div>`:''}</div>`:`<div class="infobox"><h3>この案件の契約情報</h3><div class="tiny textmuted" style="margin-bottom:14px">参画決定時に入力してください。社員詳細にも同じ契約情報を表示します。</div><div class="formgrid"><div class="field"><label>契約開始年月日</label><input type="date" id="ct_start" value="${esc(c.contract.start)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>契約終了年月日</label><input type="date" id="ct_end" value="${esc(c.contract.end)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>入場予定年月日</label><input type="date" id="ct_entry" value="${esc(c.contract.entry)}" ${final||role==='engineer'?'disabled':''}></div><div class="field"><label>単価（円/月）</label><input type="number" min="0" id="ct_rate" placeholder="例：750000" value="${esc(c.contract.rate)}" ${final||role==='engineer'?'disabled':''}></div></div>${!final&&role==='sales'?`<div class="actions">${btn('契約情報を保存',`saveContract(${c.id})`,'primary')}</div>`:''}</div>`}</div></aside>`};
-window.insertTemplate = function(t){const x=$('#message');if(!x)return;const texts={'面談候補日時を送る':'面談候補日時：\n①\n②\n③','条件確認を送る':'確認事項：\n・稼働開始可能日\n・就業時間\n・出社 / リモート条件','面談後共有を送る':'面談後共有：\n・参画意欲\n・案件への興味度合い\n・質問事項\n・他案件との比較','選考結果を送る':'選考結果：\n次の対応：','入場日確認を送る':'入場予定日：\n初日集合場所：\n持参物：','面談希望日時を送る':'面談希望日時：\n①\n②','案件への質問を送る':'確認したいこと：','面談の感想を送る':'面談の感想：\n参画意欲：','稼働条件の希望を送る':'希望条件：\n・稼働開始日\n・働き方\n・その他'};x.value+=(x.value?'\n':'')+(texts[t]||t);x.focus()};
-window.attachCaseFile=async function(id,input){const file=input.files?.[0];if(!file)return;if(file.size>10*1024*1024){notify('添付できるファイルは10MBまでです');input.value='';return}try{const key='file_'+id+'_'+Date.now()+'_'+Math.random().toString(36).slice(2);const db=await chatFileDb();await new Promise((resolve,reject)=>{const tx=db.transaction('attachments','readwrite');tx.objectStore('attachments').put({key,blob:file});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)});const c=state.cases.find(x=>x.id===id);c.chat.push({text:'ファイルを添付しました',at:new Date().toLocaleString('ja-JP'),system:false,role,attachment:{key,name:file.name,size:file.size}});persist();markRead(id);render()}catch(e){notify('添付ファイルを保存できませんでした: '+e.message)}};
-window.chatFileDb=function(){return new Promise((resolve,reject)=>{const req=indexedDB.open('ses_sales_chat_files_v5',1);req.onupgradeneeded=()=>req.result.createObjectStore('attachments',{keyPath:'key'});req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})};
-window.downloadChatAttachment=async function(key){try{const db=await chatFileDb();const item=await new Promise((resolve,reject)=>{const r=db.transaction('attachments','readonly').objectStore('attachments').get(key);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});if(!item){notify('添付データが見つかりません（このブラウザ以外では保存されません）');return}const a=document.createElement('a'),url=URL.createObjectURL(item.blob);a.href=url;a.download=item.blob.name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(e){notify('ダウンロードに失敗しました: '+e.message)}};
-normalizeSeedStatuses();
-render();
-})();
-</script>
-</body></html>
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <title>営業支援 | リデザインモック</title>
+    <style>
+        :root {
+            --p: #010120;
+            --pale: #c8f6f9;
+            --ink: #010120;
+            --muted: #747583;
+            --line: #e7e7eb;
+            --bg: #ffffff;
+            --soft: #f7f8fa;
+            --red: #c43b35;
+            --green: #177d53;
+            --amber: #9b681d
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            color: var(--ink);
+            background: var(--bg);
+            font: 14px/1.5 Inter, 'Helvetica Neue', Arial, 'Noto Sans JP', sans-serif
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        button:disabled {
+            opacity: .4;
+            cursor: not-allowed
+        }
+
+        .app {
+            display: flex;
+            min-height: 100vh
+        }
+
+        .side {
+            width: 204px;
+            flex-shrink: 0;
+            border-right: 1px solid #28283b;
+            background: #010120;
+            color: white;
+            padding: 23px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px
+        }
+
+        .brand {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -.6px
+        }
+
+        .sub {
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .nav div {
+            padding: 10px 11px;
+            color: #aaaac0
+        }
+
+        .nav div.selected {
+            color: #c8f6f9;
+            font-weight: 700;
+            background: #26263a;
+            border-left: 3px solid #c8f6f9;
+            padding-left: 8px
+        }
+
+        .main {
+            min-width: 0;
+            flex: 1
+        }
+
+        .top {
+            height: 57px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+            padding: 0 32px
+        }
+
+        .top small {
+            color: var(--muted)
+        }
+
+        .container {
+            max-width: 1530px;
+            margin: auto;
+            padding: 17px 28px 70px
+        }
+
+        .heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 10px
+        }
+
+        h1 {
+            font-size: 23px;
+            margin: 0;
+            font-weight: 750;
+            letter-spacing: -1px
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0
+        }
+
+        h3 {
+            font-size: 13px;
+            margin: 0
+        }
+
+        .textmuted {
+            color: var(--muted)
+        }
+
+        .tiny {
+            font-size: 11px
+        }
+
+        .btn {
+            height: 35px;
+            border: 1px solid var(--line);
+            background: white;
+            padding: 0 13px;
+            border-radius: 4px;
+            color: var(--ink);
+            white-space: nowrap
+        }
+
+        .btn.primary {
+            background: var(--p);
+            color: #fff;
+            border-color: var(--p)
+        }
+
+        .btn.ghost {
+            border: 0;
+            background: transparent
+        }
+
+        .btn.danger {
+            color: var(--red)
+        }
+
+        .btn:hover:not(:disabled) {
+            filter: brightness(.97)
+        }
+
+        .btn:focus-visible,
+        select:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible {
+            outline: 2px solid var(--p);
+            outline-offset: 2px
+        }
+
+        .buttons {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .tabs {
+            display: flex;
+            gap: 23px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 10px
+        }
+
+        .tab {
+            background: none;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            color: var(--muted);
+            padding: 10px 1px;
+            font-size: 13px
+        }
+
+        .tab.active {
+            font-weight: 600;
+            color: var(--ink);
+            border-color: var(--ink)
+        }
+
+        .monthbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding-bottom: 10px
+        }
+
+        .month {
+            font-size: 19px;
+            font-weight: 600
+        }
+
+        .note {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 1px;
+            background: var(--line);
+            border: 1px solid var(--line);
+            margin-bottom: 10px
+        }
+
+        .metric {
+            background: white;
+            padding: 8px 12px
+        }
+
+        .metric .num {
+            font-size: 21px;
+            font-weight: 600;
+            line-height: 1.2
+        }
+
+        .metric small {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .metric .num.purple {
+            color: var(--p)
+        }
+
+        .section {
+            border: 1px solid var(--line);
+            background: white;
+            margin-bottom: 10px
+        }
+
+        .sectionhead {
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+            border-bottom: 1px solid var(--line);
+            flex-wrap: wrap
+        }
+
+        .sectionbody {
+            padding: 11px 14px
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 13px
+        }
+
+        input,
+        select,
+        textarea {
+            border: 1px solid #d9d3d3;
+            border-radius: 4px;
+            background: var(--soft);
+            color: var(--ink);
+            padding: 8px 9px;
+            min-height: 36px
+        }
+
+        input[type=checkbox] {
+            accent-color: var(--p);
+            width: 16px;
+            height: 16px;
+            min-height: 0
+        }
+
+        input[type=date] {
+            min-width: 0
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px
+        }
+
+        .search {
+            flex: 1;
+            min-width: 200px
+        }
+
+        .scroll {
+            overflow: auto
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: left;
+            white-space: nowrap
+        }
+
+        th {
+            background: var(--soft);
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500
+        }
+
+        th,
+        td {
+            padding: 11px 12px;
+            border-bottom: 1px solid #ece8e8
+        }
+
+        tr:last-child td {
+            border-bottom: none
+        }
+
+        td {
+            vertical-align: middle
+        }
+
+        .name {
+            background: transparent;
+            border: 0;
+            color: var(--ink);
+            padding: 0;
+            text-decoration: none;
+            font-weight: 600
+        }
+
+        .name:hover {
+            color: var(--p)
+        }
+
+        .link {
+            background: transparent;
+            border: 0;
+            color: var(--ink);
+            padding: 0;
+            font-weight: 600;
+            text-decoration: none
+        }
+
+        .pill {
+            display: inline-block;
+            border: 1px solid var(--line);
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-size: 10px;
+            background: #fff
+        }
+
+        .pill.purple {
+            background: #f0f0ff;
+            border-color: #d6d6fa;
+            color: #4d47ad
+        }
+
+        .pill.green {
+            background: #eaf7ef;
+            border-color: #d2ead8;
+            color: var(--green)
+        }
+
+        .pill.red {
+            color: var(--red);
+            background: #fff1ee;
+            border-color: #f5d5cf
+        }
+
+        .pill.gray {
+            color: #777
+        }
+
+        .smallselect {
+            height: 32px;
+            min-height: 32px;
+            max-width: 136px;
+            padding: 3px 6px;
+            background: white;
+            font-size: 11px
+        }
+
+        .checkrow {
+            display: flex;
+            align-items: center;
+            gap: 7px
+        }
+
+        .empty {
+            padding: 48px 15px;
+            text-align: center;
+            color: var(--muted)
+        }
+
+        .backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 0, 0, .40);
+            z-index: 10
+        }
+
+        .drawer {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: #fff;
+            z-index: 11;
+            width: min(820px, 100vw);
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--line);
+            box-shadow: -7px 0 25px #0000000e
+        }
+
+        .drawer.narrow {
+            width: min(670px, 100vw)
+        }
+
+        .drawerhead {
+            border-bottom: 1px solid var(--line);
+            padding: 16px 21px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start
+        }
+
+        .drawerbody {
+            overflow: auto;
+            padding: 21px;
+            flex: 1
+        }
+
+        .panelgrid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 5px
+        }
+
+        .field label {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .field .value {
+            font-size: 13px;
+            font-weight: 600
+        }
+
+        .infobox {
+            border: 1px solid var(--line);
+            padding: 15px;
+            margin-bottom: 15px
+        }
+
+        .infobox h3 {
+            margin-bottom: 12px
+        }
+
+        .casecard {
+            border: 1px solid var(--line);
+            padding: 13px;
+            margin: 9px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px
+        }
+
+        .casecard:hover {
+            border-color: #c5a7f9
+        }
+
+        .modal {
+            position: fixed;
+            z-index: 21;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(590px, calc(100vw - 22px));
+            background: white;
+            border: 1px solid var(--line);
+            padding: 22px;
+            max-height: 90vh;
+            overflow: auto
+        }
+
+        .shade2 {
+            position: fixed;
+            inset: 0;
+            background: #0006;
+            z-index: 20
+        }
+
+        .formgrid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px
+        }
+
+        .full {
+            grid-column: 1/-1
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 20px
+        }
+
+        .casetabs {
+            display: flex;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 17px;
+            gap: 14px
+        }
+
+        .casetab {
+            padding: 7px 3px;
+            background: transparent;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            color: var(--muted)
+        }
+
+        .casetab.active {
+            border-color: var(--ink);
+            color: var(--ink);
+            font-weight: 600
+        }
+
+        .chat {
+            background: var(--soft);
+            border: 1px solid var(--line);
+            padding: 15px;
+            height: 330px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .bubble {
+            max-width: 85%;
+            align-self: flex-end;
+            background: #e9e8ff;
+            padding: 10px 12px;
+            border: 1px solid #d7d6fa;
+            white-space: pre-wrap;
+            border-radius: 5px
+        }
+
+        .bubble.system {
+            background: white;
+            align-self: center;
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .chatinput {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            align-items: flex-end
+        }
+
+        .chatinput textarea {
+            flex: 1;
+            min-height: 70px
+        }
+
+        .snapshot {
+            border: 1px solid #d8c4fb;
+            background: #fbf8ff;
+            padding: 11px 14px;
+            font-size: 12px;
+            margin-bottom: 17px
+        }
+
+        .highlight {
+            color: var(--p)
+        }
+
+        .categoryline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px
+        }
+
+        .categorycount {
+            padding: 5px 11px;
+            border: 1px solid var(--line);
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 9px
+        }
+
+        .categorycount b {
+            font-size: 16px
+        }
+
+        .w100 {
+            width: 100%
+        }
+
+        .mobilehint {
+            display: none
+        }
+
+        @media(max-width:1050px) {
+            .side {
+                width: 70px
+            }
+
+            .side .nav div {
+                font-size: 0
+            }
+
+            .side .nav div:before {
+                content: '[+]';
+                font-size: 14px
+            }
+
+            .side .brand {
+                font-size: 11px
+            }
+
+            .side .sub {
+                display: none
+            }
+
+            .metrics {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .container {
+                padding: 24px 17px
+            }
+
+            .top {
+                padding: 0 17px
+            }
+        }
+
+        @media(max-width:620px) {
+            .side {
+                display: none
+            }
+
+            .metrics {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .panelgrid,
+            .formgrid {
+                grid-template-columns: 1fr
+            }
+
+            .full {
+                grid-column: 1
+            }
+
+            .heading {
+                align-items: flex-start;
+                flex-direction: column
+            }
+
+            .monthbar {
+                align-items: flex-start
+            }
+
+            .mobilehint {
+                display: block
+            }
+        }
+
+        .clickrow {
+            cursor: pointer
+        }
+
+        .clickrow:hover td {
+            background: #f0f7fa
+        }
+
+        .casecard {
+            cursor: pointer
+        }
+
+        .casecard:hover {
+            background: #f6fafc
+        }
+
+        .nav div:not(.selected) {
+            cursor: pointer
+        }
+
+        .categorycount .tiny {
+            white-space: nowrap
+        }
+
+        .monthchips {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            max-height: 115px;
+            overflow: auto;
+            margin: 11px 0
+        }
+
+        .monthchip {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            border: 1px solid var(--line);
+            padding: 5px 8px;
+            background: #f7f8fa;
+            border-radius: 4px
+        }
+
+        .monthchip button {
+            border: 0;
+            background: transparent;
+            cursor: pointer
+        }
+
+        .minirow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .compactcategories {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 9px 13px;
+            border: 1px solid var(--line);
+            border-top: 0;
+            margin-bottom: 11px
+        }
+
+        .compactcategories h2 {
+            font-size: 12px;
+            white-space: nowrap;
+            font-weight: 600
+        }
+
+        .halfbox {
+            border: 1px solid var(--line);
+            padding: 15px;
+            min-width: 0
+        }
+
+        .halfbox h3 {
+            font-size: 14px;
+            margin: 0 0 12px
+        }
+
+        .data-line {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid #f0f0f1;
+            padding: 9px 0
+        }
+
+        .data-line label {
+            font-size: 12px;
+            color: var(--muted);
+            white-space: nowrap
+        }
+
+        .data-line strong {
+            font-weight: 500;
+            text-align: right;
+            overflow-wrap: anywhere
+        }
+
+        .overviewcols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .warncontract {
+            background: #fdf6e8;
+            border: 1px solid #f3d6a0;
+            padding: 11px 13px;
+            margin: 11px 0;
+            color: #8f530b
+        }
+
+        .quicktemplates {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 10px 0
+        }
+
+        .chatmeta {
+            font-size: 10px;
+            color: #787883;
+            margin-top: 3px
+        }
+
+        .chatinput textarea {
+            min-height: 68px
+        }
+
+        .tinyaction {
+            border: 1px solid var(--line);
+            padding: 4px 9px;
+            background: white;
+            border-radius: 4px
+        }
+
+        .drawer.narrow {
+            width: min(920px, 100vw)
+        }
+
+        .drawerbody {
+            padding: 17px
+        }
+
+        .status-row {
+            display: flex;
+            align-items: end;
+            gap: 12px;
+            justify-content: space-between
+        }
+
+        .employee-owner {
+            background: #f7f8fa;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        button,
+        .tab,
+        .casetab,
+        select,
+        input[type=checkbox],
+        input[type=month],
+        .btn,
+        .link,
+        .name {
+            cursor: pointer
+        }
+
+        @media(max-width:720px) {
+            .overviewcols {
+                grid-template-columns: 1fr
+            }
+
+            .compactcategories {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 7px
+            }
+
+            .metrics {
+                grid-template-columns: repeat(3, 1fr)
+            }
+        }
+
+        button,
+        select,
+        [onclick],
+        input[type=checkbox],
+        .casecard,
+        .clickrow {
+            cursor: pointer !important
+        }
+
+        .clickrow:hover td {
+            background: #f5f7fb
+        }
+
+        .name,
+        .link {
+            text-decoration: none !important
+        }
+
+        .casecard {
+            display: block
+        }
+
+        .casecard .case-meta {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+            margin-top: 10px
+        }
+
+        .mini-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            border: 1px solid var(--line);
+            margin: 14px 0 18px
+        }
+
+        .mini-kpis>div {
+            padding: 11px;
+            border-right: 1px solid var(--line)
+        }
+
+        .mini-kpis>div:last-child {
+            border: 0
+        }
+
+        .mini-kpis small {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .mini-kpis strong {
+            display: block;
+            font-size: 19px;
+            font-weight: 600
+        }
+
+        .deal-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .deal-split .infobox {
+            margin: 0;
+            min-width: 0
+        }
+
+        .compactdetails {
+            display: grid;
+            grid-template-columns: 100px minmax(0, 1fr);
+            gap: 9px 12px;
+            margin-top: 13px;
+            font-size: 13px
+        }
+
+        .compactdetails dt {
+            color: var(--muted)
+        }
+
+        .compactdetails dd {
+            margin: 0;
+            overflow-wrap: anywhere
+        }
+
+        .case-extra {
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            white-space: pre-wrap
+        }
+
+        .status-choice {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 12px
+        }
+
+        .status-choice button {
+            padding: 7px 12px;
+            border-radius: 4px;
+            border: 1px solid var(--line);
+            background: #fff
+        }
+
+        .status-choice button:hover {
+            background: #eaf9fb
+        }
+
+        .role-toggle {
+            display: flex;
+            gap: 6px;
+            align-items: center
+        }
+
+        .role-toggle button {
+            padding: 7px 12px;
+            border: 1px solid var(--line);
+            background: white
+        }
+
+        .role-toggle button.active {
+            background: #010120;
+            color: white
+        }
+
+        .chat-meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 4px
+        }
+
+        .bubble.them {
+            align-self: flex-start;
+            background: #f5f6fa;
+            border: 1px solid var(--line)
+        }
+
+        .bubble.system {
+            align-self: center;
+            max-width: 95%;
+            text-align: center
+        }
+
+        .chat-tools {
+            margin-top: 8px
+        }
+
+        .unread {
+            display: inline-block;
+            background: #ef2cc1;
+            color: white;
+            font-weight: 600;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 9px
+        }
+
+        .reasonfield {
+            border: 1px solid #f0bdd9;
+            background: #fff9fc;
+            padding: 12px;
+            margin-top: 10px
+        }
+
+        .reasonfield textarea {
+            width: 100%;
+            min-height: 68px;
+            margin: 7px 0
+        }
+
+        .month-assign {
+            border: 1px solid var(--line);
+            padding: 12px;
+            margin: 12px 0;
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            align-items: center
+        }
+
+        .month-assign select {
+            min-width: 130px
+        }
+
+        .chat-message-body {
+            white-space: pre-wrap
+        }
+
+        @media(max-width:650px) {
+            .deal-split {
+                grid-template-columns: 1fr
+            }
+
+            .mini-kpis {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+    </style>
+    <style>
+        /* v5 UI refinements */
+        .compactcategories .categoryline {
+            gap: 0;
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid var(--line);
+            width: max-content;
+            max-width: 100%
+        }
+
+        .compactcategories .category-filter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 0;
+            border-right: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 0 !important
+        }
+
+        .compactcategories .category-filter:last-child {
+            border-right: 0
+        }
+
+        .compactcategories .category-filter:hover,
+        .compactcategories .category-filter.on {
+            background: #f0f0f4
+        }
+
+        .category-filter.on {
+            box-shadow: inset 0 -3px 0 var(--category-color)
+        }
+
+        .category-filter strong {
+            font-size: 17px
+        }
+
+        .category-mark {
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0
+        }
+
+        .employee-name {
+            font-weight: 650;
+            display: block;
+            text-align: left;
+            font-size: 14px
+        }
+
+        .clickrow td:first-child {
+            text-align: left
+        }
+
+        .remove-target {
+            padding: 2px 0;
+            border: 0;
+            background: none;
+            color: #777;
+            font-size: 10px;
+            white-space: nowrap;
+            cursor: pointer
+        }
+
+        .remove-target:hover {
+            color: #ba3838;
+            text-decoration: underline
+        }
+
+        .member-contractgrid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px
+        }
+
+        .next-contract+.next-contract {
+            border-top: 1px solid var(--line);
+            margin-top: 12px;
+            padding-top: 12px
+        }
+
+        .next-heading {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 0 0 14px
+        }
+
+        .next-heading strong {
+            font-size: 13px
+        }
+
+        .tiny-link {
+            border: 0;
+            background: transparent;
+            font-size: 11px;
+            color: #4f4788;
+            text-decoration: underline;
+            white-space: nowrap
+        }
+
+        .case-list-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px
+        }
+
+        .case-metrics {
+            margin: 0 0 14px !important;
+            grid-template-columns: repeat(4, minmax(0, 1fr))
+        }
+
+        .case-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .case-list-item {
+            border: 1px solid var(--line);
+            padding: 16px;
+            cursor: pointer
+        }
+
+        .case-list-item:hover {
+            background: #f9f9fb;
+            border-color: #bcbcc8
+        }
+
+        .case-list-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 12px
+        }
+
+        .case-list-top strong {
+            font-size: 15px
+        }
+
+        .case-title {
+            font-size: 14px;
+            margin-top: 5px
+        }
+
+        .case-list-bottom {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f3
+        }
+
+        .attachment-picker {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .attach-label {
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer
+        }
+
+        .attach-label:hover {
+            background: #f7f7fa
+        }
+
+        .attachment-picker input[type=file] {
+            display: none
+        }
+
+        .attached-file {
+            margin-top: 8px;
+            background: #fff;
+            border: 1px solid var(--line);
+            padding: 9px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #201d1d;
+            font-size: 12px
+        }
+
+        .attached-file:hover {
+            background: #f6f4ff
+        }
+
+        .attached-file small {
+            color: var(--muted)
+        }
+
+        .drawer {
+            width: min(820px, 100vw) !important
+        }
+
+        .chat-shell {
+            max-height: calc(100vh - 225px);
+            min-height: 440px
+        }
+
+        .chat-stream {
+            min-height: 220px
+        }
+
+        @media(max-width:700px) {
+
+            .member-contractgrid,
+            .case-metrics {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .case-topgrid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        const KEY = 'ses_sales_redesign_mock_v3'; const CATS = ['新規営業', '単価交渉', '新規営業（終了予定）', '育児休業', '介護休業', '待機', '休職', '勤怠免除', '内勤']; const STAT = ['エントリーする', 'エントリー済', '面談依頼', '面談後お見送り', 'お見送り', 'エントリーしない', 'オファー', '参画決定', '待機']; const members = [{id: 1, name: '佐藤 直樹', team: '開発課', skill: 'Java', exp: '8年', join: '2021', current: {company: '株式会社ホワイトボックス', start: '2025-11-01', end: '2026-10-31', rate: 750000}}, {id: 2, name: '高橋 花子', team: '開発課', skill: 'PHP', exp: '5年', join: '2022', current: {company: '株式会社イダス', start: '2026-04-01', end: '2026-10-31', rate: 720000}}, {id: 3, name: '大竹 春', team: 'コンサル課', skill: 'PMO', exp: '6年', join: '2020', current: {company: '株式会社スタジー', start: '2026-01-01', end: '2026-10-31', rate: 820000}}, {id: 4, name: '山田 智也', team: 'インフラ課', skill: 'AWS', exp: '4年', join: '2023', current: {company: 'UP DOORS株式会社', start: '2026-02-01', end: '2026-10-31', rate: 650000}}, {id: 5, name: '田中 美咲', team: 'QA課', skill: 'QA', exp: '3年', join: '2024', current: {company: '株式会社EXCEED', start: '2026-05-01', end: '2026-11-30', rate: 610000}}, {id: 6, name: '伊藤 健一', team: '開発課', skill: 'React', exp: '7年', join: '2019', current: {company: '株式会社フリューゲル', start: '2025-07-01', end: '2026-10-31', rate: 790000}}, {id: 7, name: '小林 亮太', team: 'インフラ課', skill: 'Network', exp: '2年', join: '2025', current: {company: '—', start: '', end: '', rate: ''}}, {id: 8, name: '鈴木 沙織', team: '開発課', skill: 'C#', exp: '6年', join: '2020', current: {company: '株式会社ケーズ', start: '2026-01-01', end: '2026-12-31', rate: 750000}}, {id: 9, name: '中村 拓海', team: 'QA課', skill: 'QA', exp: '4年', join: '2022', current: {company: '株式会社クリニック', start: '2026-04-01', end: '2026-10-31', rate: 640000}}];
+        const OWNERS = ['営業 四郎', '営業 三郎', '営業 花子', '管理 太郎']; const seed = {owners: {1: '営業 四郎', 2: '営業 四郎', 3: '営業 三郎', 4: '営業 三郎', 5: '営業 花子', 6: '営業 四郎', 7: '営業 花子', 8: '営業 三郎', 9: '営業 花子'}, months: {'2026-09': {final: true, types: {1: '新規営業', 3: '単価交渉', 4: '待機', 6: '新規営業'}, snapshot: null}, '2026-10': {final: false, types: {1: '新規営業', 2: '単価交渉', 3: '新規営業', 4: '新規営業', 5: '待機', 6: '新規営業'}, snapshot: null}, '2026-11': {final: false, types: {2: '新規営業', 7: '新規営業'}, snapshot: null}}, cases: [{id: 100, mid: 1, month: '2026-10', company: 'Aster Works', title: '基幹刷新支援', station: '品川', notes: 'Javaを中心とした開発。週2出社。', status: 'エントリー済', owner: '営業 四郎', contract: {start: '', end: '', entry: '', rate: ''}, chat: [{text: '面談候補日時：9/23 09:00、10/1 15:00', at: '2026/09/23', system: false}]}, {id: 101, mid: 1, month: '2026-10', company: 'Northwind', title: 'クラウド移行PMO', station: '新宿', notes: 'PMO経験者歓迎', status: '面談後／オファー前', owner: '営業 四郎', contract: {start: '', end: '', entry: '', rate: ''}, chat: []}, {id: 102, mid: 1, month: '2026-10', company: 'Contoso', title: '社内ポータル改善', station: '東京', notes: '', status: 'オファー', owner: '営業 四郎', contract: {start: '2026-11-01', end: '2027-01-31', entry: '2026-11-01', rate: 770000}, chat: []}, {id: 103, mid: 2, month: '2026-10', company: '株式会社フリューゲル', title: 'Javaサーバサイド開発', station: '品川', notes: '長期想定', status: '面談依頼', owner: '営業 四郎', contract: {start: '', end: '', entry: '', rate: ''}, chat: []}, {id: 104, mid: 3, month: '2026-10', company: 'AlphaTech', title: 'Reactフロント開発', station: 'フルリモート', notes: '', status: 'エントリーする', owner: '営業 三郎', contract: {start: '', end: '', entry: '', rate: ''}, chat: []}, {id: 105, mid: 6, month: '2026-10', company: '株式会社スクエア', title: 'Webシステム改修', station: '五反田', notes: '', status: '参画決定', owner: '営業 四郎', contract: {start: '2026-11-01', end: '2027-03-31', entry: '2026-11-01', rate: 810000}, chat: []}], next: 106};
+        let state; try {state = JSON.parse(localStorage.getItem(KEY)) || structuredClone(seed)} catch (e) {state = structuredClone(seed)}; if (!state.months['2026-09'].snapshot) {state.months['2026-09'].snapshot = structuredClone({types: state.months['2026-09'].types, cases: []})} if (!state.owners) state.owners = structuredClone(seed.owners); state.cases.forEach(c => {if (c.status === 'エントリーする') c.status = 'エントリーする'; if (c.status === '面談後／オファー前') c.status = '面談依頼'; c.chat = (c.chat || []).map(x => ({...x, role: x.role || (x.system ? 'system' : 'sales')})); c.readSales ??= c.chat.length; c.readEngineer ??= 0; c.enteredAt ??= (c.status === 'エントリー済' ? '2026-10-01' : null)}); let view = 'month', month = '2026-10', query = '', typeFilter = '', statusFilter = '', drawer = null, caseTab = 'chat', modal = null, selected = new Set(), bulkMonths = ['2026-10']; let pickerMonth = '2026-10', role = 'sales', reasonOpen = false; const $ = s => document.querySelector(s); const esc = x => String(x ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c])); const fmt = n => n ? Number(n).toLocaleString('ja-JP') + '円' : '—'; const ym = m => m.replace('-', '年') + '月'; const mdata = () => state.months[month] || (state.months[month] = {final: false, types: {}, snapshot: null}); const data = () => mdata().final ? mdata().snapshot : {types: mdata().types, cases: state.cases.filter(c => c.month === month), owners: state.owners}; const currentCases = id => data().cases.filter(c => c.mid === id); const getMember = id => members.find(m => m.id === Number(id)); const catOpts = (val = '') => CATS.map(c => `<option ${c === val ? 'selected' : ''}>${esc(c)}</option>`).join(''); const statusOpts = val => STAT.map(s => `<option ${val === s ? 'selected' : ''}>${esc(s)}</option>`).join(''); const btn = (label, func, cls = '') => `<button class="btn ${cls}" onclick="${func}">${label}</button>`; function persist() {localStorage.setItem(KEY, JSON.stringify(state))} function monthShift(delta) {const [y, m] = month.split('-').map(Number); const d = new Date(y, m - 1 + delta, 1); month = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); selected.clear(); render()} function notify(msg) {alert(msg)} function totalStats() {const ids = Object.keys(data().types); const cs = data().cases; return {ids: ids.length, active: ids.filter(id => cs.some(c => c.mid == id && !['エントリーする', 'エントリーしない', 'お見送り', '面談後お見送り'].includes(c.status))).length, proposals: cs.filter(c => !['エントリーする', 'エントリーしない'].includes(c.status)).length, interviews: cs.filter(c => ['面談依頼', '面談後／オファー前', 'オファー', '参画決定'].includes(c.status)).length, offers: cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length, decided: cs.filter(c => c.status === '参画決定').length}} function applyAutoReject() {if (mdata().final) return; let changed = false; state.cases.forEach(c => {if (c.status === 'エントリー済' && c.enteredAt && Date.now() - new Date(c.enteredAt).getTime() >= 7 * 86400000) {c.status = 'お見送り'; c.chat.push({text: 'ステータス自動変更：エントリー済 → お見送り（7日経過）', system: true, role: 'system', at: new Date().toLocaleString('ja-JP')}); changed = true} }); if (changed) persist()} function render() {applyAutoReject(); const s = totalStats(), final = mdata().final; $('#root').innerHTML = `<div class="app"><aside class="side"><div><div class="brand">[+] LINK / PORTAL</div><div class="sub">EMPLOYEE PORTAL</div></div><div class="nav"><div>ホーム</div><div>メンバー</div><div>ドキュメント</div><div>勤怠表</div><div class="selected">営業支援</div><div>契約管理</div><div>設定</div></div><div class="sub" style="margin-top:auto">SALES WORKSPACE / MOCK</div></aside><div class="main"><header class="top"><div><b>営業支援</b><br><small>SES SALES / OPERATIONS</small></div><div class="tiny textmuted">管理 太郎　/　system_admin</div></header><div class="container"><div class="heading"><div><div class="tiny textmuted">営業支援 / ${view === 'month' ? '月別営業管理' : '全社員'}</div><h1>${view === 'month' ? '営業活動の管理' : '全社員から営業対象者を選定'}</h1></div><div class="buttons">${view === 'month' ? btn('全社員から追加 →', "view='employees';render()") : btn('月別営業管理に戻る →', "view='month';render()")}</div></div><div class="tabs"><button class="tab ${view === 'month' ? 'active' : ''}" onclick="view='month';render()">月別営業管理</button><button class="tab ${view === 'employees' ? 'active' : ''}" onclick="view='employees';render()">全社員・対象者選定</button></div>${view === 'month' ? monthPage(s, final) : employeePage()}</div></div></div>${drawer ? drawOverlay() : ''}${modal ? modalOverlay() : ''}`}
+        function monthPage(s, final) {const ids = Object.keys(data().types).map(Number); const rows = members.filter(m => ids.includes(m.id)).filter(m => !typeFilter || data().types[m.id] === typeFilter).filter(m => !query || (m.name + m.skill + m.team).toLowerCase().includes(query.toLowerCase())).filter(m => !statusFilter || (statusFilter === '提案あり' ? currentCases(m.id).length > 0 : currentCases(m.id).some(c => c.status === statusFilter))); const counts = CATS.filter(c => ids.some(id => data().types[id] === c)); return `<div class="monthbar"><div class="buttons">${btn('←', 'monthShift(-1)')}<span class="month">${ym(month)}</span>${btn('→', 'monthShift(1)')}<span class="pill ${final ? 'purple' : 'gray'}">${final ? '確定済・履歴固定' : '編集中'}</span></div><div class="buttons">${final ? btn('確定を解除', 'unfinalize()') : btn('この月を確定する', 'finalize()', 'primary')}${btn('CSV出力', 'exportCSV()')}</div></div>${final ? `<div class="snapshot">[✓] ${ym(month)}の営業状況は確定時点の状態で保存されています。現在の案件変更は反映されません。確定解除後に編集可能です。</div>` : ''}<div class="metrics">${[['営業対象者', s.ids], ['営業着手', s.active], ['案件提案', s.proposals], ['面談依頼以上', s.interviews], ['オファー以上', s.offers], ['参画決定', s.decided]].map(([label, value], i) => `<div class="metric"><small>${label}</small><div class="num ${i === 0 ? 'purple' : ''}">${value}</div></div>`).join('')}</div><div class="compactcategories"><h2>営業種別 / 人数</h2><div class="categoryline">${CATS.filter(c => ids.some(id => data().types[id] === c)).map(c => `<div class="categorycount"><span class="tiny textmuted">${c}</span><b>${ids.filter(id => data().types[id] === c).length}</b><span class="tiny textmuted">人</span></div>`).join('') || '<span class="textmuted">営業対象者なし</span>'}</div></div><section class="section"><div class="sectionhead"><h2>${ym(month)}の営業対象者 <span class="highlight">${ids.length}名</span></h2>${!final ? btn('[+] 対象者を追加', "view='employees';render()", 'primary') : ''}</div><div class="sectionbody"><div class="filters"><input class="search" placeholder="氏名・スキル・所属で検索" value="${esc(query)}" oninput="query=this.value;refreshRows()"><select onchange="typeFilter=this.value;refreshRows()"><option value="">全営業種別</option>${CATS.map(c => `<option ${c === typeFilter ? 'selected' : ''}>${c}</option>`).join('')}</select><select onchange="statusFilter=this.value;refreshRows()"><option value="">全提案状況</option><option ${statusFilter === '提案あり' ? 'selected' : ''}>提案あり</option>${STAT.map(s => `<option ${s === statusFilter ? 'selected' : ''}>${s}</option>`).join('')}</select></div><div class="scroll" id="rows">${monthRows(rows, final)}</div></div></section><p class="note">※ 日付入力や案件の進捗更新に締切は設けていません。月次確定は任意で行い、必要なら解除できます。すべて架空のデータです。</p>`}
+        function monthRows(rows, final) {if (!rows.length) return '<div class="empty">該当する営業対象者がいません</div>'; return `<table><thead><tr><th>エンジニア</th><th>所属・スキル</th><th>営業種別</th><th>担当営業</th><th>現契約終了</th><th>案件提案</th><th>進捗の内訳</th><th>参画決定</th><th>${final ? '履歴' : '操作'}</th></tr></thead><tbody>${rows.map(m => {const cs = currentCases(m.id), a = cs.filter(c => !['エントリーする', 'エントリーしない'].includes(c.status)); const won = cs.filter(c => c.status === '参画決定').length; return `<tr class="clickrow" onclick="event.stopPropagation();openMember(${m.id})"><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button><div class="tiny textmuted">${esc(m.exp)} / ${esc(m.join)}入社</div></td><td>${esc(m.team)}<div class="tiny textmuted">${esc(m.skill)}</div></td><td>${final ? `<span class="pill">${esc(data().types[m.id])}</span>` : `<select class="smallselect" aria-label="${esc(m.name)}の営業種別" onclick="event.stopPropagation()" onchange="changeType(${m.id},this.value)">${catOpts(data().types[m.id])}</select>`}</td><td>${esc((data().owners || state.owners)[m.id] || '未設定')}</td><td>${m.current.end || '—'}</td><td><button class="link" onclick="event.stopPropagation();openMember(${m.id},'cases')">${cs.length}件（提案${a.length}）</button></td><td><div class="tiny">${esc(progressSummary(cs))}</div></td><td>${won ? `<span class="pill green">${won}件</span>` : '—'}</td><td>${final ? '<span class="tiny textmuted">固定</span>' : btn('対象から外す', `event.stopPropagation();removeTarget(${m.id})`, 'danger')}</td></tr>`}).join('')}</tbody></table>`}
+        function progressSummary(cs) {if (!cs.length) return '案件未登録'; const count = {}; cs.forEach(c => count[c.status] = (count[c.status] || 0) + 1); return Object.entries(count).map(([a, b]) => `${a} ${b}`).join(' / ')} function refreshRows() {const rows = members.filter(m => Object.keys(data().types).includes(String(m.id))).filter(m => !typeFilter || data().types[m.id] === typeFilter).filter(m => !query || (m.name + m.skill + m.team).toLowerCase().includes(query.toLowerCase())).filter(m => !statusFilter || (statusFilter === '提案あり' ? currentCases(m.id).length > 0 : currentCases(m.id).some(c => c.status === statusFilter))); $('#rows').innerHTML = monthRows(rows, mdata().final)}
+        function allowedMonths() {const now = new Date(); const a = new Date(now.getFullYear(), now.getMonth(), 1); return [0, 1].map(n => {const d = new Date(a.getFullYear(), a.getMonth() + n, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')})} function monthSelector(id = 'targetMonth') {return `<select id="${id}">${allowedMonths().map(mm => `<option value="${mm}" ${mm === month ? 'selected' : ''}>${ym(mm)}</option>`).join('')}</select>`} function employeePage() {return `<section class="section"><div class="sectionhead"><div><h2>営業対象にする社員を選択</h2><div class="note">複数月にまとめて登録できます。すでに登録済みの月はそのまま維持されます。</div></div><span class="pill purple">選択中 ${selected.size}名</span></div><div class="sectionbody"><div class="filters"><input class="search" placeholder="社員名・所属・スキルを検索" oninput="filterEmployees(this.value)" id="empquery"><select id="empteam" onchange="filterEmployees($('#empquery').value)"><option value="">全部署</option>${[...new Set(members.map(m => m.team))].map(t => `<option>${t}</option>`).join('')}</select></div><div class="scroll" id="empRows">${empRows(members)}</div></div></section><section class="section"><div class="sectionhead"><h2>選択した社員の登録先</h2></div><div class="sectionbody"><div class="tiny textmuted" style="margin-bottom:9px">登録する月（当月または翌月）</div><div class="minirow">${monthSelector('bulkPicker')}${btn('選択した社員をこの月に登録', 'bulkAdd()', 'primary')}<span class="note">営業種別は登録後に設定できます（初期値：新規営業）</span></div></div></section>`} function empRows(ms) {return `<table><thead><tr><th><input type="checkbox" onchange="toggleAll(this.checked)" aria-label="全社員を選択"></th><th>社員</th><th>所属</th><th>主要スキル</th><th>現契約先</th><th>営業対象に登録済みの月</th></tr></thead><tbody>${ms.map(m => {const months = Object.entries(state.months).filter(([ym, d]) => !!d.types[m.id]).map(([ym]) => ym.replace('-', '年') + '月'); return `<tr><td><input type="checkbox" data-emp-id="${m.id}" ${selected.has(m.id) ? 'checked' : ''} onchange="toggleSelect(${m.id},this.checked)"></td><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button></td><td>${esc(m.team)}</td><td>${esc(m.skill)}</td><td>${esc(m.current.company)}</td><td class="tiny">${months.join(' / ') || '—'}</td></tr>`}).join('')}</tbody></table>`} function filterEmployees(q) {const t = $('#empteam').value; $('#empRows').innerHTML = empRows(members.filter(m => (!t || t === m.team) && (!q || (m.name + m.team + m.skill).toLowerCase().includes(q.toLowerCase()))))} function toggleSelect(id, v) {v ? selected.add(id) : selected.delete(id); render()} function toggleAll(v) {members.forEach(m => v ? selected.add(m.id) : selected.delete(m.id)); render()} function bulkAdd() {if (!selected.size) return notify('社員を選択してください'); const mm = $('#bulkPicker').value; if (!allowedMonths().includes(mm)) return notify('当月か翌月を選択してください'); const d = state.months[mm] || (state.months[mm] = {final: false, types: {}, snapshot: null}); if (d.final) return notify('確定済みのため登録できません。先に確定を解除してください'); selected.forEach(id => {if (!d.types[id]) d.types[id] = '新規営業'}); month = mm; selected.clear(); view = 'month'; persist(); render()} function addNextMonth(mid) {const mm = $('#carryMonth').value; if (!allowedMonths().includes(mm)) return notify('当月か翌月を選択してください'); if (mm === month) return notify('現在の月は登録済みです'); const d = state.months[mm] || (state.months[mm] = {final: false, types: {}, snapshot: null}); if (d.final) return notify('確定済みの月です'); if (d.types[mid]) return notify('その月にはすでに登録されています'); d.types[mid] = mdata().types[mid] || '新規営業'; persist(); notify(ym(mm) + 'に登録しました。案件・チャットは現在の月に残ります'); render()} function changeType(id, type) {if (mdata().final) return; mdata().types[id] = type; persist(); render()} function removeTarget(id) {if (!confirm(getMember(id).name + 'を' + ym(month) + 'の営業対象から外しますか？（この月の案件は削除されません）')) return; delete mdata().types[id]; persist(); render()}
+        function finalize() {if (!confirm(ym(month) + 'の営業状況を現在の状態で確定しますか？\nあとから解除できます。')) return; const d = mdata(); d.snapshot = structuredClone({types: d.types, cases: state.cases.filter(c => c.month === month), owners: state.owners}); d.final = true; persist(); render()} function unfinalize() {if (!confirm(ym(month) + 'の確定を解除しますか？\n確定時のコピーは解除され、現在の編集データが表示されます。')) return; mdata().final = false; mdata().snapshot = null; persist(); render()} function exportCSV() {const d = data(); const lines = [['月', '氏名', '所属', 'スキル', '営業種別', '現契約先', '現契約終了', '案件数', '参画決定数'], ...members.filter(m => d.types[m.id]).map(m => [month, m.name, m.team, m.skill, d.types[m.id], m.current.company, m.current.end, d.cases.filter(c => c.mid === m.id).length, d.cases.filter(c => c.mid === m.id && c.status === '参画決定').length])]; const str = '\ufeff' + lines.map(a => a.map(x => '"' + String(x ?? '').replace(/"/g, '""') + '"').join(',')).join('\r\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([str], {type: 'text/csv;charset=utf-8;'})); a.download = `sales_${month}.csv`; a.click(); URL.revokeObjectURL(a.href)}
+        function openMember(id, tab = 'overview') {drawer = {kind: 'member', mid: id, tab}; render()} function openCase(id) {drawer = {kind: 'case', id}; caseTab = 'chat'; reasonOpen = false; markRead(id); render()} function closeDrawer() {drawer = null; render()} function drawOverlay() {return `<div class="backdrop" onclick="closeDrawer()"></div>${drawer.kind === 'member' ? memberDrawer() : caseDrawer()}`} function memberDrawer() {const m = getMember(drawer.mid), cs = currentCases(m.id), won = cs.filter(c => c.status === '参画決定'), t = data().types[m.id], final = mdata().final; const owners = OWNERS.map(o => `<option value="${esc(o)}" ${(data().owners || state.owners)[m.id] === o ? 'selected' : ''}>${esc(o)}</option>`).join(''); const line = (k, v) => `<div class="data-line"><label>${esc(k)}</label><strong>${esc(v)}</strong></div>`; return `<aside class="drawer"><div class="drawerhead"><div><div class="tiny textmuted">ENGINEER / ${ym(month)} ${final ? '[確定時点]' : ''}</div><h2>${esc(m.name)}</h2><div class="tiny textmuted">${esc(m.team)} / ${esc(m.skill)} / ${esc(m.exp)}</div></div>${btn('×', 'closeDrawer()')}</div><div class="drawerbody"><div class="casetabs"><button class="casetab ${drawer.tab === 'overview' ? 'active' : ''}" onclick="drawer.tab='overview';render()">社員・契約情報</button><button class="casetab ${drawer.tab === 'cases' ? 'active' : ''}" onclick="drawer.tab='cases';render()">案件・営業状況 (${cs.length})</button></div>${!final && t ? `<div class="month-assign"><span class="tiny textmuted">この社員を別の月にも登録</span>${monthSelector('carryMonth')}${btn('月に追加', `addNextMonth(${m.id})`)}</div>` : ''}${drawer.tab === 'overview' ? `<div class="employee-owner"><label class="tiny textmuted">担当営業</label><select style="flex:1" ${final ? 'disabled' : ''} onchange="changeOwner(${m.id},this.value)">${owners}</select></div><div class="overviewcols"><div class="halfbox"><h3>現契約情報</h3>${line('契約先', m.current.company)}${line('契約開始', m.current.start || '—')}${line('契約終了', m.current.end || '—')}${line('単価（月額）', fmt(m.current.rate))}</div><div class="halfbox"><h3>${ym(month)}の営業</h3>${line('営業種別', t || '未登録')}${line('案件提案数', cs.length + '件')}${line('提案中', cs.filter(c => !['参画決定', '待機', 'お見送り', '面談後お見送り', 'エントリーしない'].includes(c.status)).length + '件')}${line('参画決定', won.length + '件')}</div></div><div class="infobox" style="margin-top:13px"><h3>参画決定した案件 / 次の契約情報</h3>${won.length ? won.map(c => `<div class="casecard" onclick="openCase(${c.id})"><div><b>${esc(c.company)}</b> / ${esc(c.title)}<div class="tiny textmuted">${esc(c.contract.start || '契約開始未入力')} 〜 ${esc(c.contract.end || '終了未入力')} / ${fmt(c.contract.rate)}</div></div><span>→</span></div>`).join('') : '<div class="textmuted">参画決定した案件はありません。</div>'}</div>${btn('案件・営業状況を見る →', "drawer.tab='cases';render()", 'primary')}` : `<div class="buttons" style="justify-content:space-between"><div class="textmuted tiny">案件をクリックすると、進捗・チャット・契約情報を確認できます</div>${!final ? btn('＋ 案件追加', `openCaseModal(${m.id})`, 'primary') : ''}</div><div class="mini-kpis">${[['案件提案数', cs.length], ['面談依頼数', cs.filter(c => ['面談依頼', 'オファー', '参画決定', '面談後お見送り'].includes(c.status)).length], ['オファー数', cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length], ['面談通過率', `${cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length}/${cs.filter(c => ['面談依頼', 'オファー', '参画決定', '面談後お見送り'].includes(c.status)).length}`]].map(([k, v]) => `<div><small>${k}</small><strong>${v}</strong></div>`).join('')}</div>${cs.map(c => `<div class="casecard" onclick="openCase(${c.id})"><div style="min-width:0"><b>${esc(c.company)}</b><div>${esc(c.title)}</div><div class="case-meta"><span class="pill ${c.status === '参画決定' ? 'green' : 'purple'}">${esc(c.status)}</span><span class="tiny textmuted">[最寄り駅] ${esc(c.station || '未登録')}</span>${unreadFor(c) ? `<span class="unread">未読 ${unreadFor(c)}</span>` : ''}${c.status === '参画決定' && !contractComplete(c) ? '<span class="pill red">契約情報の入力待ち</span>' : ''}</div><span>→</span></div>`).join('') || '<div class="empty">登録案件はありません。案件追加から登録できます。</div>'}`}</div></aside>`} function changeOwner(mid, o) {state.owners[mid] = o; persist(); render()} function contractComplete(c) {return !!(c.contract?.start && c.contract?.end && c.contract?.entry && c.contract?.rate)}
+        function detail(k, v) {return `<div class="field"><label>${esc(k)}</label><div class="value">${esc(v)}</div></div>`}
+        function unreadFor(c) {return Math.max(0, (c.chat || []).length - (role === 'sales' ? (c.readSales || 0) : (c.readEngineer || 0)))} function chatMetrics(cs) {let interviews = cs.filter(c => ['面談依頼', '面談後お見送り', 'オファー', '参画決定'].includes(c.status)).length, offers = cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length; return [cs.length, interviews, offers, interviews ? Math.round(offers / interviews * 100) + '% (' + offers + '/' + interviews + ')' : '— (0/0)']} function caseDrawer() {const c = data().cases.find(c => c.id === drawer.id); if (!c) {drawer = null; return ''} const m = getMember(c.mid), final = mdata().final; const unread = unreadFor(c); return `<aside class="drawer narrow"><div class="drawerhead"><div><button class="link tiny" onclick="openMember(${m.id},'cases')">← ${esc(m.name)}の案件一覧</button><div class="tiny textmuted" style="margin-top:9px">${ym(month)} / ${esc(c.company)}</div><h2>${esc(c.title)}</h2></div>${btn('×', 'closeDrawer()')}</div><div class="drawerbody"><div class="deal-split"><div class="infobox"><div class="buttons" style="justify-content:space-between"><h3>案件情報</h3>${!final ? btn('編集', `openCaseModal(${c.mid},${c.id})`) : ''}</div><dl class="compactdetails"><dt>会社名</dt><dd>${esc(c.company)}</dd><dt>案件名</dt><dd>${esc(c.title)}</dd><dt>最寄り駅</dt><dd>${esc(c.station || '—')}</dd></dl>${c.notes ? `<div class="case-extra">${esc(c.notes)}</div>` : ''}</div><div class="infobox"><h3>営業進捗</h3><div class="tiny textmuted" style="margin:5px 0 9px">担当営業：${esc(state.owners[c.mid] || '未設定')}</div>${role === 'sales' ? `<div class="field"><label>ステータス</label><select ${final ? 'disabled' : ''} onchange="changeStatus(${c.id},this.value)">${statusOpts(c.status)}</select></div>` : `<div class="tiny textmuted">現在のステータス</div><b>${esc(c.status)}</b><div class="status-choice">${!final ? btn('エントリー希望', `changeStatus(${c.id},'エントリーする')`) + btn('エントリー辞退', `reasonOpen=true;render()`) : ''}</div>`}${role === 'engineer' && reasonOpen ? `<div class="reasonfield"><label>辞退理由</label><textarea id="declineReason" placeholder="辞退理由を入力してください"></textarea>${btn('辞退を確定する', `declineEntry(${c.id})`, 'primary')}${btn('キャンセル', `reasonOpen=false;render()`)}</div>` : ''}</div></div>${c.status === '参画決定' && !contractComplete(c) ? `<div class="warncontract">参画決定です。契約情報が未入力のため、入力してください。 ${btn('契約情報を入力', "caseTab='contract';render()")}</div>` : ''}${c.status === '待機' || c.status === '参画決定' ? '<div class="snapshot">この社員の今月の営業はクローズ扱いです。月次データは確定するまで編集できます。</div>' : ''}<div class="casetabs"><button class="casetab ${caseTab === 'chat' ? 'active' : ''}" onclick="caseTab='chat';render()">案件チャット ${unread ? `<span class="unread">${unread}</span>` : ''}</button><button class="casetab ${caseTab === 'contract' ? 'active' : ''}" onclick="caseTab='contract';render()">契約情報</button></div>${caseTab === 'chat' ? `<div class="role-toggle"><span class="tiny textmuted">表示・発言する側（モック）</span><button class="${role === 'sales' ? 'active' : ''}" onclick="setRole('sales')">営業側 ${c.chat.length - (c.readSales || 0) ? `<span class="unread">${c.chat.length - (c.readSales || 0)}</span>` : ''}</button><button class="${role === 'engineer' ? 'active' : ''}" onclick="setRole('engineer')">エンジニア側 ${c.chat.length - (c.readEngineer || 0) ? `<span class="unread">${c.chat.length - (c.readEngineer || 0)}</span>` : ''}</button></div><div class="chat" id="chatHistory">${c.chat.map(x => `<div class="bubble ${x.system ? 'system' : x.role === role ? '' : 'them'}">${!x.system ? `<div class="chat-meta">${x.role === 'engineer' ? m.name : '担当営業'}</div>` : ''}<div class="chat-message-body">${esc(x.text)}</div><div class="tiny textmuted">${esc(x.at)}</div></div>`).join('') || '<div class="empty">メッセージはまだありません。</div>'}</div>${!final ? `<div class="chatinput"><textarea id="message" onkeydown="chatKeydown(event,${c.id})" placeholder="Enterで送信 / Shift+Enterで改行"></textarea>${btn('送信', `sendChat(${c.id})`, 'primary')}</div><div class="chat-tools"><div class="tiny textmuted">定型入力</div><div class="quicktemplates">${(role === 'sales' ? ['面談候補日時', '条件確認', '面談後の所感', '選考結果共有', '入場日確認'] : ['面談希望日時', '案件についての質問', '面談の感想', '稼働条件の確認']).map(t => `<button class="tinyaction" onclick="insertTemplate('${t}')">${t}</button>`).join('')}</div></div>` : ''}` : `<div class="infobox"><h3>この案件の契約情報</h3><div class="tiny textmuted" style="margin-bottom:14px">参画決定時に入力してください。社員詳細にも同じ契約情報を表示します。</div><div class="formgrid"><div class="field"><label>契約開始年月日</label><input type="date" id="ct_start" value="${esc(c.contract.start)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>契約終了年月日</label><input type="date" id="ct_end" value="${esc(c.contract.end)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>入場予定年月日</label><input type="date" id="ct_entry" value="${esc(c.contract.entry)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>単価（円/月）</label><input type="number" min="0" id="ct_rate" placeholder="例：750000" value="${esc(c.contract.rate)}" ${final || role === 'engineer' ? 'disabled' : ''}></div></div>${!final && role === 'sales' ? `<div class="actions">${btn('契約情報を保存', `saveContract(${c.id})`, 'primary')}</div>` : ''}</div>`}</div></aside>`} function setRole(v) {role = v; reasonOpen = false; if (drawer?.kind === 'case' && caseTab === 'chat') markRead(drawer.id); render()} function markRead(id) {const c = state.cases.find(x => x.id === id); if (!c) return; if (role === 'sales') c.readSales = c.chat.length; else c.readEngineer = c.chat.length; persist()} function declineEntry(id) {const el = $('#declineReason'); if (!el?.value.trim()) return notify('辞退理由を入力してください'); const c = state.cases.find(x => x.id === id); c.chat.push({text: 'エントリー辞退理由：' + el.value.trim(), at: new Date().toLocaleString('ja-JP'), system: false, role: 'engineer'}); reasonOpen = false; changeStatus(id, 'エントリーしない')}
+        function changeStatus(id, s) {if (mdata().final) return; const c = state.cases.find(x => x.id === id); if (!c || c.status === s) return; const old = c.status; c.status = s; if (s === 'エントリー済') c.enteredAt = new Date().toISOString(); if (['参画決定', '待機'].includes(s)) {const d = state.months[c.month]; if (d) {d.closed ??= {}; d.closed[c.mid] = s} } c.chat.push({text: `ステータス変更：${old} → ${s}（${role === 'sales' ? '営業' : 'エンジニア'}）`, at: new Date().toLocaleString('ja-JP'), system: true, role: 'system'}); persist(); if (s === '参画決定' && !contractComplete(c)) caseTab = 'contract'; render()} function chatKeydown(e, id) {if (e.key === 'Enter' && !e.shiftKey) {e.preventDefault(); sendChat(id)} } function insertTemplate(t) {const x = $('#message'); if (!x) return; const texts = {'面談候補日時': '面談候補日時：\n①\n②\n③', '条件確認': '稼働開始可能日：\n就業時間：\n出社・リモート条件：', '面談後の所感': '面談の所感：\n案件への意欲：\n質問・懸念：', '選考結果共有': '選考結果：\n次の対応：', '入場日確認': '入場予定日：\n初日集合場所：\n持参するもの：', '面談希望日時': '面談希望日時：\n①\n②', '案件についての質問': '確認したいこと：', '面談の感想': '面談の感想：\n参画意欲：', '稼働条件の確認': '稼働開始日：\n希望する働き方：'}; x.value += (x.value ? '\n' : '') + (texts[t] || t); x.focus()} function sendChat(id) {const el = $('#message'), v = el?.value.trim(); if (!v) return; const c = state.cases.find(x => x.id === id); c.chat.push({text: v, at: new Date().toLocaleString('ja-JP'), system: false, role}); persist(); markRead(id); render()} function saveContract(id) {const c = state.cases.find(x => x.id === id); c.contract = {start: $('#ct_start').value, end: $('#ct_end').value, entry: $('#ct_entry').value, rate: $('#ct_rate').value}; persist(); render()}
+        function openCaseModal(mid, id = null) {modal = {kind: 'case', mid, id}; render()} function closeModal() {modal = null; render()} function modalOverlay() {const c = modal.id ? state.cases.find(c => c.id === modal.id) : null; return `<div class="shade2" onclick="closeModal()"></div><div class="modal"><div class="buttons" style="justify-content:space-between;margin-bottom:17px"><h2>${c ? '案件を編集' : '新しい案件を追加'}</h2>${btn('×', 'closeModal()')}</div><div class="formgrid"><div class="field full"><label>会社名</label><input id="f_company" value="${esc(c?.company || '')}" placeholder="会社名" maxlength="150"></div><div class="field full"><label>案件名</label><input id="f_title" value="${esc(c?.title || '')}" placeholder="案件名" maxlength="150"></div><div class="field full"><label>最寄り駅</label><input id="f_station" value="${esc(c?.station || '')}" placeholder="最寄り駅 / フルリモート"></div><div class="field full"><label>その他・案件詳細</label><textarea id="f_notes" placeholder="勤務条件・スキル要件・備考など">${esc(c?.notes || '')}</textarea></div></div><div class="actions" style="justify-content:space-between">${c ? btn('この案件を削除', `deleteCase(${c.id})`, 'danger') : '<span></span>'}<div class="buttons">${btn('キャンセル', 'closeModal()')}${btn(c ? '変更を保存' : '案件を追加', 'saveCase()', 'primary')}</div></div></div>`} function saveCase() {const company = $('#f_company').value.trim(), title = $('#f_title').value.trim(); if (!company || !title) return notify('会社名と案件名は必須です'); const v = {company, title, station: $('#f_station').value.trim(), notes: $('#f_notes').value.trim()}; if (modal.id) {Object.assign(state.cases.find(c => c.id === modal.id), v)} else {state.cases.push({id: state.next++, mid: modal.mid, month, ...v, status: 'エントリーする', owner: state.owners[modal.mid] || '', contract: {start: '', end: '', entry: '', rate: ''}, chat: []})} const mid = modal.mid; modal = null; persist(); openMember(mid, 'cases')} function deleteCase(id) {if (!confirm('この案件と案件チャット、契約情報を削除しますか？')) return; const mid = modal.mid; state.cases = state.cases.filter(c => c.id !== id); modal = null; persist(); openMember(mid, 'cases')} render();
+    </script>
+    <style>
+        /* v4 overrides */
+        .compactcategories .categoryline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        .compactcategories .categorycount {
+            border-radius: 8px;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            background: #fff;
+            min-width: 140px
+        }
+
+        .compactcategories .categorycount .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            display: inline-block
+        }
+
+        .compactcategories .categorycount .row1 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px
+        }
+
+        .compactcategories .categorycount .numline {
+            display: flex;
+            align-items: baseline;
+            gap: 5px
+        }
+
+        .rowstack {
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+
+        .mono {
+            font-variant-numeric: tabular-nums
+        }
+
+        .wf-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--line);
+            font-size: 12px;
+            border-radius: 999px;
+            background: #fff
+        }
+
+        .wf-badge.pending {
+            color: #76520e;
+            background: #fff8e7;
+            border-color: #eed89e
+        }
+
+        .wf-badge.progress {
+            color: #5e37ae;
+            background: #f6f0ff;
+            border-color: #d9c1ff
+        }
+
+        .wf-badge.done {
+            color: #177d53;
+            background: #eefbf4;
+            border-color: #bfe7d0
+        }
+
+        .clickrow {
+            cursor: pointer
+        }
+
+        .clickrow td {
+            vertical-align: middle
+        }
+
+        .ownerfilter {
+            min-width: 160px
+        }
+
+        .caseflat {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px
+        }
+
+        .caseflat .casecard {
+            margin: 0;
+            cursor: pointer;
+            display: block
+        }
+
+        .caseflat .casecard:hover {
+            background: #faf8ff
+        }
+
+        .case-flat-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: flex-start
+        }
+
+        .case-flat-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0
+        }
+
+        .case-flat-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+            align-items: center
+        }
+
+        .mini-kpis {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin: 14px 0
+        }
+
+        .mini-kpis>div {
+            border: 1px solid var(--line);
+            padding: 10px 12px;
+            background: #fff
+        }
+
+        .mini-kpis small {
+            display: block;
+            color: var(--muted);
+            margin-bottom: 4px
+        }
+
+        .mini-kpis strong {
+            font-size: 18px
+        }
+
+        .member-topgrid {
+            display: grid;
+            grid-template-columns: 1.1fr 1.1fr .9fr;
+            gap: 12px
+        }
+
+        .summarybox {
+            border: 1px solid var(--line);
+            padding: 15px;
+            background: #fff
+        }
+
+        .summarybox h3 {
+            margin: 0 0 12px;
+            font-size: 16px
+        }
+
+        .summarysub {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        .summarylist {
+            display: grid;
+            gap: 8px
+        }
+
+        .summaryitem {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            border-top: 1px solid #f0f0f3;
+            padding-top: 8px
+        }
+
+        .summaryitem:first-child {
+            border-top: none;
+            padding-top: 0
+        }
+
+        .summaryitem label {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .summaryitem strong {
+            font-size: 13px;
+            text-align: right
+        }
+
+        .drawer.casewide {
+            width: min(1120px, 100vw)
+        }
+
+        .case-topgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 16px
+        }
+
+        .case-info-card {
+            border: 1px solid var(--line);
+            padding: 16px;
+            background: #fff
+        }
+
+        .case-info-card h3 {
+            margin: 0 0 12px;
+            font-size: 16px
+        }
+
+        .case-info-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 8px 12px
+        }
+
+        .case-info-grid dt {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .case-info-grid dd {
+            margin: 0;
+            font-weight: 600
+        }
+
+        .case-notes {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f3;
+            white-space: pre-wrap
+        }
+
+        .role-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 0 0 12px
+        }
+
+        .role-toggle button {
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 7px 10px;
+            border-radius: 999px
+        }
+
+        .role-toggle button.active {
+            background: #f6f0ff;
+            border-color: #d9c1ff;
+            color: #5e37ae;
+            font-weight: 700
+        }
+
+        .chat-shell {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--line);
+            background: #fff;
+            min-height: 540px;
+            max-height: calc(100vh - 240px)
+        }
+
+        .chat-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: center;
+            background: #fcfcfd
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 16px
+        }
+
+        .chat-sub {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .chat-stream {
+            flex: 1;
+            overflow: auto;
+            padding: 18px;
+            background: #f7f8fa;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-width: 72%
+        }
+
+        .message.me {
+            align-self: flex-end;
+            align-items: flex-end
+        }
+
+        .message.them {
+            align-self: flex-start;
+            align-items: flex-start
+        }
+
+        .message.system {
+            align-self: center;
+            max-width: 100%;
+            align-items: center
+        }
+
+        .message .meta {
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .message .body {
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 10px 12px;
+            border-radius: 14px;
+            white-space: pre-wrap;
+            word-break: break-word
+        }
+
+        .message.me .body {
+            background: #ece8ff;
+            border-color: #d6cdfd
+        }
+
+        .message.system .body {
+            background: #fff6df;
+            border-color: #efdfab;
+            font-size: 12px
+        }
+
+        .chat-compose {
+            border-top: 1px solid var(--line);
+            padding: 12px 16px;
+            background: #fff;
+            display: grid;
+            gap: 10px
+        }
+
+        .chat-textarea-wrap {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end
+        }
+
+        .chat-compose textarea {
+            flex: 1;
+            min-height: 84px;
+            resize: vertical
+        }
+
+        .template-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center
+        }
+
+        .template-row .tinyaction {
+            border: 1px solid var(--line);
+            background: #fff;
+            padding: 7px 10px;
+            border-radius: 999px
+        }
+
+        .template-row .tinyaction:hover {
+            background: #faf8ff
+        }
+
+        .compose-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center
+        }
+
+        .compose-actions .side-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .infochips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .unread {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #f6f0ff;
+            border: 1px solid #d9c1ff;
+            color: #5e37ae
+        }
+
+        .hintline {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        @media (max-width:960px) {
+
+            .member-topgrid,
+            .case-topgrid,
+            .caseflat,
+            .mini-kpis {
+                grid-template-columns: 1fr
+            }
+
+            .drawer.casewide {
+                width: 100vw
+            }
+
+            .chat-shell {
+                max-height: none;
+                min-height: 420px
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            window.ownerFilter = window.ownerFilter || '';
+            window.empNo = m => String((m.no || (30000 + m.id))).padStart(5, '0');
+            window.ownerOf = id => ((data().owners || state.owners)[id] || '未設定');
+            window.typeTone = type => ({'新規営業': '#7C3AED', '単価交渉': '#FC4C02', '新規営業（終了予定）': '#BDBBFF', '育児休業': '#777', '介護休業': '#777', '待機': '#177D53', '休職': '#959494', '勤怠免除': '#959494', '内勤': '#010120'}[type] || '#7C3AED');
+            window.workflowStatus = mid => {const cs = currentCases(mid); if (cs.some(c => c.status === '参画決定')) return '確定'; if (cs.length) return '提案中'; return '未';};
+            window.workflowBadge = st => `<span class="wf-badge ${st === '確定' ? 'done' : st === '提案中' ? 'progress' : 'pending'}">${esc(st)}</span>`;
+            window.typeCard = (type, count) => `<button class="category-filter ${typeFilter === type ? 'on' : ''}" style="--category-color:${typeTone(type)}" onclick="typeFilter=typeFilter===${JSON.stringify(type)}?'':${JSON.stringify(type)};render()"><span class="category-mark" style="background:${typeTone(type)}"></span><span>${esc(type)}</span><strong>${count}</strong><span class="tiny">人</span></button>`;
+            window.normalizeSeedStatuses = () => {state.cases.forEach(c => {if (c.status === '面談後／オファー前') c.status = '面談依頼'; if (typeof c.readSales !== 'number') c.readSales = 0; if (typeof c.readEngineer !== 'number') c.readEngineer = 0; if (!Array.isArray(c.chat)) c.chat = []; c.chat.forEach(x => {if (!x.role && !x.system) x.role = 'sales';});}); persist();};
+            window.totalStats = function () {const ids = Object.keys(data().types); const cs = data().cases; return {ids: ids.length, active: ids.filter(id => cs.some(c => c.mid == id && !['エントリーする', 'エントリーしない', 'お見送り', '面談後お見送り'].includes(c.status))).length, proposals: cs.length, interviews: cs.filter(c => ['面談依頼', 'オファー', '参画決定', '面談後お見送り'].includes(c.status)).length, offers: cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length, decided: cs.filter(c => c.status === '参画決定').length}};
+            window.allowedMonths = function () {const [y, m] = month.split('-').map(Number); return [-1, 0, 1].map(n => {const d = new Date(y, m - 1 + n, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0')})};
+            window.monthSelector = function (id = 'targetMonth') {return `<select id="${id}">${allowedMonths().map(mm => `<option value="${mm}" ${mm === month ? 'selected' : ''}>${ym(mm)}</option>`).join('')}</select>`};
+            window.monthPage = function (s, final) {const ids = Object.keys(data().types).map(Number); const rows = members.filter(m => ids.includes(m.id)).filter(m => !typeFilter || data().types[m.id] === typeFilter).filter(m => !ownerFilter || ownerOf(m.id) === ownerFilter).filter(m => !query || ((m.name + m.skill + m.team + empNo(m) + (m.current.company || '')).toLowerCase().includes(query.toLowerCase()))).filter(m => !statusFilter || workflowStatus(m.id) === statusFilter); const typeCounts = CATS.filter(c => ids.some(id => data().types[id] === c)); return `<div class="monthbar"><div class="buttons">${btn('←', 'monthShift(-1)')}<span class="month">${ym(month)}</span>${btn('→', 'monthShift(1)')}<span class="pill ${final ? 'purple' : 'gray'}">${final ? '確定済・履歴固定' : '編集中'}</span></div><div class="buttons">${final ? btn('確定を解除', 'unfinalize()') : btn('この月を確定する', 'finalize()', 'primary')}${btn('CSV出力', 'exportCSV()')}</div></div>${final ? `<div class="snapshot">[✓] ${ym(month)}の営業状況は確定時点の状態で保存されています。現在の案件変更は反映されません。確定解除後に編集可能です。</div>` : ''}<div class="metrics">${[['営業対象者', s.ids], ['営業着手', s.active], ['案件提案', s.proposals], ['面談依頼以上', s.interviews], ['オファー以上', s.offers], ['参画決定', s.decided]].map(([label, value], i) => `<div class="metric"><small>${label}</small><div class="num ${i === 0 ? 'purple' : ''}">${value}</div></div>`).join('')}</div><div class="compactcategories"><h2>営業種別 / 人数</h2><div class="categoryline">${typeCounts.map(c => typeCard(c, ids.filter(id => data().types[id] === c).length)).join('') || '<span class="textmuted">営業対象者なし</span>'}</div></div><section class="section"><div class="sectionhead"><h2>${ym(month)}の営業対象者 <span class="highlight">${ids.length}名</span></h2>${!final ? btn('[+] 対象者を追加', "view='employees';render()", 'primary') : ''}</div><div class="sectionbody"><div class="filters"><input class="search" placeholder="氏名・社員番号・スキル・所属で検索" value="${esc(query)}" oninput="query=this.value;refreshRows()"><select onchange="typeFilter=this.value;refreshRows()"><option value="">全営業種別</option>${CATS.map(c => `<option ${c === typeFilter ? 'selected' : ''}>${c}</option>`).join('')}</select><select class="ownerfilter" onchange="ownerFilter=this.value;refreshRows()"><option value="">全担当営業</option>${OWNERS.map(o => `<option ${o === ownerFilter ? 'selected' : ''}>${o}</option>`).join('')}</select><select onchange="statusFilter=this.value;refreshRows()"><option value="">全ステータス</option><option ${statusFilter === '未' ? 'selected' : ''}>未</option><option ${statusFilter === '提案中' ? 'selected' : ''}>提案中</option><option ${statusFilter === '確定' ? 'selected' : ''}>確定</option></select></div><div class="scroll" id="rows">${monthRows(rows, final)}</div></div></section><p class="note">※ 提案件数はその月に登録されている案件数です。ステータスは「未 / 提案中 / 確定」で簡易表示しています。</p>`};
+            window.monthRows = function (rows, final) {if (!rows.length) return '<div class="empty">該当する営業対象者がいません</div>'; return `<table><thead><tr><th>エンジニア</th><th>社員番号</th><th>所属・スキル</th><th>営業種別</th><th>担当営業</th><th>現契約終了</th><th>現契約先</th><th>提案件数</th><th>ステータス</th><th>${final ? '履歴' : '操作'}</th></tr></thead><tbody>${rows.map(m => {const cs = currentCases(m.id); return `<tr class="clickrow" onclick="event.stopPropagation();openMember(${m.id})"><td><div class="rowstack"><span class="employee-name">${esc(m.name)}</span><div class="tiny textmuted">${esc(m.exp)} / ${esc(m.join)}入社</div></div></td><td class="mono">${empNo(m)}</td><td>${esc(m.team)}<div class="tiny textmuted">${esc(m.skill)}</div></td><td>${final ? `<span class="pill">${esc(data().types[m.id])}</span>` : `<select class="smallselect" aria-label="${esc(m.name)}の営業種別" onclick="event.stopPropagation()" onchange="changeType(${m.id},this.value)">${catOpts(data().types[m.id])}</select>`}</td><td>${esc(ownerOf(m.id))}</td><td>${esc(m.current.end || '—')}</td><td>${esc(m.current.company || '—')}</td><td>${cs.length}件</td><td>${workflowBadge(workflowStatus(m.id))}</td><td>${final ? '<span class="tiny textmuted">固定</span>' : `<button class="remove-target" onclick="event.stopPropagation();removeTarget(${m.id})">対象から外す</button>`}</td></tr>`}).join('')}</tbody></table>`};
+            window.refreshRows = function () {const ids = Object.keys(data().types).map(Number); const rows = members.filter(m => ids.includes(m.id)).filter(m => !typeFilter || data().types[m.id] === typeFilter).filter(m => !ownerFilter || ownerOf(m.id) === ownerFilter).filter(m => !query || ((m.name + m.skill + m.team + empNo(m) + (m.current.company || '')).toLowerCase().includes(query.toLowerCase()))).filter(m => !statusFilter || workflowStatus(m.id) === statusFilter); $('#rows').innerHTML = monthRows(rows, mdata().final)};
+            window.employeePage = function () {return `<section class="section"><div class="sectionhead"><div><h2>営業対象にする社員を選択</h2><div class="note">対象月は「前月・当月・翌月」の3ヶ月から選べます。すでに登録済みの月はそのまま維持されます。</div></div><span class="pill purple">選択中 ${selected.size}名</span></div><div class="sectionbody"><div class="filters"><input class="search" placeholder="社員名・社員番号・所属・スキルを検索" oninput="filterEmployees(this.value)" id="empquery"><select id="empteam" onchange="filterEmployees($('#empquery').value)"><option value="">全部署</option>${[...new Set(members.map(m => m.team))].map(t => `<option>${t}</option>`).join('')}</select></div><div class="scroll" id="empRows">${empRows(members)}</div></div></section><section class="section"><div class="sectionhead"><h2>選択した社員の登録先</h2></div><div class="sectionbody"><div class="tiny textmuted" style="margin-bottom:9px">登録する月（前月・当月・翌月）</div><div class="minirow">${monthSelector('bulkPicker')}${btn('選択した社員をこの月に登録', 'bulkAdd()', 'primary')}<span class="note">営業種別は登録後に設定できます（初期値：新規営業）</span></div></div></section>`};
+            window.empRows = function (ms) {return `<table><thead><tr><th><input type="checkbox" onchange="toggleAll(this.checked)" aria-label="全社員を選択"></th><th>社員</th><th>社員番号</th><th>所属</th><th>主要スキル</th><th>現契約先</th><th>営業対象に登録済みの月</th></tr></thead><tbody>${ms.map(m => {const months = Object.entries(state.months).filter(([x, d]) => !!d.types[m.id]).map(([x]) => x.replace('-', '年') + '月'); return `<tr><td><input type="checkbox" data-emp-id="${m.id}" ${selected.has(m.id) ? 'checked' : ''} onchange="toggleSelect(${m.id},this.checked)"></td><td><button class="name" onclick="event.stopPropagation();openMember(${m.id})">${esc(m.name)}</button></td><td class="mono">${empNo(m)}</td><td>${esc(m.team)}</td><td>${esc(m.skill)}</td><td>${esc(m.current.company)}</td><td class="tiny">${months.join(' / ') || '—'}</td></tr>`}).join('')}</tbody></table>`};
+            window.filterEmployees = function (q) {const t = $('#empteam').value; $('#empRows').innerHTML = empRows(members.filter(m => (!t || t === m.team) && (!q || ((m.name + m.team + m.skill + empNo(m) + (m.current.company || '')).toLowerCase().includes(q.toLowerCase())))))};
+            window.bulkAdd = function () {if (!selected.size) return notify('社員を選択してください'); const mm = $('#bulkPicker').value; if (!allowedMonths().includes(mm)) return notify('前月・当月・翌月のいずれかを選択してください'); const d = state.months[mm] || (state.months[mm] = {final: false, types: {}, snapshot: null}); if (d.final) return notify('確定済みのため登録できません。先に確定を解除してください'); selected.forEach(id => {if (!d.types[id]) d.types[id] = '新規営業'}); month = mm; selected.clear(); view = 'month'; persist(); render()};
+            window.addNextMonth = function (mid) {const mm = $('#carryMonth').value; if (!allowedMonths().includes(mm)) return notify('前月・当月・翌月のいずれかを選択してください'); if (mm === month) return notify('現在の月はすでに表示中です'); const d = state.months[mm] || (state.months[mm] = {final: false, types: {}, snapshot: null}); if (d.final) return notify('確定済みの月です'); if (d.types[mid]) return notify('その月にはすでに登録されています'); d.types[mid] = mdata().types[mid] || '新規営業'; persist(); notify(ym(mm) + 'に登録しました。案件・チャットは現在の月に残ります'); render()};
+            window.memberDrawer = function () {const m = getMember(drawer.mid), cs = currentCases(m.id), won = cs.filter(c => c.status === '参画決定'), t = data().types[m.id], final = mdata().final; const owners = OWNERS.map(o => `<option value="${esc(o)}" ${ownerOf(m.id) === o ? 'selected' : ''}>${esc(o)}</option>`).join(''); const item = (k, v) => `<div class="summaryitem"><label>${esc(k)}</label><strong>${esc(v)}</strong></div>`; return `<aside class="drawer"><div class="drawerhead"><div><div class="tiny textmuted">ENGINEER / ${ym(month)} ${final ? '[確定時点]' : ''}</div><h2>${esc(m.name)}</h2><div class="tiny textmuted">社員番号 ${empNo(m)} / ${esc(m.team)} / ${esc(m.skill)} / ${esc(m.exp)}</div></div>${btn('×', 'closeDrawer()')}</div><div class="drawerbody"><div class="casetabs"><button class="casetab ${drawer.tab === 'overview' ? 'active' : ''}" onclick="drawer.tab='overview';render()">社員・契約情報</button><button class="casetab ${drawer.tab === 'cases' ? 'active' : ''}" onclick="drawer.tab='cases';render()">案件・営業状況 (${cs.length})</button></div>${!final && t ? `<div class="month-assign"><span class="tiny textmuted">この社員を別の月にも登録</span>${monthSelector('carryMonth')}${btn('月に追加', `addNextMonth(${m.id})`)}</div>` : ''}${drawer.tab === 'overview' ? `<div class="employee-owner"><label class="tiny textmuted">担当営業</label><select style="flex:1" ${final ? 'disabled' : ''} onchange="changeOwner(${m.id},this.value)">${owners}</select></div><div class="member-contractgrid"><section class="summarybox"><h3>現契約情報</h3><div class="summarylist">${item('契約先', m.current.company)}${item('契約開始', m.current.start || '—')}${item('契約終了', m.current.end || '—')}${item('単価（月額）', fmt(m.current.rate))}</div></section><section class="summarybox"><h3>参画決定した案件 / 次の契約情報</h3>${won.length ? won.map(c => `<div class="next-contract"><div class="next-heading"><strong>${esc(c.company)} / ${esc(c.title)}</strong><button class="tiny-link" onclick="openCase(${c.id})">案件を開く →</button></div><div class="summarylist">${item('契約開始', c.contract.start || '未入力')}${item('契約終了', c.contract.end || '未入力')}${item('入場予定日', c.contract.entry || '未入力')}${item('単価（月額）', fmt(c.contract.rate))}</div></div>`).join('') : '<div class="textmuted">参画決定した案件はありません。</div>'}</section></div>` : `<div class="case-list-head"><span class="textmuted tiny">案件を選択すると進捗・チャット・契約情報を確認できます。</span>${!final ? btn('＋ 案件追加', `openCaseModal(${m.id})`, 'primary') : ''}</div><div class="metrics case-metrics">${[['案件提案数', cs.length], ['面談依頼数', cs.filter(c => ['面談依頼', 'オファー', '参画決定', '面談後お見送り'].includes(c.status)).length], ['オファー数', cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length], ['面談通過率', `${cs.filter(c => ['オファー', '参画決定'].includes(c.status)).length}/${cs.filter(c => ['面談依頼', 'オファー', '参画決定', '面談後お見送り'].includes(c.status)).length || 0}`]].map(([k, v]) => `<div class="metric"><small>${k}</small><div class="num">${v}</div></div>`).join('')}</div><div class="case-list">${cs.map(c => `<div class="case-list-item" onclick="openCase(${c.id})"><div class="case-list-top"><div><strong>${esc(c.company)}</strong><div class="case-title">${esc(c.title)}</div></div><span class="pill ${c.status === '参画決定' ? 'green' : 'purple'}">${esc(c.status)}</span></div><div class="case-list-bottom"><span class="tiny textmuted">最寄り駅：${esc(c.station || '未登録')}</span>${unreadFor(c) ? `<span class="unread">未読 ${unreadFor(c)}</span>` : ''}${c.status === '参画決定' && !contractComplete(c) ? '<span class="pill red">契約情報の入力待ち</span>' : ''}</div></div>`).join('') || '<div class="empty">登録案件はありません。案件追加から登録できます。</div>'}</div>`}</div></aside>`};
+            window.caseDrawer = function () {const c = data().cases.find(x => x.id === drawer.id); if (!c) {drawer = null; return ''} const m = getMember(c.mid), final = mdata().final; const unread = unreadFor(c); const statusButtons = !final && role === 'engineer' ? `<div class="status-choice">${btn('エントリー希望', `changeStatus(${c.id},'エントリーする')`)}${btn('エントリー辞退', `reasonOpen=true;render()`)}${reasonOpen ? `<div class="reasonfield"><label>辞退理由</label><textarea id="declineReason" placeholder="辞退理由を入力してください"></textarea><div class="buttons" style="margin-top:8px">${btn('辞退を確定する', `declineEntry(${c.id})`, 'primary')}${btn('キャンセル', `reasonOpen=false;render()`)}</div></div>` : ''}</div>` : ''; return `<aside class="drawer"><div class="drawerhead"><div><button class="link tiny" onclick="openMember(${m.id},'cases')">← ${esc(m.name)}の案件一覧</button><div class="tiny textmuted" style="margin-top:9px">${ym(month)} / ${esc(c.company)} / 社員番号 ${empNo(m)}</div><h2>${esc(c.title)}</h2></div>${btn('×', 'closeDrawer()')}</div><div class="drawerbody"><div class="case-topgrid"><div class="case-info-card"><div class="buttons" style="justify-content:space-between;align-items:flex-start"><h3>案件情報</h3>${!final ? btn('編集', `openCaseModal(${c.mid},${c.id})`) : ''}</div><dl class="case-info-grid"><dt>会社名</dt><dd>${esc(c.company)}</dd><dt>案件名</dt><dd>${esc(c.title)}</dd><dt>最寄り駅</dt><dd>${esc(c.station || '—')}</dd><dt>担当営業</dt><dd>${esc(state.owners[c.mid] || '未設定')}</dd></dl>${c.notes ? `<div class="case-notes">${esc(c.notes)}</div>` : ''}</div><div class="case-info-card"><h3>営業進捗</h3><dl class="case-info-grid"><dt>現在ステータス</dt><dd><span class="pill ${c.status === '参画決定' ? 'green' : 'purple'}">${esc(c.status)}</span></dd><dt>提案月</dt><dd>${ym(c.month)}</dd><dt>営業対象種別</dt><dd>${esc(data().types[c.mid] || '—')}</dd><dt>未読</dt><dd><div class="infochips"><span class="unread">営業 ${Math.max(0, c.chat.length - (c.readSales || 0))}</span><span class="unread">エンジニア ${Math.max(0, c.chat.length - (c.readEngineer || 0))}</span></div></dd></dl>${role === 'sales' ? `<div class="field" style="margin-top:12px"><label>ステータス変更</label><select ${final ? 'disabled' : ''} onchange="changeStatus(${c.id},this.value)">${statusOpts(c.status)}</select></div>` : ''}${statusButtons}${c.status === '参画決定' && !contractComplete(c) ? `<div class="warncontract">参画決定です。契約情報が未入力のため、入力してください。 ${btn('契約情報を入力', "caseTab='contract';render()")}</div>` : ''}</div></div>${c.status === '待機' || c.status === '参画決定' ? '<div class="snapshot">この社員の今月の営業はクローズ扱いです。月次データは確定するまで編集できます。</div>' : ''}<div class="casetabs"><button class="casetab ${caseTab === 'chat' ? 'active' : ''}" onclick="caseTab='chat';render()">チャット ${unread ? `<span class="unread">${unread}</span>` : ''}</button><button class="casetab ${caseTab === 'contract' ? 'active' : ''}" onclick="caseTab='contract';render()">契約情報</button></div>${caseTab === 'chat' ? `<div class="role-toggle"><span class="tiny textmuted">表示・発言する側（モック）</span><button class="${role === 'sales' ? 'active' : ''}" onclick="setRole('sales')">営業側 ${Math.max(0, c.chat.length - (c.readSales || 0)) ? `<span class="unread">${Math.max(0, c.chat.length - (c.readSales || 0))}</span>` : ''}</button><button class="${role === 'engineer' ? 'active' : ''}" onclick="setRole('engineer')">エンジニア側 ${Math.max(0, c.chat.length - (c.readEngineer || 0)) ? `<span class="unread">${Math.max(0, c.chat.length - (c.readEngineer || 0))}</span>` : ''}</button></div><div class="chat-shell"><div class="chat-header"><div><h3>案件チャット</h3><div class="chat-sub">ステータス変更も履歴として残ります。どの進捗でどの会話をしたか追える構成です。</div></div><div class="infochips"><span class="pill">${esc(c.status)}</span>${unread ? `<span class="unread">未読 ${unread}</span>` : ''}</div></div><div class="chat-stream" id="chatHistory">${c.chat.map(x => `<div class="message ${x.system ? 'system' : x.role === role ? 'me' : 'them'}"><div class="meta">${x.system ? '履歴' : (x.role === 'engineer' ? m.name : '担当営業')}</div><div class="body">${esc(x.text)}${x.attachment ? `<div class="attached-file" onclick="downloadChatAttachment('${esc(x.attachment.key)}')" role="button" tabindex="0">📎 ${esc(x.attachment.name)} <small>(${Math.round(x.attachment.size / 1024)}KB)　↓</small></div>` : ''}</div><div class="meta">${esc(x.at)}</div></div>`).join('') || '<div class="empty">メッセージはまだありません。</div>'}</div>${!final ? `<div class="chat-compose"><div class="chat-textarea-wrap"><textarea id="message" onkeydown="chatKeydown(event,${c.id})" placeholder="Enterで送信 / Shift+Enterで改行"></textarea>${btn('送信', `sendChat(${c.id})`, 'primary')}</div><div class="attachment-picker"><label class="attach-label" for="chatAttachment">＋ ファイル添付（最大10MB）</label><input id="chatAttachment" type="file" accept="*/*" onchange="attachCaseFile(${c.id},this)"><span class="tiny textmuted">送信後にチャット履歴へ追加されます</span></div><div class="template-row"><span class="tiny textmuted">定型入力</span>${(role === 'sales' ? ['面談候補日時を送る', '条件確認を送る', '面談後共有を送る', '選考結果を送る', '入場日確認を送る'] : ['面談希望日時を送る', '案件への質問を送る', '面談の感想を送る', '稼働条件の希望を送る']).map(t => `<button class="tinyaction" onclick="insertTemplate('${t}')">${t}</button>`).join('')}</div><div class="compose-actions"><div class="hintline">よくあるチャットUIに寄せて、入力欄は下部固定にしています。</div><div class="side-actions">${btn('未読をクリア', `markRead(${c.id});render()`)} </div></div></div>` : ''}</div>` : `<div class="infobox"><h3>この案件の契約情報</h3><div class="tiny textmuted" style="margin-bottom:14px">参画決定時に入力してください。社員詳細にも同じ契約情報を表示します。</div><div class="formgrid"><div class="field"><label>契約開始年月日</label><input type="date" id="ct_start" value="${esc(c.contract.start)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>契約終了年月日</label><input type="date" id="ct_end" value="${esc(c.contract.end)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>入場予定年月日</label><input type="date" id="ct_entry" value="${esc(c.contract.entry)}" ${final || role === 'engineer' ? 'disabled' : ''}></div><div class="field"><label>単価（円/月）</label><input type="number" min="0" id="ct_rate" placeholder="例：750000" value="${esc(c.contract.rate)}" ${final || role === 'engineer' ? 'disabled' : ''}></div></div>${!final && role === 'sales' ? `<div class="actions">${btn('契約情報を保存', `saveContract(${c.id})`, 'primary')}</div>` : ''}</div>`}</div></aside>`};
+            window.insertTemplate = function (t) {const x = $('#message'); if (!x) return; const texts = {'面談候補日時を送る': '面談候補日時：\n①\n②\n③', '条件確認を送る': '確認事項：\n・稼働開始可能日\n・就業時間\n・出社 / リモート条件', '面談後共有を送る': '面談後共有：\n・参画意欲\n・案件への興味度合い\n・質問事項\n・他案件との比較', '選考結果を送る': '選考結果：\n次の対応：', '入場日確認を送る': '入場予定日：\n初日集合場所：\n持参物：', '面談希望日時を送る': '面談希望日時：\n①\n②', '案件への質問を送る': '確認したいこと：', '面談の感想を送る': '面談の感想：\n参画意欲：', '稼働条件の希望を送る': '希望条件：\n・稼働開始日\n・働き方\n・その他'}; x.value += (x.value ? '\n' : '') + (texts[t] || t); x.focus()};
+            window.attachCaseFile = async function (id, input) {const file = input.files?.[0]; if (!file) return; if (file.size > 10 * 1024 * 1024) {notify('添付できるファイルは10MBまでです'); input.value = ''; return } try {const key = 'file_' + id + '_' + Date.now() + '_' + Math.random().toString(36).slice(2); const db = await chatFileDb(); await new Promise((resolve, reject) => {const tx = db.transaction('attachments', 'readwrite'); tx.objectStore('attachments').put({key, blob: file}); tx.oncomplete = resolve; tx.onerror = () => reject(tx.error)}); const c = state.cases.find(x => x.id === id); c.chat.push({text: 'ファイルを添付しました', at: new Date().toLocaleString('ja-JP'), system: false, role, attachment: {key, name: file.name, size: file.size}}); persist(); markRead(id); render()} catch (e) {notify('添付ファイルを保存できませんでした: ' + e.message)} };
+            window.chatFileDb = function () {return new Promise((resolve, reject) => {const req = indexedDB.open('ses_sales_chat_files_v5', 1); req.onupgradeneeded = () => req.result.createObjectStore('attachments', {keyPath: 'key'}); req.onsuccess = () => resolve(req.result); req.onerror = () => reject(req.error)})};
+            window.downloadChatAttachment = async function (key) {try {const db = await chatFileDb(); const item = await new Promise((resolve, reject) => {const r = db.transaction('attachments', 'readonly').objectStore('attachments').get(key); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error)}); if (!item) {notify('添付データが見つかりません（このブラウザ以外では保存されません）'); return } const a = document.createElement('a'), url = URL.createObjectURL(item.blob); a.href = url; a.download = item.blob.name; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000)} catch (e) {notify('ダウンロードに失敗しました: ' + e.message)} };
+            normalizeSeedStatuses();
+            render();
+        })();
+    </script>
+</body>
+
+</html>
