@@ -1983,4 +1983,145 @@ mbEditAdmin=function(id){mbV66Edit(id);const join=document.getElementById('mbJoi
 const pmV66Grant=pmAdminGrantView;
 pmAdminGrantView=function(){let h=pmV66Grant();const opener='<div class="pm-grant-group"><div class="pm-grant-values">';const a=h.indexOf(opener);if(a<0)return h;const time='<div class="pm-grant-group pm-grant-timegroup">';const b=h.indexOf(time,a);if(b<0)return h;const reason='<div class="pm-grant-group pm-grant-reasongroup">';const c=h.indexOf(reason,b);if(c<0)return h;const block=h.slice(a,c);return h.slice(0,a)+'<div class="pm-v66-grant-line">'+block+'</div>'+h.slice(c)};
 </script>
+
+<style id="onport-v67">
+/* unread: reserve a constant-width dot instead of an extra badge */
+.home-news-title{display:inline-flex!important;align-items:center;gap:8px;min-width:0}
+.home-unread-label{display:inline-block!important;flex:0 0 7px;width:7px;height:7px;border-radius:50%;background:#7458bd;overflow:hidden;font-size:0!important;padding:0!important;border:0!important;line-height:0!important;margin:0!important;box-shadow:none!important}
+.news .home-news-title::before{content:"";display:inline-block;width:7px;flex:0 0 7px}
+.news .home-news-title:has(.home-unread-label)::before{display:none}
+.news.on-unread{background:#faf9fd!important}
+/* paired timesheet totals */
+.on-v67-flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;padding:12px 16px;color:#625b78;background:#faf8fe;border-bottom:1px solid #eae6f4}
+.on-v67-flow span{font-weight:600}.on-v67-flow b{color:#9b92b0}
+.on-v67-scroll{overflow:auto}.on-v67-table{min-width:1120px!important}
+.on-v67-table th,.on-v67-table td{white-space:nowrap}.on-v67-table .on-v67-mismatch{font-weight:700;color:#c64150}.on-v67-table .on-v67-match{color:#6f6b77}.on-v67-table .on-v67-small{font-size:11px;color:#777;display:block}
+.on-v67-chip{display:inline-block;background:#f1ecf9;color:#684aaf;border-radius:4px;padding:4px 7px;font-size:11px;font-weight:700}.on-v67-chip.bad{background:#fcecef;color:#be3c4b}.on-v67-chip.warn{background:#fff4e7;color:#9e641b}.on-v67-chip.good{background:#e8f5ef;color:#167f56}
+.on-v67-detail-compare{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}
+.on-v67-detail-compare>div{border:1px solid #e6e4eb;border-radius:6px;padding:11px}.on-v67-detail-compare small{display:block;color:#777;font-size:12px}.on-v67-detail-compare strong{font-size:20px}.on-v67-detail-compare .bad strong{color:#c64150}
+.on-v67-detail-compare .bad{background:#fff7f8}
+.on-v67-compare-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px}.on-v67-compare-table th,.on-v67-compare-table td{padding:10px;border-bottom:1px solid #e8e7ed;text-align:right}.on-v67-compare-table th:first-child,.on-v67-compare-table td:first-child{text-align:left}
+.on-v67-compare-table th{background:#f5f4f8;color:#696672}
+.on-v67-actions{display:flex;gap:8px;justify-content:flex-end}
+@media(max-width:620px){.on-v67-detail-compare{grid-template-columns:repeat(3,minmax(0,1fr))}.on-v67-detail-compare strong{font-size:16px}}
+</style>
+<script id="onport-v67-features">
+/* Client and company totals are independently recorded; 0.25h rounding displayed to two decimals. */
+const oa67Client={
+'30001':{total:165.0,ot:25,sub:12,status:'提出済'},
+'30002':{total:182.5,ot:42,sub:6,status:'提出済'},
+'30003':{total:196.0,ot:59,sub:11,status:'提出済'},
+'30004':{total:153.75,ot:14,sub:0,status:'提出済'},
+'30005':{total:null,ot:null,sub:null,status:'未提出'},
+'30006':{total:134.0,ot:30,sub:24,status:'提出済'},
+'30007':{total:176.0,ot:36,sub:3,status:'代理提出済'},
+'30008':{total:182.0,ot:46,sub:16,status:'提出済'}
+};
+onAttRows.forEach(r=>{if(r.submitted==='承認済')r.submitted='提出済';r.approved=false});
+let oa67DetailId=null;
+function oa67ClientFor(r){return oa67Client[r.id]||{total:null,ot:null,sub:null,status:'未提出'}}
+function oa67Difference(r){const c=oa67ClientFor(r);return c.total===null||r.submitted==='未提出'?null:Number((r.main-c.total).toFixed(2))}
+function oa67Hour(n){return n===null?'—':Number(n).toFixed(2)+' h'}
+function oa67Badge(t){return `<span class="on-v67-chip ${t==='未提出'?'bad':t==='差し戻し中'?'warn':t==='代理提出済'?'good':''}">${t}</span>`}
+function oa67Issues(r){const delta=oa67Difference(r),c=oa67ClientFor(r);const issues=[];if(c.status==='未提出')issues.push('客先勤怠が未提出');if(r.submitted==='未提出')issues.push('自社勤怠が未提出');if(delta!==null&&Math.abs(delta)>=.01)issues.push('合計時間に差分あり');if(c.ot!==null&&r.overtime!==c.ot)issues.push('残業時間に差分あり');if(r.submitted!=='未提出'&&(r.main<140||r.main>180))issues.push('総稼働が基準範囲外');if(r.sub>=20)issues.push('サブ時間が20h以上');return issues}
+function oa67SelectAll(checked){for(const r of onAttMatching(onAttFilters()))onAttToggle(r.id,checked);onAttRefresh()}
+/* Keep the established filters and leave ledger; replace only the timesheet comparison section. */
+onAttAdmin=function(){return `<div class="on-admin-wrap"><div class="on-admin-title"><h2>勤怠表管理</h2><span class="on-att-note">2026年10月</span></div><div class="on-admin-section"><div class="on-admin-head"><h3>社員別の提出状況</h3><div class="buttons"><button class="btn" onclick="oa67BulkReturn()">選択した社員へ差し戻し</button></div></div><div class="on-v67-flow"><span>客先勤怠の提出</span><b>→</b><span>自社勤怠の入力補助</span><b>→</b><span>時間差分の確認</span></div><div id="onAttSummary" class="on-att-summary"></div><div id="onAttFilters" class="on-admin-filters"><label>社員検索<input type="search" name="q" placeholder="氏名・社員番号・拠点" oninput="onAttRefresh()"></label><label>提出状況<select name="status" onchange="onAttRefresh()"><option value="all">すべて</option><option>未提出</option><option>提出済</option><option>差し戻し中</option><option>代理提出済</option></select></label><label>残業時間<select name="ot" onchange="onAttRefresh()"><option value="0">指定なし</option><option value="30">30時間以上</option><option value="45">45時間以上</option><option value="60">60時間以上</option></select></label><label>総稼働時間<select name="bound" onchange="onAttRefresh()"><option value="all">すべて</option><option value="out">140〜180時間の範囲外</option><option value="under">140時間未満</option><option value="over">180時間超</option></select></label><label>サブ時間<select name="sub" onchange="onAttRefresh()"><option value="0">指定なし</option><option value="5">5時間以上</option><option value="10">10時間以上</option><option value="20">20時間以上</option></select></label><label>拠点<select name="office" onchange="onAttRefresh()"><option value="all">全拠点</option>${['関東','関西','中部','九州','他地域'].map(x=>`<option>${x}</option>`).join('')}</select></label><label>差分<select name="delta" onchange="onAttRefresh()"><option value="all">すべて</option><option value="yes">差分あり</option><option value="no">差分なし</option><option value="missing">未提出あり</option></select></label></div><div class="on-admin-scroll on-v67-scroll"><table class="on-admin-table on-v67-table"><thead><tr><th style="width:34px"><input type="checkbox" title="表示中を選択" onchange="oa67SelectAll(this.checked)"></th>${onAttTh('社員','name')}${onAttTh('拠点','office')}<th>客先提出</th>${onAttTh('客先合計','clientTotal')}<th>自社提出</th>${onAttTh('自社合計','main')}${onAttTh('差分','delta')}<th>確認事項</th></tr></thead><tbody id="onAttRows"></tbody></table></div></div><div class="on-admin-section"><div class="on-admin-head"><h3>有給休暇の取得状況</h3></div><div id="onAttLeaveFilters" class="on-admin-filters"><label>残日数・期限<select name="leave" onchange="onAttLeaveRefresh()"><option value="all">全社員</option><option value="low">残り5日以下</option><option value="urgent">残り5日以下・失効間近</option></select></label><label>氏名・拠点<input type="search" name="q" placeholder="社員名で検索" oninput="onAttLeaveRefresh()"></label></div><div class="on-admin-scroll"><table class="on-admin-table"><thead><tr>${onAttTh('社員','name')}<th>拠点</th><th>有休残日数</th><th>失効日</th><th>通知状況</th></tr></thead><tbody id="onAttLeaveRows"></tbody></table></div></div></div>`};
+const oa67OldMatch=onAttMatching;
+onAttMatching=function(f){let list=oa67OldMatch({...f,status:'all'});if(f.status&&f.status!=='all')list=list.filter(r=>r.submitted===f.status);if(f.delta==='yes')list=list.filter(r=>{const d=oa67Difference(r);return d!==null&&Math.abs(d)>=.01});if(f.delta==='no')list=list.filter(r=>{const d=oa67Difference(r);return d!==null&&Math.abs(d)<.01});if(f.delta==='missing')list=list.filter(r=>r.submitted==='未提出'||oa67ClientFor(r).status==='未提出');return list};
+onAttRefresh=function(){const target=document.getElementById('onAttRows');if(!target)return;const f=onAttFilters();const rows=onAttMatching(f);const summary=document.getElementById('onAttSummary');if(summary)summary.innerHTML=[['全社員',onAttRows.length],['未提出',onAttRows.filter(r=>r.submitted==='未提出'||oa67ClientFor(r).status==='未提出').length],['提出済',onAttRows.filter(r=>r.submitted==='提出済'||r.submitted==='代理提出済').length],['差分あり',onAttRows.filter(r=>{let d=oa67Difference(r);return d!==null&&Math.abs(d)>=.01}).length],['差し戻し中',onAttRows.filter(r=>r.submitted==='差し戻し中').length]].map(([label,n])=>`<div><small>${label}</small><b>${n}<span style="font-size:12px;font-weight:500"> 名</span></b></div>`).join('');target.innerHTML=rows.map(r=>{const c=oa67ClientFor(r),delta=oa67Difference(r),issues=oa67Issues(r);return `<tr tabindex="0" onclick="onAttDetail('${r.id}')" onkeydown="if(event.key==='Enter')onAttDetail('${r.id}')"><td onclick="event.stopPropagation()"><input type="checkbox" ${onAttSelection.has(r.id)?'checked':''} onchange="onAttToggle('${r.id}',this.checked)"></td><td><strong>${r.name}</strong><small>${r.id}</small></td><td>${r.office}</td><td>${oa67Badge(c.status)}</td><td class="on-att-score">${oa67Hour(c.total)}</td><td>${oa67Badge(r.submitted)}</td><td class="on-att-score">${r.submitted==='未提出'?'—':oa67Hour(r.main)}</td><td class="${delta!==null&&Math.abs(delta)>=.01?'on-v67-mismatch':'on-v67-match'}">${delta===null?'—':(delta>0?'+':'')+delta.toFixed(2)+' h'}</td><td>${issues.length?`<span class="on-v67-chip bad" title="${issues.join(' ／ ')}">要確認 ${issues.length}</span>`:'<span class="on-v67-chip good">問題なし</span>'}</td></tr>`}).join('')||'<tr><td colspan="9" style="text-align:center;padding:24px">該当する社員がいません</td></tr>';onAttLeaveRefresh()};
+const oa67PreviousDetail=onAttDetail;
+onAttDetail=function(id){const r=onAttRows.find(x=>x.id===id);if(!r)return;oa67DetailId=id;const c=oa67ClientFor(r),d=oa67Difference(r);oa67PreviousDetail(id);const body=document.getElementById('modalBody');if(!body)return;body.insertAdjacentHTML('afterbegin',`<div class="on-v67-detail-compare"><div><small>客先勤怠</small><strong>${oa67Hour(c.total)}</strong></div><div><small>自社勤怠</small><strong>${r.submitted==='未提出'?'—':oa67Hour(r.main)}</strong></div><div class="${d!==null&&Math.abs(d)>=.01?'bad':''}"><small>差分（自社 − 客先）</small><strong>${d===null?'—':(d>0?'+':'')+d.toFixed(2)+' h'}</strong></div></div><table class="on-v67-compare-table"><thead><tr><th>項目</th><th>客先</th><th>自社</th><th>差分</th></tr></thead><tbody>${[['総稼働',c.total,r.main],['残業',c.ot,r.overtime],['サブ',c.sub,r.sub]].map(([t,a,b])=>`<tr><td>${t}</td><td>${oa67Hour(a)}</td><td>${oa67Hour(b)}</td><td>${a===null?'—':(b-a>0?'+':'')+Number(b-a).toFixed(2)+' h'}</td></tr>`).join('')}</tbody></table>`);const foot=document.querySelector('#modalFoot');if(foot)foot.innerHTML=`<button class="btn" onclick="closeOverlay()">閉じる</button><button class="btn" onclick="oa67Return('${id}')">差し戻し</button><button class="btn primary" onclick="oa67Proxy('${id}')">代理提出</button>`};
+function oa67Return(id){const r=onAttRows.find(x=>x.id===id);if(!r)return;openModal(r.name+' に差し戻し','2026年10月',`<label style="display:block;font-weight:650">修正依頼の内容<textarea id="oa67ReturnMemo" rows="4" placeholder="確認・修正してほしい箇所" style="display:block;width:100%;margin-top:8px"></textarea></label>`,`<button class="btn" onclick="onAttDetail('${id}')">戻る</button><button class="btn primary" onclick="oa67SaveReturn('${id}')">差し戻す</button>`)}
+function oa67SaveReturn(id){const memo=document.getElementById('oa67ReturnMemo')?.value.trim();if(!memo){atToast('修正依頼の内容を入力してください');return}const r=onAttRows.find(x=>x.id===id);r.submitted='差し戻し中';r.returnMemo=memo;closeOverlay();onAttRefresh();atToast(r.name+' に差し戻しました')}
+function oa67Proxy(id){const r=onAttRows.find(x=>x.id===id);if(!r)return;openModal(r.name+' の代理提出','2026年10月',`<div class="on-v67-detail-compare"><div><small>客先勤怠</small><strong>${oa67Hour(oa67ClientFor(r).total)}</strong></div><div><small>現在の自社勤怠</small><strong>${oa67Hour(r.main)}</strong></div></div><label style="display:block">修正後の自社合計時間<input id="oa67ProxyTotal" type="number" step="0.25" min="0" value="${r.main}" style="display:block;width:100%;margin-top:7px"></label><label style="display:block;margin-top:12px">代理提出の理由<textarea id="oa67ProxyMemo" rows="3" style="display:block;width:100%;margin-top:7px"></textarea></label>`,`<button class="btn" onclick="onAttDetail('${id}')">戻る</button><button class="btn primary" onclick="oa67SaveProxy('${id}')">代理提出する</button>`)}
+function oa67SaveProxy(id){const total=Number(document.getElementById('oa67ProxyTotal')?.value),memo=document.getElementById('oa67ProxyMemo')?.value.trim();if(!Number.isFinite(total)||total<0||!memo){atToast('修正時間と理由を入力してください');return}const r=onAttRows.find(x=>x.id===id);r.main=total;r.submitted='代理提出済';r.proxyMemo=memo;closeOverlay();onAttRefresh();atToast(r.name+' の代理提出を記録しました')}
+function oa67BulkReturn(){const ids=[...onAttSelection];if(!ids.length){atToast('社員を選択してください');return}openModal('選択した社員に差し戻し','',`<p>選択した ${ids.length} 名へ修正依頼を送ります。</p><textarea id="oa67ReturnMemo" rows="3" placeholder="修正してほしい内容" style="width:100%"></textarea>`,`<button class="btn" onclick="closeOverlay()">戻る</button><button class="btn primary" onclick="oa67BulkReturnSave()">差し戻す</button>`)}
+function oa67BulkReturnSave(){const memo=document.getElementById('oa67ReturnMemo')?.value.trim();if(!memo){atToast('修正内容を入力してください');return}onAttRows.filter(r=>onAttSelection.has(r.id)).forEach(r=>{r.submitted='差し戻し中';r.returnMemo=memo});onAttSelection.clear();closeOverlay();onAttRefresh();atToast('差し戻しを記録しました')}
+/* employee-side submission retains existing OCR review and adds a client original submission entry */
+const oa67OldAttendance=attendance;
+attendance=function(){let html=oa67OldAttendance();const anchor='<div class="at-wrap">';if(!html.includes(anchor))return html;const client=`<section class="on-v67-employee-upload" style="background:#fff;border:1px solid #e5e3eb;border-radius:8px;padding:13px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><strong>客先勤怠表</strong><div style="font-size:12px;color:#797781;margin-top:3px">${window.oa67MyClientSubmitted?'提出済':'未提出'}</div></div><div class="buttons"><button class="btn" onclick="atOpenOCR()">読み取り・入力補助</button><button class="btn primary" onclick="oa67ClientSubmit()">客先勤怠を提出</button></div></section>`;return html.replace(anchor,anchor+client)};
+function oa67ClientSubmit(){openModal('客先勤怠表を提出','2026年10月',`<label style="display:block;font-weight:650">客先勤怠表（PDF・画像・Excel）<input id="oa67ClientFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.xlsx,.xls" style="display:block;margin-top:10px;width:100%"></label><div style="margin-top:12px"><button class="btn" onclick="atOpenOCR()">読み取って自社勤怠へ反映</button></div>`,`<button class="btn" onclick="closeOverlay()">閉じる</button><button class="btn primary" onclick="oa67ClientSubmitSave()">提出する</button>`)}
+function oa67ClientSubmitSave(){const el=document.getElementById('oa67ClientFile');if(!el?.files?.length){atToast('提出するファイルを選択してください');return}window.oa67MyClientSubmitted=true;closeOverlay();render();atToast('客先勤怠表を提出しました')}
+</script>
+
+<style id="onport-v68-style">
+/* sectioning follows actual workflows, not explanatory banners */
+#content .on-v67-flow,#content .on-v67-employee-upload{display:none!important}
+#content .on-admin-title{display:none!important}
+#content .on-v68-tabs{display:flex;gap:22px;border-bottom:1px solid #e5e4eb;margin:0 0 15px;padding:0 18px}
+#content .on-v68-tab{border:0;background:transparent;color:#77727f;padding:13px 2px;font-weight:650;border-bottom:2px solid transparent;cursor:pointer}
+#content .on-v68-tab.active{color:#7353bd;border-color:#7353bd}
+#content .on-v68-leave .on-admin-scroll{overflow-x:auto}
+#content .on-v68-leave .on-admin-table{min-width:850px;width:100%;table-layout:auto}
+#content .on-v68-leave .on-admin-table th,#content .on-v68-leave .on-admin-table td{white-space:nowrap;text-align:left}
+#content .pm-contract-filters{display:flex;flex-wrap:wrap;gap:10px;align-items:end;padding:14px 18px;border-bottom:1px solid #e8e6ed}
+#content .pm-contract-filters label{display:grid;gap:5px;font-size:12px;font-weight:600;color:#65616e}
+#content .pm-contract-filters input,#content .pm-contract-filters select{min-width:130px;max-width:250px;padding:9px 10px;border:1px solid #dcd9e2;border-radius:5px;background:#fff}
+#content .ap68-tools{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:15px 18px;border-bottom:1px solid #e7e5eb}
+#content .ap68-tools input,#content .ap68-tools select{height:38px;border:1px solid #dcd9e2;border-radius:5px;background:#fff;padding:7px 10px}
+#content .ap68-tools input{min-width:220px;flex:1}
+#content .ap68-status{font-size:12px;font-weight:650;color:#6c558b}
+#content .ap68-table{width:100%;border-collapse:collapse}
+#content .ap68-table th{color:#6c6872;background:#f5f4f7;font-weight:600;font-size:12px;text-align:left;padding:12px}
+#content .ap68-table td{padding:13px 12px;border-bottom:1px solid #eeecf0;font-size:13px}
+#content .ap68-table td:last-child{text-align:right}
+#content .ap68-table .btn{white-space:nowrap}
+#content .ap68-tab{background:#fff;border:0;border-bottom:2px solid transparent;padding:15px 5px;margin-right:20px;font-weight:650;color:#75727c}
+#content .ap68-tab.active{color:#7556ba;border-bottom-color:#7556ba}
+#content .ap68-head{padding:0 18px;border-bottom:1px solid #e6e4e9}
+#content .ap68-none{color:#827e88;text-align:center;padding:35px 12px}
+@media(max-width:800px){#content .pm-contract-filters label{flex:1;min-width:145px}}
+</style>
+<script id="onport-v68-features">
+/* Employee entry: reuse the existing single toolbar action. No explanatory extra row. */
+attendance=oa67OldAttendance;
+const v68OldAttendance=attendance;
+attendance=function(){let s=v68OldAttendance();s=s.replace(`onclick="atOpenOCR()">${icon('file')} 客先勤怠から作成`,`onclick="oa67ClientSubmit()">${icon('file')} 客先勤怠を提出・取り込む`);return s};
+/* The same upload is used both for delivery and for later assisted entry. */
+function v68SubmitAndImport(){oa67ClientSubmit()}
+const v68OldClientSave=oa67ClientSubmitSave;
+oa67ClientSubmitSave=function(){const el=document.getElementById('oa67ClientFile');if(!el?.files?.length){atToast('提出するファイルを選択してください');return}window.oa67MyClientSubmitted=true;closeOverlay();render();openModal('客先勤怠の取り込み','2026年10月',`<div class="pm-field"><strong>客先勤怠を提出しました</strong></div><div style="margin-top:14px">提出した勤怠表をもとに自社勤怠へ反映できます。</div>`,`<button class="btn" onclick="closeOverlay()">閉じる</button><button class="btn primary" onclick="atOpenOCR()">読み取り結果を確認</button>`)};
+const v68OldClientSubmit=oa67ClientSubmit;
+oa67ClientSubmit=function(){v68OldClientSubmit();let b=document.getElementById('modalBody');if(b){b.querySelector('button[onclick="atOpenOCR()"]')?.remove();}const h=document.querySelector('.modal h2');if(h&&h.textContent.includes('客先勤怠表を提出'))h.textContent='客先勤怠を提出・取り込む'};
+/* Monthly attendance and leave information are separate working views. */
+let v68AttendanceTab='monthly';
+const v68OldAttAdmin=onAttAdmin;
+onAttAdmin=function(){let s=v68OldAttAdmin();s=s.replace(/<div class="on-v67-flow">[\s\S]*?<\/div>/,'');s=s.replace(/<div class="on-admin-title">[\s\S]*?<\/div>/,'');const second=s.indexOf('<div class="on-admin-section">',s.indexOf('<div class="on-admin-section">')+1);if(second<0)return s;const closing=s.lastIndexOf('</div>');const before=s.slice(0,second),leave=s.slice(second,closing);const tabs=`<div class="on-v68-tabs"><button class="on-v68-tab ${v68AttendanceTab==='monthly'?'active':''}" onclick="v68AttendanceTab='monthly';render()">月次勤怠</button><button class="on-v68-tab ${v68AttendanceTab==='leave'?'active':''}" onclick="v68AttendanceTab='leave';render()">休暇管理</button></div>`;if(v68AttendanceTab==='monthly')return before.replace('class="on-admin-wrap"','class="on-admin-wrap"') .replace('<div class="on-admin-section">',tabs+'<div class="on-admin-section">',1)+'</div>';let lv=leave.replace('class="on-admin-section"','class="on-admin-section on-v68-leave"').replace('<h3>有給休暇の取得状況</h3>','<h3>有給休暇の取得状況</h3>').replace('<th>有休残日数</th><th>失効日</th><th>通知状況</th>','<th>有休残日数</th><th>前年度残</th><th>前年度失効日</th><th>次回付与</th><th>通知状況</th>');return '<div class="on-admin-wrap">'+tabs+lv+'</div>'};
+/* Contract history: search, period and status controls, without changing document-specific actions. */
+let v68ContractQ='',v68ContractMonth='',v68ContractStatus='all';
+const v68OldContractList=pmContractList;
+pmContractList=function(){const original=pmContracts.slice();const subset=original.filter(c=>{const text=[c.emp,c.code,c.client,c.period].join(' ').toLowerCase();return (!v68ContractQ||text.includes(v68ContractQ.toLowerCase()))&&(!v68ContractMonth||c.period.startsWith(v68ContractMonth))&&(v68ContractStatus==='all'||c.status===v68ContractStatus)});pmContracts.splice(0,pmContracts.length,...subset);let h;try{h=v68OldContractList()}finally{pmContracts.splice(0,pmContracts.length,...original)}const form=`<div class="pm-contract-filters"><label>検索<input type="search" value="${pmEsc(v68ContractQ)}" placeholder="社員名・派遣先" oninput="v68ContractQ=this.value;v68RefreshContract()"></label><label>契約月<input type="month" value="${v68ContractMonth.replace('/','-')}" onchange="v68ContractMonth=this.value.replace('-','/');render()"></label><label>状況<select onchange="v68ContractStatus=this.value;render()"><option value="all">すべて</option>${['要確認','確認依頼中','完了','確認依頼可能'].map(v=>`<option ${v68ContractStatus===v?'selected':''}>${v}</option>`).join('')}</select></label><button class="pm-btn" onclick="v68ContractQ='';v68ContractMonth='';v68ContractStatus='all';render()">クリア</button></div>`;return h.replace('<div class="pm-tablewrap">',form+'<div class="pm-tablewrap">')};
+function v68RefreshContract(){const input=document.activeElement;const start=input?.selectionStart,end=input?.selectionEnd;render();const el=document.querySelector('.pm-contract-filters input[type="search"]');if(el){el.focus();try{el.setSelectionRange(start,end)}catch(e){}}}
+/* Approval processing now has an auditable list within the same management view. */
+let v68ApprovalTab='pending',v68ApprovalQ='',v68ApprovalType='all',v68ApprovalStatus='all';
+const v68ApprovalRecords=[
+{id:1,type:'交通費申請',person:'佐藤 花子',date:'2026/10/22',status:'承認待ち'},
+{id:2,type:'有給休暇申請',person:'営業 四郎',date:'2026/10/21',status:'承認待ち'},
+{id:3,type:'産前産後休業の申請',person:'総務 花子',date:'2026/10/20',status:'承認待ち'},
+{id:4,type:'交通費申請',person:'伊藤 健一',date:'2026/10/18',status:'承認済',processed:'2026/10/19',by:'管理 太郎'},
+{id:5,type:'特別休暇申請',person:'高橋 花子',date:'2026/10/17',status:'差戻し',processed:'2026/10/18',by:'総務 花子'},
+{id:6,type:'有給休暇申請',person:'佐藤 直樹',date:'2026/10/15',status:'承認済',processed:'2026/10/16',by:'管理 太郎'},
+{id:7,type:'交通費申請',person:'山田 智也',date:'2026/09/28',status:'引継ぎ済',processed:'2026/09/29',by:'総務 花子'},
+{id:8,type:'欠勤申請',person:'大竹 七奈',date:'2026/09/24',status:'承認済',processed:'2026/09/26',by:'管理 太郎'}];
+let v68CurrentApproval=null;
+const v68OldOpenApprove=openApprove;
+openApprove=function(name,person){v68CurrentApproval=v68ApprovalRecords.find(r=>r.type===name&&r.person===person&&r.status==='承認待ち')||null;v68OldOpenApprove(name,person)};
+const v68OldApprovalCommit=approvalCommit;
+approvalCommit=function(){const publicText=document.getElementById('ap59Public')?.value.trim()||'';if(approvalDecision==='return'&&!publicText){v68OldApprovalCommit();return}if(approvalDecision==='forward'&&!document.querySelector('#ap59ForwardPerson,#ap59ForwardRole')?.value){v68OldApprovalCommit();return}const entry=v68CurrentApproval,choice=approvalDecision,internal=document.getElementById('ap59Internal')?.value.trim()||'',recipient=document.getElementById('ap59ForwardPerson')?.value||document.getElementById('ap59ForwardRole')?.value||'';v68OldApprovalCommit();if(entry){entry.status=choice==='approve'?'承認済':choice==='return'?'差戻し':'引継ぎ済';entry.processed='2026/10/26';entry.by='管理 太郎';entry.internal=internal;entry.publicText=publicText;entry.recipient=recipient;v68CurrentApproval=null;render()}};
+function v68ApprovalDetails(id){const r=v68ApprovalRecords.find(x=>x.id===id);if(!r)return;const safe=pmEsc;openModal(r.type,`申請者：${safe(r.person)}　・　${r.status}`,`<div class="pm-field"><label>申請日</label><strong>${r.date}</strong></div><div class="pm-field" style="margin-top:12px"><label>処理日</label><strong>${r.processed||'—'}</strong></div><div class="pm-field" style="margin-top:12px"><label>対応者</label><strong>${safe(r.by||'—')}</strong></div>${r.recipient?`<div class="pm-field" style="margin-top:12px"><label>引継ぎ先</label><strong>${safe(r.recipient)}</strong></div>`:''}${r.internal?`<div class="pm-field" style="margin-top:12px"><label>承認者間メモ</label><p>${safe(r.internal)}</p></div>`:''}${r.publicText?`<div class="pm-field" style="margin-top:12px"><label>申請者へのメッセージ</label><p>${safe(r.publicText)}</p></div>`:''}`,`<button class="btn" onclick="closeOverlay()">閉じる</button>`)}
+approvals=function(){const pending=v68ApprovalRecords.filter(r=>r.status==='承認待ち').length;const tabs=`<div class="ap68-head"><button class="ap68-tab ${v68ApprovalTab==='pending'?'active':''}" onclick="v68ApprovalTab='pending';render()">承認待ち ${pending}</button><button class="ap68-tab ${v68ApprovalTab==='history'?'active':''}" onclick="v68ApprovalTab='history';render()">処理履歴</button></div>`;const filter=`<div class="ap68-tools"><input type="search" value="${pmEsc(v68ApprovalQ)}" placeholder="申請者・申請内容で検索" oninput="v68ApprovalQ=this.value;v68ApprovalRefresh()"><select onchange="v68ApprovalType=this.value;v68ApprovalRefresh()"><option value="all">すべての申請種別</option>${[...new Set(v68ApprovalRecords.map(r=>r.type))].map(t=>`<option ${v68ApprovalType===t?'selected':''}>${t}</option>`).join('')}</select>${v68ApprovalTab==='history'?`<select onchange="v68ApprovalStatus=this.value;v68ApprovalRefresh()"><option value="all">すべてのステータス</option>${['承認済','差戻し','引継ぎ済'].map(v=>`<option ${v68ApprovalStatus===v?'selected':''}>${v}</option>`).join('')}</select>`:''}</div>`;const list=v68ApprovalRecords.filter(r=>(v68ApprovalTab==='pending'?r.status==='承認待ち':r.status!=='承認待ち')&&(!v68ApprovalQ||(r.type+r.person).toLowerCase().includes(v68ApprovalQ.toLowerCase()))&&(v68ApprovalType==='all'||r.type===v68ApprovalType)&&(v68ApprovalTab==='pending'||v68ApprovalStatus==='all'||r.status===v68ApprovalStatus));const table=`<div style="overflow-x:auto"><table class="ap68-table"><thead><tr><th>${v68ApprovalTab==='pending'?'申請日':'処理日'}</th><th>申請者</th><th>申請種別</th><th>ステータス</th>${v68ApprovalTab==='history'?'<th>対応者</th>':''}<th>操作</th></tr></thead><tbody>${list.map(r=>`<tr><td>${v68ApprovalTab==='pending'?r.date:r.processed||'—'}</td><td><strong>${pmEsc(r.person)}</strong></td><td>${pmEsc(r.type)}</td><td><span class="ap68-status">${r.status}</span></td>${v68ApprovalTab==='history'?`<td>${pmEsc(r.by||'—')}</td>`:''}<td><button class="btn ${v68ApprovalTab==='pending'?'primary':''}" onclick="${v68ApprovalTab==='pending'?`openApprove('${r.type}','${r.person}')`:`v68ApprovalDetails(${r.id})`}">${v68ApprovalTab==='pending'?'確認する':'詳細'}</button></td></tr>`).join('')||`<tr><td colspan="6" class="ap68-none">該当する申請はありません</td></tr>`}</tbody></table></div>`;return `<section class="panel">${tabs}${filter}<div id="ap68-list">${table}</div></section>`};
+function v68ApprovalRefresh(){const input=document.activeElement;const isSearch=input?.type==='search';const start=isSearch?input.selectionStart:null;render();if(isSearch){const el=document.querySelector('.ap68-tools input');el?.focus();try{el?.setSelectionRange(start,start)}catch(e){}}}
+</script>
+
+<script>
+// Populate the leave table whenever the attendance-management leave tab is rendered.
+const v69PreviousRender = render;
+render = function(){
+  v69PreviousRender();
+  if(view === 'attendance-admin' && v68AttendanceTab === 'leave') {
+    onAttLeaveRefresh();
+  }
+};
+</script>
 </body></html>
